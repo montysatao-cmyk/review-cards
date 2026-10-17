@@ -73,7 +73,8 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <canvas id="cv" width="1080" height="1350"></canvas>
 <img id="out" alt="Generated card">
 <p class="hint">If the image doesn't download, press and hold the picture above and choose Save image.</p>
-<div class="bar"><button id="ex">Load example</button><button id="save">Save image</button></div>
+<div class="bar"><button id="ex">Example</button><button id="exp">Export data</button><button id="imp">Import data</button><button id="save">Save image</button></div>
+<input type="file" id="impf" accept=".json,application/json" hidden>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -143,6 +144,11 @@ document.addEventListener('input',draw);
 $('save').onclick=()=>{render();$('cv').toBlob(b=>{const u=URL.createObjectURL(b);$('out').src=u;$('out').style.display='block';const a=document.createElement('a');a.href=u;a.download=($('title').value||'review').replace(/\W+/g,'-')+'-'+tab+'.png';a.click()},'image/png')};
 $('ex').onclick=()=>{const s={title:'The Furious',year:'2026',age:'18+',rt:'1h 53m',origin:'Chinese',dir:'Kenji Tanigaki',score:'8.75',feel:'Masterclass, Action, Ragebait',chips:'Action, Thriller, Martial Arts, Original',short:'One of the craziest action movies I have seen. Action is insane from the first fight, but a villain scene at the end ragebaited me 🥀',full:'It\'s 1 of the craziest action movies I have seen...\n\nGreat points: It starts with action and goes insane from the 1st action sequence. Straightforward story, minimal dialogue, good pacing. You can see they worked very hard on the fighting styles, choreography and brutality.\n\nFlaws: Few logic issues. Too basic in story. Emotions could have been better. It drags sometimes, even the fights.\n\nOne villain scene at the end ruined my experience, so I dropped my rating to Go For It.',sn:'1',en:'3',et:'12',ert:'24 min',edate:'16 Jul 2026',escore:'8.5',erev:'Sample episode review. Replace this text.'};Object.entries(s).forEach(([k,v])=>$(k).value=v);$('v').value='🫡 Respect';$('mr').value='🟢 Go For It';$('pot').value='Greatest';$('ach').value='Greater';$('ev').value='👍 Liked';draw()};
 
+const IDS=['title','year','age','rt','origin','dir','handle','fmt','score','v','mr','feel','chips','short','pot','ach','size','full','sn','ert','en','et','edate','escore','ev','erev','bg','dark','blur'];
+const small=(im,mw,q)=>{if(!im)return null;const s=Math.min(1,mw/im.width),t=document.createElement('canvas');t.width=im.width*s|0;t.height=im.height*s|0;t.getContext('2d').drawImage(im,0,0,t.width,t.height);return t.toDataURL('image/jpeg',q)};
+$('exp').onclick=()=>{const o={app:'review-card-maker',tab,f:{},poster:small(poster,700,.85),bgimg:small(bgimg,1080,.75)};IDS.forEach(k=>o.f[k]=$(k).value);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));a.download=($('title').value||'review').replace(/\W+/g,'-')+'-data.json';a.click()};
+$('imp').onclick=()=>$('impf').click();
+$('impf').onchange=()=>{const f=$('impf').files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);Object.entries(o.f||{}).forEach(([k,v])=>{if($(k))$(k).value=v});poster=null;bgimg=null;const im=(d,cb)=>{if(!d)return;const i=new Image();i.onload=()=>{cb(i);draw()};i.src=d};im(o.poster,i=>poster=i);im(o.bgimg,i=>bgimg=i);const b=document.querySelector('.tabs button[data-t="'+o.tab+'"]');if(b)b.click();draw()}catch(e){alert('That file could not be read.')}};r.readAsText(f);$('impf').value=''};
 const opts=(id,a)=>$(id).innerHTML=a.map(x=>`<option>${x}</option>`).join('');
 opts('v',Object.keys(VD));opts('ev',Object.keys(VD));opts('mr',Object.keys(MR));opts('pot',POT.slice().reverse());opts('ach',ACH.slice().reverse());
 $('bg').innerHTML=Object.entries(BG).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('bg').value='cinema';
