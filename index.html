@@ -31,10 +31,11 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 
 <details open><summary>Title details</summary>
 <label>Poster (vertical)<input type="file" id="poster" accept="image/*"></label>
-<label data-f="post full">Label<input id="fmt" value="🎬 Movie"></label>
+<label data-f="post full">Label<input id="fmt" value="Movie"></label>
 <label>Title<input id="title"></label>
 <div class="row"><label>Year<input id="year"></label><label>Age rating<input id="age"></label></div>
 <div class="row"><label data-f="post full">Runtime<input id="rt"></label><label data-f="post full">Origin<input id="origin"></label></div>
+<label data-f="post full">Genres (comma separated)<input id="genre"></label>
 <label>Director<input id="dir"></label>
 <label>Handle<input id="handle" value="@Monty274"></label>
 </details>
@@ -51,7 +52,7 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <div class="row"><label>My score /10<input id="score"></label><label>Verdict<select id="v"></select></label></div>
 <label>Moctale rating<select id="mr"></select></label>
 <label>One-word set (comma separated)<input id="feel"></label>
-<label>Chips: genres, source, studio (comma separated)<input id="chips"></label>
+<label>Chips: source, studio, extras (comma separated)<input id="chips"></label>
 </details>
 
 <details data-f="post" open><summary>Short review and potential</summary>
@@ -108,12 +109,14 @@ function bg(c,h,T){const k=T.k;let g;
 
 function pic(c,x,y,w,h){c.save();rr(c,x,y,w,h,24);c.clip();if(poster){const s=Math.max(w/poster.width,h/poster.height);c.drawImage(poster,x+(w-poster.width*s)/2,y+(h-poster.height*s)/2,poster.width*s,poster.height*s)}else{c.fillStyle='#2a2d34';c.fillRect(x,y,w,h)}c.restore()}
 
+const IC={film:'M3 4.5h18V9H3z M8 4.5L6 9 M13 4.5L11 9 M18 4.5L16 9 M3 9v11h18V9',cal:'M4 6h16v14H4z M4 10h16 M8 3v4 M16 3v4',clock:'M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18z M12 7v5l3 2',globe:'M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18z M3 12h18 M12 3c3 3 3 15 0 18 M12 3c-3 3-3 15 0 18',age:'M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18z',mask:'M5 4h14v8a7 7 0 0 1-14 0z M9 10v1 M15 10v1 M9 15c1.5 1.5 4.5 1.5 6 0',dir:'M4 10v4h3l7 4V6l-7 4z M17 9a4 4 0 0 1 0 6'};
+function ico(c,k,x,y,z,col,t){c.save();c.translate(x,y);c.scale(z/24,z/24);c.strokeStyle=col;c.lineWidth=1.8;c.lineCap='round';c.lineJoin='round';c.stroke(new Path2D(IC[k]));if(t){c.fillStyle=col;c.font=font('700',7.5);c.textAlign='center';c.textBaseline='middle';c.fillText(t,12,12.6);c.textAlign='left'}c.restore()}
 function header(c,y,T,ep){const d=id=>$(id).value.trim(),pw=ep?240:300,ph=pw*1.5,x=P+pw+44,mw=W-P-x;pic(c,P,y,pw,ph);let ty=y;
- if(!ep&&d('fmt'))ty=para(c,d('fmt'),x,ty,mw,30,40,T.mu,'600')+6;
+ 
  const t=d('title')||'Title';let sz=ep?58:72,L;do{c.font=font('800',sz);L=wrap(c,t,mw);sz-=6}while(L.length>3&&sz>36);
  ty=para(c,t,x,ty,mw,sz+6,(sz+6)*1.12,T.tx,'800')+12;
- const m=ep?['Season '+(d('sn')||'?')+' • Episode '+(d('en')||'?')+'/'+(d('et')||'?'),[d('year'),d('edate')&&'watched '+d('edate')].filter(Boolean).join(' • '),d('ert')&&'Ep runtime: '+d('ert'),d('dir')&&'Directed by '+d('dir')]:[[d('year'),d('rt'),d('age')].filter(Boolean).join(' • '),d('origin'),d('dir')&&'Directed by '+d('dir')];
- m.filter(Boolean).forEach(s=>{ty=para(c,s,x,ty,mw,32,44,T.mu)});
+ if(ep){[ 'Season '+(d('sn')||'?')+' • Episode '+(d('en')||'?')+'/'+(d('et')||'?'),[d('year'),d('edate')&&'watched '+d('edate')].filter(Boolean).join(' • '),d('ert')&&'Ep runtime: '+d('ert'),d('dir')&&'Directed by '+d('dir')].filter(Boolean).forEach(t=>{ty=para(c,t,x,ty,mw,32,44,T.mu)})}
+ else{const g=d('genre').split(',').map(v=>v.trim()).filter(Boolean).join(' • ');[['film',d('fmt').replace(/\p{Extended_Pictographic}|\uFE0F/gu,'').trim()],['cal',d('year')],['clock',d('rt')],['globe',d('origin')],['age',d('age'),d('age')],['mask',g],['dir',d('dir')]].filter(r=>r[1]).forEach(r=>{ico(c,r[0],x,ty+3,36,T.mu,r[2]);ty=para(c,r[1],x+56,ty,mw-56,32,44,T.mu)+8})}
  return Math.max(y+ph,ty)+36}
 
 function hero(c,y,T,sc,cs,acc){panel(c,P,y,IW,210,T);c.textBaseline='alphabetic';c.font=font('800',130);c.fillStyle=acc;const s=sc||'–';c.fillText(s,P+40,y+150);const sw=c.measureText(s).width;c.font=font('600',48);c.fillStyle=T.mu;c.fillText('/10',P+40+sw+10,y+150);
@@ -144,9 +147,9 @@ load($('poster'),i=>poster=i);load($('bgimg'),i=>{bgimg=i;$('bg').value='custom'
 $('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;tab=b.dataset.t;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x==b));show();draw()};
 document.addEventListener('input',draw);
 $('save').onclick=()=>{render();$('cv').toBlob(b=>{const u=URL.createObjectURL(b);$('out').src=u;$('out').style.display='block';const a=document.createElement('a');a.href=u;a.download=($('title').value||'review').replace(/\W+/g,'-')+'-'+tab+'.png';a.click()},'image/png')};
-$('ex').onclick=()=>{const s={title:'The Furious',year:'2026',age:'18+',rt:'1h 53m',origin:'Chinese',dir:'Kenji Tanigaki',score:'8.75',feel:'Masterclass, Action, Ragebait',chips:'Action, Thriller, Martial Arts, Original',short:'One of the craziest action movies I have seen. Action is insane from the first fight, but a villain scene at the end ragebaited me 🥀',full:'It\'s 1 of the craziest action movies I have seen...\n\nGreat points: It starts with action and goes insane from the 1st action sequence. Straightforward story, minimal dialogue, good pacing. You can see they worked very hard on the fighting styles, choreography and brutality.\n\nFlaws: Few logic issues. Too basic in story. Emotions could have been better. It drags sometimes, even the fights.\n\nOne villain scene at the end ruined my experience, so I dropped my rating to Go For It.',sn:'1',en:'3',et:'12',ert:'24 min',edate:'16 Jul 2026',escore:'8.5',erev:'Sample episode review. Replace this text.'};Object.entries(s).forEach(([k,v])=>$(k).value=v);$('v').value='🫡 Respect';$('mr').value='🟢 Go For It';$('pot').value='Greatest';$('ach').value='Greater';$('ev').value='👍 Liked';draw()};
+$('ex').onclick=()=>{const s={title:'The Furious',year:'2026',age:'18+',rt:'1h 53m',origin:'Chinese',dir:'Kenji Tanigaki',score:'8.75',feel:'Masterclass, Action, Ragebait',genre:'Action, Thriller, Martial Arts',fmt:'Movie',chips:'Original',short:'One of the craziest action movies I have seen. Action is insane from the first fight, but a villain scene at the end ragebaited me 🥀',full:'It\'s 1 of the craziest action movies I have seen...\n\nGreat points: It starts with action and goes insane from the 1st action sequence. Straightforward story, minimal dialogue, good pacing. You can see they worked very hard on the fighting styles, choreography and brutality.\n\nFlaws: Few logic issues. Too basic in story. Emotions could have been better. It drags sometimes, even the fights.\n\nOne villain scene at the end ruined my experience, so I dropped my rating to Go For It.',sn:'1',en:'3',et:'12',ert:'24 min',edate:'16 Jul 2026',escore:'8.5',erev:'Sample episode review. Replace this text.'};Object.entries(s).forEach(([k,v])=>$(k).value=v);$('v').value='🫡 Respect';$('mr').value='🟢 Go For It';$('pot').value='Greatest';$('ach').value='Greater';$('ev').value='👍 Liked';draw()};
 
-const IDS=['title','year','age','rt','origin','dir','handle','fmt','score','v','mr','feel','chips','short','pot','ach','size','full','sn','ert','en','et','edate','escore','ev','erev','bg','dark','blur'];
+const IDS=['title','year','age','rt','origin','dir','genre','handle','fmt','score','v','mr','feel','chips','short','pot','ach','size','full','sn','ert','en','et','edate','escore','ev','erev','bg','dark','blur'];
 const small=(im,mw,q)=>{if(!im)return null;const s=Math.min(1,mw/im.width),t=document.createElement('canvas');t.width=im.width*s|0;t.height=im.height*s|0;t.getContext('2d').drawImage(im,0,0,t.width,t.height);return t.toDataURL('image/jpeg',q)};
 $('exp').onclick=()=>{const o={app:'review-card-maker',tab,f:{},poster:small(poster,700,.85),bgimg:small(bgimg,1080,.75)};IDS.forEach(k=>o.f[k]=$(k).value);const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));a.download=($('title').value||'review').replace(/\W+/g,'-')+'-data.json';a.click()};
 $('imp').onclick=()=>$('impf').click();
