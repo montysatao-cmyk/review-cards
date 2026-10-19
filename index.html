@@ -16,7 +16,13 @@ details{background:var(--pn);border:1px solid var(--ln);border-radius:12px;margi
 summary{padding:12px 0;font-weight:600;cursor:pointer}
 label{display:block;margin:0 0 10px;color:var(--mu);font-size:13px}
 input,select,textarea{width:100%;margin-top:4px;padding:9px;background:#0d0e10;color:var(--tx);border:1px solid var(--ln);border-radius:8px;font:inherit}
-input[type=range]{padding:0;height:34px}
+input[type=range]{-webkit-appearance:none;appearance:none;padding:0;border:0;border-radius:0;height:34px;cursor:pointer;touch-action:pan-y;
+ background:linear-gradient(var(--ac),var(--ac)) 11px 50%/calc((100% - 22px)*var(--p,.5)) 6px no-repeat,linear-gradient(#3a3e47,#3a3e47) 11px 50%/calc(100% - 22px) 6px no-repeat}
+input[type=range]::-webkit-slider-runnable-track{-webkit-appearance:none;height:34px;background:transparent;border:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;margin-top:6px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 5px rgba(0,0,0,.65)}
+input[type=range]::-moz-range-track{height:34px;background:transparent;border:0}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 5px rgba(0,0,0,.65)}
+input[type=range]:focus{outline:none}
 input[type=color]{height:40px;padding:3px}
 textarea{min-height:90px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -41,6 +47,7 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <div class="row"><label>Poster height<input type="range" id="ph" min="320" max="700" value="470"></label><label>Poster focus<select id="pfocus"><option value="0">Top</option><option value=".25">Upper</option><option value=".5" selected>Center</option><option value="1">Bottom</option></select></label></div>
 <label data-f="post full anime">Label<input id="fmt" value="Movie"></label>
 <label>Title<input id="title"></label>
+<label>Title size <span class="cnt" id="tszv">54</span><input type="range" id="tsz" min="30" max="90" value="54"></label>
 <div class="row"><label>Year<input id="year"></label><label>Age rating<input id="age"></label></div>
 <div class="row"><label data-f="post full anime">Runtime<input id="rt"></label><label data-f="full anime">Origin<input id="origin"></label></div>
 <label data-f="post full anime">Genres (comma separated, first 5 are shown)<input id="genre"></label>
@@ -59,7 +66,6 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <details data-f="post full anime" open><summary>Score and tags</summary>
 <div class="row"><label>My score /10<input id="score"></label><label>Verdict<select id="v"></select></label></div>
 <label>Moctale rating<select id="mr"></select></label>
-<label>One-word set, shown at the top of the poster (comma separated)<input id="feel"></label>
 <label data-f="full anime">Chips: source, studio, extras (comma separated)<input id="chips"></label>
 <div class="row"><label>Potential /10<input id="pot" type="number" min="1" max="10" value="10"></label><label>Achieved /10<input id="ach" type="number" min="1" max="10" value="9"></label></div>
 </details>
@@ -80,16 +86,15 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 
 <details open><summary>Look</summary>
 <label>Theme<select id="bg"></select></label>
-<label class="chk"><input type="checkbox" id="rgb">RGB glow mode (shining edges, glowing dots, emoji and bar)</label>
-<div class="row"><label class="chk" style="margin-top:22px"><input type="checkbox" id="accon">Custom accent</label><label>Accent colour<input type="color" id="accent" value="#00d084"></label></div>
+<label class="chk"><input type="checkbox" id="rgb">RGB glow (soft glow on the bar, logo, rating and verdict bubbles)</label>
 <label>Background image (for the "My background image" theme)<input type="file" id="bgimg" accept="image/*"></label>
-<div class="row"><label>Darkness<input type="range" id="dark" min="0" max="90" value="55"></label><label>Blur<input type="range" id="blur" min="0" max="100" value="75"></label></div>
+<div id="imgopts" hidden><div class="row"><label>Darkness<input type="range" id="dark" min="0" max="90" value="55"></label><label>Blur<input type="range" id="blur" min="0" max="100" value="75"></label></div>
+<p class="hint">Darkness and blur change the picture behind the card. Text is always drawn on top at full strength.</p></div>
 <label>Review font<select id="rfont"></select></label>
 <div class="row"><label>Review text size<select id="rsize"><option value="30">Small</option><option value="34" selected>Medium</option><option value="40">Large</option><option value="46">Extra large</option></select></label><label data-f="post">Card size<select id="size"><option value="0">Auto, fits the content</option><option value="1920">9:16 (at least 1080×1920)</option><option value="1350">4:5 (at least 1080×1350)</option></select></label></div>
 <label class="chk"><input type="checkbox" id="outl" checked>Thin outline around the review</label>
 <label>Saved image width<select id="xs"><option value="1">Full (1080 px)</option><option value=".8">Medium (864 px)</option><option value=".6">Small (648 px)</option></select></label>
 <p class="hint">Formatting: **bold** *italic* or _italic_ ***bold italic*** __underline__ ~~strike~~ (single ~ works too). Colour: {red:text} {#ff8800:text} {ff8800:text} {rgb(255,0,0):text}. Lists: start a line with - or * (indent 2 spaces for sub-bullets). Quote: &gt; line, or &gt;&gt;&gt; for many lines. A blank line makes a small gap between paragraphs.</p>
-<p class="hint">Darkness and blur only change the "Blurred poster" and "My background image" themes. Text is always drawn on top at full strength.</p>
 </details>
 
 <canvas id="cv" width="1080" height="1350"></canvas>
@@ -101,7 +106,7 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <script>
 const $=id=>document.getElementById(id),V=id=>$(id).value.trim(),LST=id=>V(id).split(',').map(x=>x.trim()).filter(Boolean);
 const MR={'🟣 Perfection':'#a855f7','🟢 Go For It':'#00d084','🟡 Timepass':'#f5b301','🔴 Skip':'#ff5c7a'};
-const VD={'💜 Personal fav':'#ff6fb5','🫡 Respect':'#7c6cff','👍 Liked':'#3b9cff','👎 Didn\'t like':'#fb923c','🗑️ Trash':'#ef4444'};
+const VD={'💜 Personal fav':'#9b5de5','🫡 Respect':'#2f9fe0','👍 Liked':'#ec4899','👎 Didn\'t like':'#f59e0b','🗑️ Trash':'#ef4444'};
 const W=1080,P=64,IW=W-2*P;
 const FF='"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Color Emoji","Apple Color Emoji",sans-serif';
 const font=(w,s)=>`${w} ${s}px ${FF}`;
@@ -137,8 +142,7 @@ const TH={tint:'Poster tint (default)',cinema:'Cinematic',neon:'Neon noir',midni
 function theme(){const k=$('bg').value,light=k=='paper';
  return{k,light,tx:light?'#231d14':'#ffffff',mu:light?'#5a4f3f':'#b4bfcf',ln:light?'rgba(60,45,20,.22)':'rgba(150,170,200,.24)',
   cb:light?'rgba(60,45,20,.07)':'rgba(255,255,255,.09)',cs:light?'rgba(60,45,20,.30)':'rgba(150,170,200,.34)',
-  pn:light?'rgba(255,250,240,.7)':'rgba(10,11,14,.42)',bs:light?'rgba(60,45,20,.35)':'rgba(180,191,207,.38)',line:light?'#b9a47c':'#3b5b8f'}}
-const ACC=()=>$('accon').checked?$('accent').value:(MR[V('mr')]||'#00d084');
+  pn:light?'rgba(255,250,240,.7)':'rgba(10,11,14,.42)',bs:light?'rgba(60,45,20,.35)':'rgba(180,191,207,.38)',line:light?'#b9a47c':'#3b5b8f',gl:light?'rgba(90,79,63,.45)':'rgba(165,172,186,.5)'}}
 
 /* ---------- small helpers ---------- */
 const lum=h=>{const n=parseInt(h.slice(1),16);return((n>>16)*299+((n>>8)&255)*587+(n&255)*114)/1000};
@@ -172,13 +176,10 @@ function brandText(c,T,x,ym,size){
  const sx=12+w2*.97,sy=ph/2-size*.34,sh=g.createRadialGradient(sx,sy,0,sx,sy,w2*.36);
  sh.addColorStop(0,'rgba(255,255,255,.95)');sh.addColorStop(.35,'rgba(235,240,255,.42)');sh.addColorStop(1,'rgba(255,255,255,0)');
  g.fillStyle=sh;g.fillRect(0,0,pw,ph);
- c.drawImage(t,x+w1-12,ym-ph/2);
- /* small sparkle on the same corner */
- const r=size*.26;c.save();c.translate(x+w1+w2-1,ym-size*.38);c.fillStyle=T.light?'#7fa6ff':'#ffffff';if(RGB){c.shadowColor='#9fd0ff';c.shadowBlur=14}
- c.beginPath();c.moveTo(0,-r);c.quadraticCurveTo(r*.14,-r*.14,r,0);c.quadraticCurveTo(r*.14,r*.14,0,r);c.quadraticCurveTo(-r*.14,r*.14,-r,0);c.quadraticCurveTo(-r*.14,-r*.14,0,-r);c.fill();c.restore();
+ c.save();if(RGB){c.shadowColor='#6f8cff';c.shadowBlur=20}c.drawImage(t,x+w1-12,ym-ph/2);c.restore();
  return w1+w2+w3}
 function brandLock(c,T,right,ym,size,mh){c.font=font('800',size);const tw=['My','Cine','List'].reduce((a,s)=>a+c.measureText(s).width,0),m=MKL,ok=m.complete&&m.width,mw=ok?m.width/m.height*mh:0,x=right-tw;
- brandText(c,T,x,ym,size);if(ok)c.drawImage(m,x-14-mw,ym-mh/2,mw,mh);return x-(ok?14+mw:0)}
+ brandText(c,T,x,ym,size);if(ok){c.save();if(RGB){c.shadowColor='#6f8cff';c.shadowBlur=22}c.drawImage(m,x-14-mw,ym-mh/2,mw,mh);c.restore()}return x-(ok?14+mw:0)}
 
 /* ---------- review text (Discord-style formatting) ---------- */
 function rich(t){const o=[],st={b:0,i:0,s:0,u:0},cs=[];let w='';const fl=()=>{if(w){o.push({w,...st,c:cs[cs.length-1]});w=''}};const pn=/[\s.,!?;:)(]/;
@@ -236,22 +237,19 @@ function heroPoster(c,T,PH){const m=document.createElement('canvas');m.width=W;m
  g.globalCompositeOperation='destination-in';const gr=g.createLinearGradient(0,0,0,PH);
  gr.addColorStop(0,'#000');gr.addColorStop(T.light?.2:.4,'#000');gr.addColorStop(T.light?.7:1,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,0)');
  g.fillStyle=gr;g.fillRect(0,0,W,PH);c.drawImage(m,0,0)}
-function titleLayout(c,t){const em='🎬 ';try{c.letterSpacing='3px'}catch(e){}
+function titleLayout(c,t){const em='🎬 ',TZ=Math.max(24,+$('tsz').value||54);try{c.letterSpacing='3px'}catch(e){}
  const w=(z,s)=>{c.font=font('800',z);return c.measureText(s).width};
- for(let z=100;z>=60;z-=2)if(w(z,em+t)<=IW)return{z,L:[em+t]};
- for(let z=84;z>=34;z-=2){c.font=font('800',z);const L=wrap(c,em+t,IW);if(L.length<=2)return{z,L}}
- let z=34;while(z>20&&w(z,em+t)>IW)z-=2;return{z,L:[em+t]}}
+ for(let z=TZ;z>=Math.max(28,Math.round(TZ*.72));z-=2)if(w(z,em+t)<=IW)return{z,L:[em+t]};
+ for(let z=TZ;z>=24;z-=2){c.font=font('800',z);const L=wrap(c,em+t,IW);if(L.length<=2)return{z,L}}
+ let z=24;while(z>16&&w(z,em+t)>IW)z-=2;return{z,L:[em+t]}}
 function drawTitle(c,T,PH,title){const t=title.toUpperCase();c.textBaseline='top';c.textAlign='left';
  const {z,L}=titleLayout(c,t),lh=Math.round(z*1.08),y0=PH-10-L.length*lh;c.font=font('800',z);
  L.forEach((ln,i)=>{const y=y0+i*lh;c.fillStyle='#ffffff';c.fillStyle=T.tx;
-  if(i==0&&ln.startsWith('🎬 ')){const ew=c.measureText('🎬 ').width;c.save();if(RGB){c.shadowColor='rgba(255,79,216,.8)';c.shadowBlur=22}c.fillText('🎬',P,y);c.restore();c.fillText(ln.slice(3),P+ew,y)}
+  if(i==0&&ln.startsWith('🎬 ')){const ew=c.measureText('🎬 ').width;c.fillText('🎬',P,y);c.fillText(ln.slice(3),P+ew,y)}
   else c.fillText(ln,P,y)});
  try{c.letterSpacing='0px'}catch(e){}}
-function hero(c,T,PH,title,tags,acc){
- if(LIVE){heroPoster(c,T,PH);
-  if(tags.length){const g=c.createLinearGradient(0,0,0,190);g.addColorStop(0,'rgba(0,0,0,.55)');g.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=g;c.fillRect(0,0,W,190);
-   chipRow(c,tags,P,36,IW,{size:26,pad:22,h:50,bg:'rgba(0,0,0,.42)',fg:'#ffffff',stroke:acc})}
-  drawTitle(c,T,PH,title)}
+function hero(c,T,PH,title){
+ if(LIVE){heroPoster(c,T,PH);drawTitle(c,T,PH,title)}
  return PH+24}
 
 /* ---------- card parts ---------- */
@@ -264,22 +262,21 @@ function infoRow(c,T,y,cells){const H=88;cells=cells.filter(x=>x.show);if(!cells
   else item(c,x+(i?24:0),cy,cl.ico,cl.text,T.tx,'',w-(i?30:6));
   x+=w});
  return y+H+14}
+function pill(c,px,vy,col,raw,avail){const m=raw.match(/^(\S+)\s+(.*)$/),em=m&&/\p{Extended_Pictographic}/u.test(m[1])?m[1]:'',tx=em?m[2]:raw;let z=30;
+ const mz=()=>{c.font=font('700',z);return 20+(em?c.measureText(em).width+10:0)+c.measureText(tx).width+26};
+ while(mz()>avail&&z>18)z-=2;const pw=mz(),ph=56;
+ c.save();if(RGB){c.shadowColor=col;c.shadowBlur=28}rr(c,px,vy-ph/2,pw,ph,ph/2);c.fillStyle=col;c.fill();c.restore();
+ c.textAlign='left';c.textBaseline='middle';let x=px+20;if(em){c.fillStyle='#ffffff';c.fillText(em,x,vy+1);x+=c.measureText(em).width+10}
+ c.fillStyle=ink(col);c.fillText(tx,x,vy+1)}
 function ratingsRow(c,T,y,cols){const n=cols.length,cw=IW/n;c.fillStyle=T.ln;c.fillRect(P,y,IW,2);const ry=y+18,vy=ry+74;
  cols.forEach((k,i)=>{const cx=P+i*cw,px=cx+(i?28:0),avail=cw-(i?28:0)-14;
   c.textBaseline='top';c.textAlign='left';c.font=font('600',21);c.fillStyle=T.mu;c.fillText(k.label,px,ry);
   if(i){c.fillStyle=T.ln;c.fillRect(cx,ry+4,2,92)}
   c.textBaseline='middle';
-  if(k.t=='mr'){const nm=(k.mr||'').replace(EMO,'').trim(),col=MR[k.mr]||'#8a8f99';let z=30;c.font=font('700',z);while(c.measureText(nm).width>avail-70&&z>18){z-=2;c.font=font('700',z)}
-   const tw=c.measureText(nm).width,pw=16+26+10+tw+24,ph=56;
-   c.save();if(RGB){c.shadowColor=col;c.shadowBlur=26}rr(c,px,vy-ph/2,pw,ph,ph/2);c.fillStyle=col;c.fill();c.restore();
-   c.beginPath();c.arc(px+16+13,vy,9.5,0,7);c.fillStyle=ink(col);c.fill();
-   c.fillStyle=ink(col);c.textAlign='left';c.fillText(nm,px+16+26+10,vy+1)}
-  else if(k.t=='score'){const s=k.s||'–';c.save();c.translate(px,vy-19);c.scale(1.6,1.6);c.fillStyle='#f5b301';if(RGB){c.shadowColor='#f5b301';c.shadowBlur=16}c.fill(new Path2D(STAR));c.restore();
+  if(k.t=='mr'){if(k.mr)pill(c,px,vy,MR[k.mr]||'#8a8f99',k.mr,avail)}
+  else if(k.t=='score'){const s=k.s||'–';c.save();c.translate(px,vy-19);c.scale(1.6,1.6);c.fillStyle='#f5b301';c.fill(new Path2D(STAR));c.restore();
    c.font=font('800',46);c.fillStyle=T.tx;c.textAlign='left';c.fillText(s,px+50,vy);const sw=c.measureText(s).width;c.font=font('600',28);c.fillStyle=T.mu;c.fillText('/10',px+50+sw+6,vy+6)}
-  else{const vd=k.v||'',m=vd.match(/^(\S+)\s+(.*)$/),em=m?m[1]:'',tx=m?m[2]:vd;let z=36;c.font=font('800',z);
-   const ew=()=>em?c.measureText(em+' ').width:0;while(ew()+c.measureText(tx).width>avail&&z>20){z-=2;c.font=font('800',z)}
-   c.textAlign='left';if(em){c.save();if(RGB){c.shadowColor=VD[vd]||'#ffffff';c.shadowBlur=20}c.fillStyle=T.tx;c.fillText(em,px,vy+1);c.restore()}
-   c.fillStyle=T.tx;c.fillText(tx,px+ew(),vy+1)}});
+  else{if(k.v)pill(c,px,vy,VD[k.v]||'#8a8f99',k.v,avail)}});
  c.fillStyle=T.ln;c.fillRect(P,y+138,IW,2);return y+160}
 function reviewBlock(c,T,y,text,o){const z=+$('rsize').value||34,lh=Math.round(z*1.42),f=fam(),ol=$('outl').checked,pd=ol?32:0,y0=y,L=rdoc(c,text,z,f,IW-2*pd);let yy=y+(ol?28:0);
  if(o.label){c.textBaseline='top';c.textAlign='left';c.font=font('700',21);c.fillStyle=T.mu;try{c.letterSpacing='2px'}catch(e){}c.fillText(o.label.toUpperCase(),P+pd,yy);try{c.letterSpacing='0px'}catch(e){}yy+=40}
@@ -297,29 +294,23 @@ function epChart(c,T,y,arr){if(!arr.length)return y;const x=P,w=IW,h=372,n=arr.l
  [10,5,0].forEach(v=>{const gy=by-v/10*ph;c.fillStyle=T.ln;c.fillRect(px-8,gy-1,pw+8,2);c.font=font('500',20);c.fillStyle=T.mu;c.textBaseline='middle';c.textAlign='right';c.fillText(String(v),px-18,gy)});
  const slot=pw/n,bw=Math.min(56,slot*.66);
  arr.forEach((v0,i)=>{const v=Math.max(0,Math.min(10,v0)),bh=Math.max(5,v/10*ph),bx=px+slot*i+(slot-bw)/2,col=epColor(v);
-  c.save();if(RGB){c.shadowColor=col;c.shadowBlur=14}rr(c,bx,by-bh,bw,bh,[Math.min(10,bw/2),Math.min(10,bw/2),3,3]);c.fillStyle=col;c.fill();c.restore();
+  rr(c,bx,by-bh,bw,bh,[Math.min(10,bw/2),Math.min(10,bw/2),3,3]);c.fillStyle=col;c.fill();
   if(slot>=32){let fs=Math.min(24,slot*.45);const t=f2(v0);c.font=font('700',fs);while(c.measureText(t).width>slot-4&&fs>12){fs-=1;c.font=font('700',fs)}
    if(c.measureText(t).width<=slot-2){c.fillStyle=T.tx;c.textAlign='center';c.textBaseline='alphabetic';c.fillText(t,bx+bw/2,by-bh-8)}}});
  const step=Math.ceil(44/slot);c.font=font('500',20);c.fillStyle=T.mu;c.textAlign='center';c.textBaseline='top';
  arr.forEach((v,i)=>{if(i%step==0)c.fillText('E'+(i+1),px+slot*i+slot/2,by+12)});c.textAlign='left';
  return y+h+24}
-function barRow(c,T,y,o,acc){c.fillStyle=T.ln;c.fillRect(P,y,IW,2);y+=24;const bh=18,bw=470,b=o.segs?y+54:y+10,mid=b+bh/2;let x1=P;
+function barRow(c,T,y,o){c.fillStyle=T.ln;c.fillRect(P,y,IW,2);y+=24;const bh=18,bw=470,b=o.segs?y+54:y+10,mid=b+bh/2;let x1=P;
  if(o.segs){ico(c,'tgt',P,y,30,T.mu,'');c.textBaseline='middle';c.textAlign='left';c.font=font('700',22);c.fillStyle=T.mu;c.fillText(o.label,P+42,y+15);
   if(RGB){let s=0;o.segs.forEach(([e,col])=>{c.save();c.shadowColor=col;c.shadowBlur=20;c.fillStyle=col;rr(c,P+s*bw,b,Math.max(1,(e-s)*bw),bh,9);c.fill();c.restore();s=e})}
   c.save();rr(c,P,b,bw,bh,9);c.clip();c.fillStyle=T.ln;c.fillRect(P,b,bw,bh);let s=0;o.segs.forEach(([e,col])=>{c.fillStyle=col;c.fillRect(P+s*bw,b,(e-s)*bw,bh);s=e});c.restore();
   c.font=font('700',28);c.fillStyle=T.tx;c.textBaseline='middle';c.textAlign='left';c.fillText(o.text,P+bw+18,mid);x1=P+bw+18+c.measureText(o.text).width+22}
  const lx=brandLock(c,T,W-P,mid,34,56),x2=lx-22;
- if(x2>x1+20){c.save();if(RGB){const g=c.createLinearGradient(x1,0,x2,0);['#ff2d55','#ffe600','#30ff7a','#00e5ff','#b44cff'].forEach((col,i,a)=>g.addColorStop(i/(a.length-1),col));c.fillStyle=g;c.shadowColor='#7aa8ff';c.shadowBlur=12}
-  else c.fillStyle=$('accon').checked?acc:T.line;c.fillRect(x1,mid-1,x2-x1,2);c.restore()}
+ if(x2>x1+20){c.fillStyle=T.gl;c.fillRect(x1,mid-1,x2-x1,2)}
  return b+bh+50}
-function rgbFrame(c,H){const g=c.createLinearGradient(0,0,W,H);const cols=['#ff2d55','#ff9f0a','#ffe600','#30ff7a','#00e5ff','#3d7bff','#b44cff','#ff2d9a','#ff2d55'];
- cols.forEach((col,i)=>g.addColorStop(i/(cols.length-1),col));c.save();c.strokeStyle=g;c.lineJoin='round';
- [[34,.05],[25,.07],[17,.1],[10,.16],[5,.3]].forEach(([w,a])=>{c.globalAlpha=a;c.lineWidth=w;rr(c,12,12,W-24,H-24,36);c.stroke()});
- c.globalAlpha=1;c.lineWidth=3;rr(c,12,12,W-24,H-24,36);c.stroke();c.restore()}
-
 /* ---------- build one card ---------- */
 function scoresList(){return V('ascores').split(/[\s,;]+/).filter(Boolean).map(Number).filter(v=>isFinite(v))}
-function build(c,T,PH,sp){const isEp=tab=='ep',acc=ACC();let y=hero(c,T,PH,V('title')||'Title',isEp?[]:LST('feel').slice(0,6),acc)+sp;
+function build(c,T,PH,sp){const isEp=tab=='ep';let y=hero(c,T,PH,V('title')||'Title')+sp;
  const yr=V('year'),fm=V('fmt').replace(EMO,'').trim(),dot='  •  ';
  const mid=isEp?`S${V('sn')||'?'}${dot}E${V('en')||'?'}${V('et')?'/'+V('et'):''}`:[fm,yr].filter(Boolean).join(dot),rt=isEp?V('ert'):V('rt');
  y=infoRow(c,T,y,[{k:'dir',w:3.1,text:V('dir'),show:!!V('dir')},{k:'mid',w:3.5,ico:'reel',text:mid,show:!!mid},{k:'age',w:1.25,text:V('age'),show:!!V('age')},{k:'rt',w:2.1,ico:'clock',text:rt,show:!!rt}])+sp;
@@ -334,20 +325,21 @@ function build(c,T,PH,sp){const isEp=tab=='ep',acc=ACC();let y=hero(c,T,PH,V('ti
  const rv=tab=='full'?V('full'):isEp?V('erev'):V('short');
  if(rv)y=reviewBlock(c,T,y,rv,{label:tab=='full'?'Review':isEp?'Episode review':''});
  y+=sp;
- const base=$('accon').checked?acc:'#6c7bff';let o;
+ const base='#6c7bff';let o;
  if(isEp){const en=+V('en'),et=+V('et');o=en>0&&et>0?{label:'EPISODE PROGRESS',segs:[[Math.min(1,en/et),base]],text:en+'/'+et}:{}}
  else{const cl=v=>Math.max(0,Math.min(10,+v||0)),pt=cl(V('pot')),ac=cl(V('ach')),m=Math.min(pt,ac),M=Math.max(pt,ac);
   o={label:'POTENTIAL / ACHIEVED',segs:[[m/10,base],[M/10,ac>pt?'#f5b301':'#3ddc97']],text:ac+'/10'}}
- return barRow(c,T,y,o,acc)}
+ return barRow(c,T,y,o)}
 
 let SW=0;
-function render(){const T=theme(),cv=$('cv'),dm=document.createElement('canvas').getContext('2d');RGB=$('rgb').checked;
+function sync(){document.querySelectorAll('input[type=range]').forEach(r=>r.style.setProperty('--p',(r.value-r.min)/(r.max-r.min)));$('tszv').textContent=$('tsz').value;$('imgopts').hidden=!['poster','custom'].includes($('bg').value)}
+function render(){sync();const T=theme(),cv=$('cv'),dm=document.createElement('canvas').getContext('2d');RGB=$('rgb').checked;
  const PH0=+$('ph').value||470,tgt=tab=='post'?(+$('size').value||0):0;let PH=PH0,sp=0;LIVE=false;
  let H=Math.ceil(build(dm,T,PH,sp));
  if(tgt>H){let ex=tgt-H;if(poster){PH=PH0+Math.min(ex,Math.max(0,1100-PH0))}else{sp=Math.min(ex/6,70);PH=PH0+Math.max(0,ex-sp*6)}
   H=Math.ceil(build(dm,T,PH,sp));if(tgt>H){sp+=(tgt-H)/6;H=Math.ceil(build(dm,T,PH,sp))}}
  H=Math.max(H,tgt);PLY=posterLayer(PH);cv.width=W;cv.height=H;const c=cv.getContext('2d');
- drawBG(c,H,T,PLY.bc);LIVE=true;build(c,T,PH,sp);LIVE=false;if(RGB)rgbFrame(c,H)}
+ drawBG(c,H,T,PLY.bc);LIVE=true;build(c,T,PH,sp);LIVE=false}
 let tm;function draw(){clearTimeout(tm);tm=setTimeout(()=>{try{$('cnt').textContent=$('short').value.length+'/500';render()}catch(e){console.error(e)}},120)}
 
 /* ---------- page wiring ---------- */
@@ -357,31 +349,31 @@ function setTab(t,swap){tab=t;document.querySelectorAll('.tabs button').forEach(
 const load=(inp,cb)=>{inp.onchange=()=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{cb(i);draw()};i.src=r.result};r.readAsDataURL(f)}};
 load($('poster'),i=>poster=i);load($('bgimg'),i=>{bgimg=i;$('bg').value='custom'});
 $('tabs').onclick=e=>{const b=e.target.closest('button');if(b)setTab(b.dataset.t,true)};
-document.addEventListener('input',draw);
+document.addEventListener('input',e=>{if(e.target.type=='range')sync();draw()});
 $('rfont').addEventListener('change',()=>fontReady().then(draw));
 $('save').onclick=async()=>{await fontReady();render();const sc=+$('xs').value||1;let src=$('cv');
  if(sc<1){const t=document.createElement('canvas');t.width=Math.round(src.width*sc);t.height=Math.round(src.height*sc);const g=t.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(src,0,0,t.width,t.height);src=t}
  src.toBlob(b=>{const u=URL.createObjectURL(b);$('out').src=u;$('out').style.display='block';const a=document.createElement('a');a.href=u;a.download=($('title').value||'review').replace(/\W+/g,'-')+'-'+tab+'.png';a.click()},'image/png')};
-$('ex').onclick=()=>{const s={title:'The Furious',year:'2026',age:'18+',rt:'1h 53m',origin:'Chinese',dir:'Kenji Tanigaki',score:'8.75',feel:'Masterclass, Action, Ragebait',genre:'Action, Thriller, Martial Arts',fmt:'Movie',chips:'Original',
+$('ex').onclick=()=>{const s={title:'The Furious',year:'2026',age:'18+',rt:'1h 53m',origin:'Chinese',dir:'Kenji Tanigaki',score:'8.75',genre:'Action, Thriller, Martial Arts',fmt:'Movie',chips:'Original',
  short:'One of the craziest action movies I have seen. Action is insane from the first fight, but a villain scene at the end ragebaited me 🥀',
  full:'It\'s 1 of the craziest action movies I have seen...\n\nGreat points: It starts with action and goes insane from the 1st action sequence. Straightforward story, minimal dialogue, good pacing. You can see they worked very hard on the fighting styles, choreography and brutality.\n\nFlaws: Few logic issues. Too basic in story. Emotions could have been better. It drags sometimes, even the fights.\n\nOne villain scene at the end ruined my experience, so I dropped my rating to Go For It.',
  sn:'1',en:'3',et:'12',ert:'24 min',edate:'16 Jul 2026',escore:'8.5',erev:'Sample episode review. Replace this text.',ascope:'Season 1 • 12 episodes',ascores:'8, 8.5, 9, 7.5, 9.5, 8, 6.5, 8.5, 9, 9.5, 8, 10'};
  Object.entries(s).forEach(([k,v])=>$(k).value=v);$('v').value='🫡 Respect';$('mr').value='🟢 Go For It';$('pot').value='10';$('ach').value='9';
  $('short').value='**Masterclass** action. {red:Red text} and ~~cut~~.\n- first point\n  - sub point\n> quoted line';$('ev').value='👍 Liked';draw()};
 
-const IDS=['title','year','age','rt','origin','dir','genre','handle','rfont','rsize','fmt','score','v','mr','feel','chips','short','pot','ach','size','full','sn','ert','en','et','edate','escore','ev','erev','ascope','ascores','bg','dark','blur','ph','pfocus','accent','xs'];
+const IDS=['title','year','age','rt','origin','dir','genre','handle','rfont','rsize','fmt','score','v','mr','chips','short','pot','ach','size','full','sn','ert','en','et','edate','escore','ev','erev','ascope','ascores','bg','dark','blur','ph','pfocus','tsz','xs'];
 const small=(im,mw,q)=>{if(!im)return null;const s=Math.min(1,mw/im.width),t=document.createElement('canvas');t.width=im.width*s|0;t.height=im.height*s|0;t.getContext('2d').drawImage(im,0,0,t.width,t.height);return t.toDataURL('image/jpeg',q)};
-$('exp').onclick=()=>{const o={app:'review-card-maker',ver:2,tab,f:{},poster:small(poster,1080,.88),bgimg:small(bgimg,1080,.75)};IDS.forEach(k=>o.f[k]=$(k).value);o.outl=$('outl').checked;o.rgb=$('rgb').checked;o.accon=$('accon').checked;
+$('exp').onclick=()=>{const o={app:'review-card-maker',ver:2,tab,f:{},poster:small(poster,1080,.88),bgimg:small(bgimg,1080,.75)};IDS.forEach(k=>o.f[k]=$(k).value);o.outl=$('outl').checked;o.rgb=$('rgb').checked;
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));a.download=($('title').value||'review').replace(/\W+/g,'-')+'-data.json';a.click()};
 $('imp').onclick=()=>$('impf').click();
 $('impf').onchange=()=>{const f=$('impf').files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result),old=!o.ver;
  Object.entries(o.f||{}).forEach(([k,v])=>{const e=$(k);if(!e)return;if(k=='mr'&&v=='🔴 Skip It')v='🔴 Skip';e.value=v;if(e.tagName=='SELECT'&&e.selectedIndex<0)e.selectedIndex=0});
- if(old)$('bg').value='tint';if('outl' in o)$('outl').checked=o.outl;if('rgb' in o)$('rgb').checked=o.rgb;if('accon' in o)$('accon').checked=o.accon;
+ if(old)$('bg').value='tint';if('outl' in o)$('outl').checked=o.outl;if('rgb' in o)$('rgb').checked=o.rgb;
  poster=null;bgimg=null;const im=(d,cb)=>{if(!d)return;const i=new Image();i.onload=()=>{cb(i);draw()};i.src=d};im(o.poster,i=>poster=i);im(o.bgimg,i=>bgimg=i);
  setTab(['post','full','ep','anime'].includes(o.tab)?o.tab:'post',false);fontReady().then(draw)}catch(e){alert('That file could not be read.')}};r.readAsText(f);$('impf').value=''};
 const opts=(id,a)=>$(id).innerHTML=a.map(x=>`<option>${x}</option>`).join('');
 opts('v',Object.keys(VD));opts('ev',Object.keys(VD));opts('mr',Object.keys(MR));
 $('bg').innerHTML=Object.entries(TH).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('bg').value='tint';
 $('rfont').innerHTML=Object.entries(FONTS).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
-show();draw();fontReady().then(draw);
+show();sync();draw();fontReady().then(draw);
 </script></body></html>
