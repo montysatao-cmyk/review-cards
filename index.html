@@ -32,10 +32,21 @@ textarea{min-height:90px}
 canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 #out{display:none;margin-top:10px}
 .bar{position:fixed;left:0;right:0;bottom:0;margin:auto;max-width:720px;padding:10px 12px;background:#121316;display:flex;gap:8px}
-.bar button{flex:1;padding:13px;border-radius:10px;border:0;font:inherit;font-weight:700}
+.bar button{flex:1 1 auto;padding:13px 4px;border-radius:10px;border:0;font:inherit;font-size:13px;font-weight:700;white-space:nowrap}
+@media(max-width:340px){.bar{gap:5px;padding:10px 8px}.bar button{font-size:12px;padding:13px 2px}}
 #save{background:var(--ac);color:#06120d}
-#ex,#exp,#imp{background:var(--pn);color:var(--tx);border:1px solid var(--ln)}
+#ex,#exp,#imp,#share{background:var(--pn);color:var(--tx);border:1px solid var(--ln)}
 .hint{color:var(--mu);font-size:12px;margin:4px 0 10px}
+.b{padding:11px 12px;border-radius:10px;border:1px solid var(--ln);background:#262930;color:var(--tx);font:inherit;font-weight:600;cursor:pointer}
+.b.pri{background:var(--ac);color:#06120d;border-color:var(--ac)}
+.b[disabled]{opacity:.5}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}.btns .b{flex:1 1 auto}
+.sub{background:#16181c;border:1px solid var(--ln);border-radius:10px;padding:0 10px;margin:6px 0 10px}.sub summary{padding:10px 0;font-size:14px}
+.res{display:flex;gap:6px;align-items:center;margin:0 0 10px}.res input{margin:0;flex:1;min-width:0}.res .b{padding:9px 12px}
+.cap{color:var(--mu);font-size:13px;margin:0 0 4px}
+#lprev{padding:12px;background:#0d0e10;border:1px solid var(--ln);border-radius:8px;margin:6px 0 10px;word-break:break-word;min-height:44px}#lprev a{color:#6aa9ff}
+.msg{font-size:13px;margin:4px 0 10px;color:var(--mu)}.msg.err{color:#ff8a8a}.msg.ok{color:#7be0b0}
+hr{border:0;border-top:1px solid var(--ln);margin:14px 0}
 [hidden]{display:none!important}
 </style></head>
 <body>
@@ -43,6 +54,7 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <div class="tabs" id="tabs"><button data-t="post" class="on">Post</button><button data-t="full">Full review</button><button data-t="ep">Episode</button><button data-t="anime">Anime</button></div>
 
 <details open><summary>Title details</summary>
+<div class="btns" style="margin-top:0"><button class="b" id="newr">New review (clears the text)</button></div>
 <label>Poster (a wide image works best)<input type="file" id="poster" accept="image/*"></label>
 <div class="row"><label>Poster height<input type="range" id="ph" min="320" max="700" value="470"></label><label>Poster focus<select id="pfocus"><option value="0">Top</option><option value=".25">Upper</option><option value=".5" selected>Center</option><option value="1">Bottom</option></select></label></div>
 <label data-f="post full anime">Label<input id="fmt" value="Movie"></label>
@@ -100,7 +112,40 @@ canvas,#out{width:100%;height:auto;border-radius:12px;display:block}
 <canvas id="cv" width="1080" height="1350"></canvas>
 <img id="out" alt="Generated card">
 <p class="hint">If the image doesn't download, press and hold the picture above and choose Save image.</p>
-<div class="bar"><button id="ex">Example</button><button id="exp">Export data</button><button id="imp">Import data</button><button id="save">Save image</button></div>
+
+<details id="tools"><summary>Link tools</summary>
+<p class="hint">Two small helpers. They don't change the card.</p>
+<b>1. Image to link</b>
+<p class="hint">Uploads a picture to your own GitHub repo and gives you a link to it. Pictures you upload become public.</p>
+<label>Pick an image<input type="file" id="upf" accept="image/*"></label>
+<div class="btns"><button class="b pri" id="upgo">Upload this image</button><button class="b" id="upcard">Upload the card</button></div>
+<p class="msg" id="upmsg" hidden></p>
+<div id="upres" hidden>
+<p class="cap">Page link (permanent, starts working in about a minute)</p>
+<div class="res"><input id="up1" readonly><button class="b" data-copy="up1">Copy</button></div>
+<p class="cap">Instant link (works right away)</p>
+<div class="res"><input id="up2" readonly><button class="b" data-copy="up2">Copy</button></div>
+<div class="btns"><button class="b" id="upuse">Send to the link maker below</button></div>
+</div>
+<details class="sub" id="ghset"><summary>GitHub setup (one time)</summary>
+<label>GitHub username<input id="gho" autocapitalize="off" autocomplete="off" spellcheck="false"></label>
+<label>Repository name<input id="ghr" autocapitalize="off" autocomplete="off" spellcheck="false"></label>
+<label>Access token<input id="ght" type="password" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="github_pat_..."></label>
+<p class="hint">The token is kept only in this browser and is sent only to GitHub. Make it a fine-grained token for just this repo with Contents: Read and write.</p>
+<div class="btns"><button class="b" id="ghforget">Forget token</button></div>
+</details>
+<hr>
+<b>2. Link to clickable name</b>
+<p class="hint">Turns a long link into a short blue name, like The Furious.</p>
+<label>Link<input id="lk" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://..."></label>
+<label>Name to show<input id="lt" placeholder="The Furious"></label>
+<div class="btns"><button class="b" id="luse">Use the card title</button></div>
+<div id="lprev"></div>
+<div class="btns"><button class="b pri" id="lrich">Copy clickable name</button><button class="b" id="lmd">Copy Markdown</button><button class="b" id="lhtml">Copy HTML</button></div>
+<p class="msg" id="lmsg" hidden></p>
+<p class="hint">Clickable name works where you can paste formatted text: Notion, Google Docs, Gmail, Apple Notes. Markdown is for apps that read [name](link). Plain-text-only places (Instagram bio, WhatsApp, X) always show the full link, nothing can change that.</p>
+</details>
+<div class="bar"><button id="ex">Example</button><button id="exp">Export</button><button id="imp">Import</button><button id="share">Share</button><button id="save">Save image</button></div>
 <input type="file" id="impf" accept=".json,application/json" hidden>
 
 <script>
@@ -340,20 +385,26 @@ function render(){sync();const T=theme(),cv=$('cv'),dm=document.createElement('c
   H=Math.ceil(build(dm,T,PH,sp));if(tgt>H){sp+=(tgt-H)/6;H=Math.ceil(build(dm,T,PH,sp))}}
  H=Math.max(H,tgt);PLY=posterLayer(PH);cv.width=W;cv.height=H;const c=cv.getContext('2d');
  drawBG(c,H,T,PLY.bc);LIVE=true;build(c,T,PH,sp);LIVE=false}
-let tm;function draw(){clearTimeout(tm);tm=setTimeout(()=>{try{$('cnt').textContent=$('short').value.length+'/500';render()}catch(e){console.error(e)}},120)}
+let tm;function draw(){clearTimeout(tm);tm=setTimeout(()=>{try{$('cnt').textContent=$('short').value.length+'/500';render();persist()}catch(e){console.error(e)}},120)}
 
 /* ---------- page wiring ---------- */
 function show(){document.querySelectorAll('[data-f]').forEach(e=>e.hidden=!e.dataset.f.split(' ').includes(tab))}
 function setTab(t,swap){tab=t;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.t==t));
  if(swap){const f=$('fmt');if(t=='anime'&&f.value=='Movie')f.value='Anime';else if(t!='anime'&&f.value=='Anime')f.value='Movie'}show();draw()}
 const load=(inp,cb)=>{inp.onchange=()=>{const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{cb(i);draw()};i.src=r.result};r.readAsDataURL(f)}};
-load($('poster'),i=>poster=i);load($('bgimg'),i=>{bgimg=i;$('bg').value='custom'});
+load($('poster'),i=>{poster=i;saveImg('poster',i)});load($('bgimg'),i=>{bgimg=i;$('bg').value='custom';saveImg('bgimg',i)});
 $('tabs').onclick=e=>{const b=e.target.closest('button');if(b)setTab(b.dataset.t,true)};
 document.addEventListener('input',e=>{if(e.target.type=='range')sync();draw()});
 $('rfont').addEventListener('change',()=>fontReady().then(draw));
-$('save').onclick=async()=>{await fontReady();render();const sc=+$('xs').value||1;let src=$('cv');
+const fname=()=>($('title').value||'review').replace(/\W+/g,'-')+'-'+tab;
+async function cardBlob(){await fontReady();render();const sc=+$('xs').value||1;let src=$('cv');
  if(sc<1){const t=document.createElement('canvas');t.width=Math.round(src.width*sc);t.height=Math.round(src.height*sc);const g=t.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(src,0,0,t.width,t.height);src=t}
- src.toBlob(b=>{const u=URL.createObjectURL(b);$('out').src=u;$('out').style.display='block';const a=document.createElement('a');a.href=u;a.download=($('title').value||'review').replace(/\W+/g,'-')+'-'+tab+'.png';a.click()},'image/png')};
+ return new Promise(r=>src.toBlob(r,'image/png'))}
+$('save').onclick=async()=>{const b=await cardBlob(),u=URL.createObjectURL(b);$('out').src=u;$('out').style.display='block';const a=document.createElement('a');a.href=u;a.download=fname()+'.png';a.click()};
+if(!navigator.share)$('share').hidden=true;
+$('share').onclick=async()=>{try{const b=await cardBlob(),f=new File([b],fname()+'.png',{type:'image/png'});
+ if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],title:V('title')||'Review'});else alert('This browser cannot share images. Use Save image instead.')}
+ catch(e){if(e&&e.name!='AbortError')alert('Could not open the share sheet. Try Save image instead.')}};
 $('ex').onclick=()=>{const s={title:'The Furious',year:'2026',age:'18+',rt:'1h 53m',origin:'Chinese',dir:'Kenji Tanigaki',score:'8.75',genre:'Action, Thriller, Martial Arts',fmt:'Movie',chips:'Original',
  short:'One of the craziest action movies I have seen. Action is insane from the first fight, but a villain scene at the end ragebaited me 🥀',
  full:'It\'s 1 of the craziest action movies I have seen...\n\nGreat points: It starts with action and goes insane from the 1st action sequence. Straightforward story, minimal dialogue, good pacing. You can see they worked very hard on the fighting styles, choreography and brutality.\n\nFlaws: Few logic issues. Too basic in story. Emotions could have been better. It drags sometimes, even the fights.\n\nOne villain scene at the end ruined my experience, so I dropped my rating to Go For It.',
@@ -369,11 +420,85 @@ $('imp').onclick=()=>$('impf').click();
 $('impf').onchange=()=>{const f=$('impf').files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result),old=!o.ver;
  Object.entries(o.f||{}).forEach(([k,v])=>{const e=$(k);if(!e)return;if(k=='mr'&&v=='🔴 Skip It')v='🔴 Skip';e.value=v;if(e.tagName=='SELECT'&&e.selectedIndex<0)e.selectedIndex=0});
  if(old)$('bg').value='tint';if('outl' in o)$('outl').checked=o.outl;if('rgb' in o)$('rgb').checked=o.rgb;
- poster=null;bgimg=null;const im=(d,cb)=>{if(!d)return;const i=new Image();i.onload=()=>{cb(i);draw()};i.src=d};im(o.poster,i=>poster=i);im(o.bgimg,i=>bgimg=i);
+ poster=null;bgimg=null;saveImg('poster',null);saveImg('bgimg',null);const im=(d,cb)=>{if(!d)return;const i=new Image();i.onload=()=>{cb(i);draw()};i.src=d};im(o.poster,i=>{poster=i;saveImg('poster',i)});im(o.bgimg,i=>{bgimg=i;saveImg('bgimg',i)});
  setTab(['post','full','ep','anime'].includes(o.tab)?o.tab:'post',false);fontReady().then(draw)}catch(e){alert('That file could not be read.')}};r.readAsText(f);$('impf').value=''};
 const opts=(id,a)=>$(id).innerHTML=a.map(x=>`<option>${x}</option>`).join('');
 opts('v',Object.keys(VD));opts('ev',Object.keys(VD));opts('mr',Object.keys(MR));
 $('bg').innerHTML=Object.entries(TH).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');$('bg').value='tint';
 $('rfont').innerHTML=Object.entries(FONTS).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join('');
-show();sync();draw();fontReady().then(draw);
+
+/* ---------- remember my settings, draft, New review ---------- */
+const LOOKIDS=['rfont','rsize','bg','size','xs','tsz','ph','pfocus','dark','blur','handle'],LOOKCHK=['rgb','outl'],TXTIDS=IDS.filter(k=>!LOOKIDS.includes(k));
+const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+function persist(){const L={};LOOKIDS.forEach(k=>L[k]=$(k).value);LOOKCHK.forEach(k=>L[k]=$(k).checked);ls.set('mcl.look',JSON.stringify(L));
+ const D={tab};TXTIDS.forEach(k=>D[k]=$(k).value);ls.set('mcl.draft',JSON.stringify(D))}
+function saveImg(k,im){if(!im){ls.del('mcl.'+k);return}ls.set('mcl.'+k,small(im,1080,k=='poster'?.85:.7))}
+function putVal(k,v){const e=$(k);if(!e)return;e.value=v;if(e.tagName=='SELECT'&&e.selectedIndex<0)e.selectedIndex=0}
+function restore(){
+ try{const L=JSON.parse(ls.get('mcl.look')||'null');if(L){LOOKIDS.forEach(k=>{if(k in L)putVal(k,L[k])});LOOKCHK.forEach(k=>{if(k in L&&$(k))$(k).checked=!!L[k]})}}catch(e){}
+ try{const D=JSON.parse(ls.get('mcl.draft')||'null');if(D){TXTIDS.forEach(k=>{if(k in D)putVal(k,D[k])});if(['post','full','ep','anime'].includes(D.tab))tab=D.tab}}catch(e){}
+ ['poster','bgimg'].forEach(k=>{const d=ls.get('mcl.'+k);if(d){const i=new Image();i.onload=()=>{if(k=='poster')poster=i;else bgimg=i;draw()};i.src=d}});
+ setTab(tab,false)}
+$('newr').onclick=()=>{if(!confirm('Clear this review and start a new one? Your look settings stay. Tap Export first if you want a backup.'))return;
+ ['title','year','age','rt','origin','dir','genre','score','chips','short','full','sn','ert','en','et','edate','escore','erev','ascope','ascores'].forEach(k=>$(k).value='');
+ $('fmt').value=tab=='anime'?'Anime':'Movie';$('pot').value='10';$('ach').value='9';['v','ev','mr'].forEach(k=>$(k).selectedIndex=0);
+ poster=null;bgimg=null;saveImg('poster',null);saveImg('bgimg',null);if($('bg').value=='custom')$('bg').value='tint';draw()};
+
+/* ---------- link tools ---------- */
+const say=(id,t,c)=>{const e=$(id);e.textContent=t||'';e.className='msg '+(c||'');e.hidden=!t};
+const esc=t=>t.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){}
+ const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();return ok}
+async function copyRich(url,text){const html=`<a href="${esc(url)}">${esc(text)}</a>`,md=`[${text}](${url})`;
+ try{if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([md],{type:'text/plain'})})]);return true}}catch(e){}
+ const d=document.createElement('div');d.contentEditable='true';d.innerHTML=html;d.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(d);
+ const r=document.createRange();r.selectNodeContents(d);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);let ok=false;try{ok=document.execCommand('copy')}catch(e){}sl.removeAllRanges();d.remove();return ok}
+function linkUrl(){let u=V('lk');if(u&&!/^[a-z][a-z0-9+.-]*:/i.test(u))u='https://'+u;return /^https?:\/\/[^\s]+$/i.test(u)?u:''}
+function niceName(u){try{const x=new URL(u),p=decodeURIComponent(x.pathname.split('/').filter(Boolean).pop()||x.hostname);return p.replace(/\.[a-z0-9]{2,5}$/i,'').replace(/[-_+]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase()).trim()}catch(e){return ''}}
+function linkPrev(){const u=linkUrl(),t=V('lt')||niceName(u),p=$('lprev');p.textContent='';
+ if(!u){p.innerHTML='<span class="cap">Your clickable name will show here.</span>';return null}
+ const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';a.textContent=t||u;p.appendChild(a);return{u,t:t||u}}
+['lk','lt'].forEach(k=>$(k).addEventListener('input',linkPrev));
+$('luse').onclick=()=>{$('lt').value=V('title');linkPrev()};
+$('lrich').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}
+ say('lmsg',await copyRich(x.u,x.t)?'Copied. Paste it in Notion, Docs, Gmail or Notes and it shows as a blue clickable name.':'Could not copy. Try Copy Markdown instead.',null);$('lmsg').className='msg ok'};
+$('lmd').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}say('lmsg',await copyText(`[${x.t}](${x.u})`)?'Markdown copied.':'Could not copy.','ok')};
+$('lhtml').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}say('lmsg',await copyText(`<a href="${esc(x.u)}">${esc(x.t)}</a>`)?'HTML copied.':'Could not copy.','ok')};
+document.addEventListener('click',async e=>{const id=e.target.dataset&&e.target.dataset.copy;if(!id)return;const ok=await copyText($(id).value);e.target.textContent=ok?'Copied':'Failed';setTimeout(()=>e.target.textContent='Copy',1400)});
+
+function ghInit(){let o='',r='review-cards';
+ if(/\.github\.io$/i.test(location.hostname)){o=location.hostname.split('.')[0];const g=location.pathname.split('/')[1];r=g&&!/\./.test(g)?g:o+'.github.io'}
+ try{const g=JSON.parse(ls.get('mcl.gh')||'{}');o=g.o||o;r=g.r||r}catch(e){}
+ $('gho').value=o;$('ghr').value=r;$('ght').value=ls.get('mcl.tk')||''}
+['gho','ghr'].forEach(k=>$(k).addEventListener('input',()=>ls.set('mcl.gh',JSON.stringify({o:V('gho'),r:V('ghr')}))));
+$('ght').addEventListener('input',()=>ls.set('mcl.tk',$('ght').value.trim()));
+$('ghforget').onclick=()=>{ls.del('mcl.tk');$('ght').value='';say('upmsg','Token removed from this browser.','ok')};
+const b64=blob=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(String(f.result).split(',')[1]);f.readAsDataURL(blob)});
+async function prep(file){if(file.size<=4e6)return file;const u=URL.createObjectURL(file);
+ const im=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=u});
+ const k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k|0;c.height=im.height*k|0;c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
+ return new Promise(r=>c.toBlob(r,'image/jpeg',.9))}
+async function ghPut(blob,base){const ow=V('gho'),rp=V('ghr'),tk=$('ght').value.trim();
+ if(!ow||!rp||!tk){$('ghset').open=true;throw new Error('Open "GitHub setup" below and fill in your username, repo and token first.')}
+ const ext=((blob.type||'image/png').split('/')[1]||'png').replace('jpeg','jpg').replace(/[^a-z0-9]/g,'')||'png',
+  slug=(base||'image').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'image',path=`img/${slug}-${Date.now().toString(36)}.${ext}`;
+ let r;try{r=await fetch(`https://api.github.com/repos/${encodeURIComponent(ow)}/${encodeURIComponent(rp)}/contents/${path}`,{method:'PUT',
+  headers:{'Authorization':'Bearer '+tk,'Accept':'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:'Add '+path,content:await b64(blob)})})}
+ catch(e){throw new Error('Could not reach GitHub. Check your internet and try again.')}
+ if(r.status==401)throw new Error('GitHub did not accept the token. It may be wrong or expired.');
+ if(r.status==403)throw new Error('The token has no permission to write. It needs Contents: Read and write for this repo.');
+ if(r.status==404)throw new Error('GitHub could not find that repo, or the token has no access to it. Check the username and repo name.');
+ if(r.status==422)throw new Error('GitHub refused the file (name clash). Try again.');
+ if(!r.ok)throw new Error('GitHub said: error '+r.status+'.');
+ const j=await r.json(),page=`https://${ow}.github.io/${rp.toLowerCase()==(ow+'.github.io').toLowerCase()?'':rp+'/'}${path}`;
+ return{page,raw:(j.content&&j.content.download_url)||`https://raw.githubusercontent.com/${ow}/${rp}/HEAD/${path}`}}
+async function doUpload(getBlob,base){const bs=['upgo','upcard'];bs.forEach(i=>$(i).disabled=true);say('upmsg','Uploading... please wait.');$('upres').hidden=true;
+ try{const r=await ghPut(await getBlob(),base);$('up1').value=r.page;$('up2').value=r.raw;$('upres').hidden=false;say('upmsg','Done. Tap Copy next to the link you want.','ok')}
+ catch(e){say('upmsg',e.message||'Upload failed.','err')}finally{bs.forEach(i=>$(i).disabled=false)}}
+$('upgo').onclick=()=>{const f=$('upf').files[0];if(!f){say('upmsg','Pick an image first.','err');return}if(!/^image\//.test(f.type)){say('upmsg','That file is not an image.','err');return}
+ doUpload(()=>prep(f),f.name.replace(/\.[^.]+$/,''))};
+$('upcard').onclick=()=>doUpload(cardBlob,V('title')||'review');
+$('upuse').onclick=()=>{$('lk').value=$('up2').value;if(!V('lt'))$('lt').value=V('title');linkPrev();$('lk').scrollIntoView({block:'center'})};
+ghInit();linkPrev();
+restore();show();sync();draw();fontReady().then(draw);
 </script></body></html>
