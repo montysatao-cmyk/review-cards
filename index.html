@@ -141,9 +141,9 @@ hr{border:0;border-top:1px solid var(--ln);margin:14px 0}
 <label>Name to show<input id="lt" placeholder="The Furious"></label>
 <div class="btns"><button class="b" id="luse">Use the card title</button></div>
 <div id="lprev"></div>
-<div class="btns"><button class="b pri" id="lrich">Copy clickable name</button><button class="b" id="lmd">Copy Markdown</button><button class="b" id="lhtml">Copy HTML</button></div>
+<div class="btns"><button class="b pri" id="lrich">Copy clickable name</button><button class="b" id="ldc">Copy for Discord</button><button class="b" id="lmd">Copy Markdown</button><button class="b" id="lhtml">Copy HTML</button></div>
 <p class="msg" id="lmsg" hidden></p>
-<p class="hint">Clickable name works where you can paste formatted text: Notion, Google Docs, Gmail, Apple Notes. Markdown is for apps that read [name](link). Plain-text-only places (Instagram bio, WhatsApp, X) always show the full link, nothing can change that.</p>
+<p class="hint">Clickable name works where you can paste formatted text: Notion, Google Docs, Gmail, Apple Notes. Copy for Discord is Markdown with the picture preview switched off. Markdown is for other apps that read [name](link). Plain-text-only places (Instagram bio, WhatsApp, X) always show the full link, nothing can change that.</p>
 </details>
 <div class="bar"><button id="ex">Example</button><button id="exp">Export</button><button id="imp">Import</button><button id="share">Share</button><button id="save">Save image</button></div>
 <input type="file" id="impf" accept=".json,application/json" hidden>
@@ -463,6 +463,7 @@ $('luse').onclick=()=>{$('lt').value=V('title');linkPrev()};
 $('lrich').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}
  say('lmsg',await copyRich(x.u,x.t)?'Copied. Paste it in Notion, Docs, Gmail or Notes and it shows as a blue clickable name.':'Could not copy. Try Copy Markdown instead.',null);$('lmsg').className='msg ok'};
 $('lmd').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}say('lmsg',await copyText(`[${x.t}](${x.u})`)?'Markdown copied.':'Could not copy.','ok')};
+$('ldc').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}say('lmsg',await copyText(`[${x.t}](<${x.u}>)`)?'Copied for Discord. Paste it in a message: it shows the blue name and no picture preview.':'Could not copy.','ok')};
 $('lhtml').onclick=async()=>{const x=linkPrev();if(!x){say('lmsg','Paste a link first (it should start with http).','err');return}say('lmsg',await copyText(`<a href="${esc(x.u)}">${esc(x.t)}</a>`)?'HTML copied.':'Could not copy.','ok')};
 document.addEventListener('click',async e=>{const id=e.target.dataset&&e.target.dataset.copy;if(!id)return;const ok=await copyText($(id).value);e.target.textContent=ok?'Copied':'Failed';setTimeout(()=>e.target.textContent='Copy',1400)});
 
