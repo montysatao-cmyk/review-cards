@@ -113,8 +113,16 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 /* ---------- welcome ---------- */
 #welcome{position:fixed;inset:0;z-index:60;overflow:hidden;background:#05060a}
-#welcome .wall{position:absolute;display:grid;gap:14px;opacity:.9;will-change:transform;animation:wdrift linear infinite}
-@keyframes wdrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(var(--dx),var(--dy),0)}}
+#welcome .wall{position:absolute;display:flex;gap:14px;opacity:.9}
+#welcome .wall.rows{flex-direction:column}
+#welcome .lane{display:flex;flex:none;will-change:transform;animation-timing-function:linear;animation-iteration-count:infinite}
+#welcome .wall:not(.rows) .lane{flex-direction:column;animation-name:laneY}
+#welcome .wall.rows .lane{flex-direction:row;animation-name:laneX}
+#welcome .half{display:flex;flex:none;gap:14px}
+#welcome .wall:not(.rows) .half{flex-direction:column;padding-bottom:14px}
+#welcome .wall.rows .half{flex-direction:row;padding-right:14px}
+@keyframes laneY{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-50%,0)}}
+@keyframes laneX{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 #welcome .pt{width:var(--tw);height:calc(var(--tw)*1.5);border-radius:12px;background-size:cover;background-position:center;box-shadow:0 8px 24px rgba(0,0,0,.45)}
 #welcome .veil{position:absolute;inset:0;background:radial-gradient(75% 55% at 50% 52%,rgba(5,6,10,.92),rgba(5,6,10,.6) 62%,rgba(5,6,10,.88))}
 #welcome .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:14px}
@@ -186,6 +194,29 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .hist{display:flex;gap:6px;align-items:flex-end;height:130px;margin-top:14px}.hist .hc{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;min-width:0}.hist .hc i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:var(--grad);min-height:2px}.hist .hn{font:700 12px var(--disp);color:var(--tx);height:14px}.hist .hl{font-size:11px;color:var(--mu);white-space:nowrap}
 .bars .br .n{width:112px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bars .br .tr{flex:1;height:12px;border-radius:999px;background:var(--ln);overflow:hidden}.bars .br .tr i{display:block;height:100%;border-radius:999px;background:var(--c,var(--a1))}.bars .br .v{width:30px;text-align:right;font:700 15px var(--disp)}
 
+
+/* ---------- 3.5: pickers, selection, banner ---------- */
+.pf{position:relative}.pf .in{padding-right:50px}
+.pfb{position:absolute;right:0;top:0;bottom:0;width:48px;border:0;background:none;color:var(--mu);display:grid;place-items:center;border-radius:0 14px 14px 0}
+.pfsel{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;width:100%;color:var(--tx)}
+.pfsel span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pfsel.ph span{color:var(--mu)}.pfsel svg{color:var(--mu);flex:none}
+.opts{display:grid;gap:8px}.opts .opt{display:flex;justify-content:space-between;align-items:center;min-height:50px;padding:0 16px;border-radius:14px;border:1.5px solid var(--ln);background:var(--pn);color:var(--tx);font-size:16px;text-align:left;width:100%}
+.opts .opt.on{border-color:var(--a1);box-shadow:0 0 0 3px rgba(47,140,255,.18)}.opts .opt small{color:var(--mu);display:block;font-size:13px}
+.ygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:52dvh;overflow:auto;padding:2px}
+.ygrid button{min-height:44px;border-radius:12px;border:1px solid var(--ln);background:var(--pn);color:var(--tx);font-weight:600}.ygrid button.on{border-color:var(--a1);background:var(--pn2)}
+.how{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:12px}.how li{font-size:15px;line-height:1.45}.how code{background:var(--pn2);border:1px solid var(--ln);border-radius:8px;padding:2px 7px;font-size:14px;white-space:nowrap}
+.tile.sel .art::after{content:"";position:absolute;inset:0;border-radius:inherit;background:rgba(8,10,16,.28);transition:.12s}
+.tile.sel.on .art{border-color:var(--a1);box-shadow:0 0 0 3px var(--a1)}.tile.sel.on .art::after{background:rgba(47,140,255,.2)}
+.ck{position:absolute;right:8px;top:8px;width:26px;height:26px;border-radius:50%;border:2px solid #fff;background:rgba(8,10,16,.5);display:grid;place-items:center;z-index:2}
+.ck svg{width:15px;height:15px;stroke-width:3.2;color:#fff;opacity:0}.on>.ck,.on .ck{background:var(--a1);border-color:var(--a1)}.on>.ck svg,.on .ck svg{opacity:1}
+.tile.sel .cn{right:44px}
+.rv.sel{position:relative}.rv.sel .ck{position:static;flex:none;margin-left:2px}.rv.sel.on{border-color:var(--a1)}
+.selbar{position:fixed;left:0;right:0;bottom:calc(var(--nav) + var(--sb));z-index:6;display:flex;gap:8px;align-items:center;padding:10px 14px;background:rgba(14,17,25,.96);border-top:1px solid var(--ln);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.selbar .n{flex:1;min-width:0;font-weight:600;font-size:14px;white-space:nowrap}
+@media(min-width:900px){.selbar{left:230px;bottom:0}}
+.hero .bd.bn{inset:0;filter:brightness(.6);opacity:1;transform:none}
+.hero .top .ib+.ib{margin-left:auto}
+
 /* ---------- create wizard ---------- */
 .wz-top{position:sticky;top:0;z-index:6;background:var(--bg);margin:0 -16px;padding:10px 16px 12px;border-bottom:1px solid var(--ln)}
 .wz-top .rowt{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -236,7 +267,7 @@ body.nonav #toast{bottom:calc(96px + var(--sb))}
 .list>*:first-child{border-top:0}
 .list .t{flex:1;min-width:0}.list small{display:block;color:var(--mu);font-size:12.5px}
 .list svg.i{color:var(--mu)}
-@media(prefers-reduced-motion:reduce){#welcome .wall{animation:none}*{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){#welcome .lane{animation:none}*{transition:none!important;animation:none!important}}
 
 </style></head>
 <body>
@@ -507,7 +538,7 @@ const wordOf=v=>{const m=String(v||'').match(/^(\S+)\s+(.*)$/);return m?m[2]:Str
 const buzz=()=>{try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}};
 
 /* ---------- icons ---------- */
-const IC2={home:'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',lib:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',plus:'M12 5v14 M5 12h14',chart:'M5 20V11 M12 20V4 M19 20v-6',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M4 21a8 8 0 0 1 16 0',back:'M15 5l-7 7 7 7',close:'M6 6l12 12 M18 6L6 18',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z M21 21l-5-5',trash:'M4 7h16 M9 7V4h6v3 M6 7l1 13h10l1-13',edit:'M4 20h4L19 9l-4-4L4 16z',copy:'M9 9h11v11H9z M5 15H4V4h11v1',share:'M12 3v12 M7 8l5-5 5 5 M5 14v6h14v-6',down:'M12 3v12 M7 10l5 5 5-5 M5 20h14',link:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1 M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',image:'M4 5h16v14H4z M4 16l5-5 4 4 3-3 4 4',check:'M5 12l5 5 9-10',film:'M4 4h16v16H4z M8 4v16 M16 4v16 M4 9h4 M4 15h4 M16 9h4 M16 15h4',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',box:'M4 7h16v4H4z M5 11v9h14v-9 M10 15h4',info:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 11v6 M12 8v.01',arrow:'M5 12h14 M13 6l6 6-6 6',up:'M12 21V9 M7 14l5-5 5 5 M5 4h14',file:'M6 3h8l4 4v14H6z M14 3v4h4',tool:'M14 6a4 4 0 0 0-5 5L3 17l4 4 6-6a4 4 0 0 0 5-5l-3 3-3-3z'};
+const IC2={home:'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',lib:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',plus:'M12 5v14 M5 12h14',chev:'M6 9l6 6 6-6',info:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 7.6v.01',check:'M5 12l5 5 9-10',chart:'M5 20V11 M12 20V4 M19 20v-6',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M4 21a8 8 0 0 1 16 0',back:'M15 5l-7 7 7 7',close:'M6 6l12 12 M18 6L6 18',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z M21 21l-5-5',trash:'M4 7h16 M9 7V4h6v3 M6 7l1 13h10l1-13',edit:'M4 20h4L19 9l-4-4L4 16z',copy:'M9 9h11v11H9z M5 15H4V4h11v1',share:'M12 3v12 M7 8l5-5 5 5 M5 14v6h14v-6',down:'M12 3v12 M7 10l5 5 5-5 M5 20h14',link:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1 M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',image:'M4 5h16v14H4z M4 16l5-5 4 4 3-3 4 4',check:'M5 12l5 5 9-10',film:'M4 4h16v16H4z M8 4v16 M16 4v16 M4 9h4 M4 15h4 M16 9h4 M16 15h4',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',box:'M4 7h16v4H4z M5 11v9h14v-9 M10 15h4',info:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 11v6 M12 8v.01',arrow:'M5 12h14 M13 6l6 6-6 6',up:'M12 21V9 M7 14l5-5 5 5 M5 4h14',file:'M6 3h8l4 4v14H6z M14 3v4h4',tool:'M14 6a4 4 0 0 0-5 5L3 17l4 4 6-6a4 4 0 0 0 5-5l-3 3-3-3z'};
 const ic=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true"><path d="${n=='star'?STAR:IC2[n]}"/></svg>`;
 
 /* ---------- storage (IndexedDB, memory fallback) ---------- */
@@ -524,7 +555,7 @@ const kvGet=k=>dbGet('kv',k),kvSet=(k,v)=>dbPut('kv',v,k);
 
 /* ---------- app state ---------- */
 const LOOK0={bg:'tint',rgb:false,rfont:'Sans',rsize:'34',size:'0',tsz:'54',ph:'470',pfocus:'.5',dark:'55',blur:'75',outl:true,xs:'1'};
-const S={vp:{},reviews:[],profile:{name:'Monty',handle:'@Monty274',avatar:null},look:{...LOOK0},draft:null,seen:false,lastBackup:null,lib:{q:'',v:'',sort:'new'},pendingLink:null,route:'home'};
+const S={vp:{},bn:{},sel:{on:false,scope:'',set:new Set(),hash:''},reviews:[],profile:{name:'Monty',handle:'@Monty274',avatar:null},look:{...LOOK0},draft:null,seen:false,lastBackup:null,lib:{q:'',v:'',sort:'new'},pendingLink:null,route:'home'};
 const $$=(sel,root=document)=>[...root.querySelectorAll(sel)];
 
 /* ---------- images ---------- */
@@ -556,16 +587,16 @@ async function shareBlob(b,name,title){try{const f=new File([b],name,{type:'imag
 async function saveReview(d){const id=d.id||uid(),now=Date.now();
  const cv=await drawCard(document.createElement('canvas'),d),tw=360,t=document.createElement('canvas');t.width=tw;t.height=Math.round(cv.height*tw/cv.width);
  const g=t.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(cv,0,0,t.width,t.height);
- const rec={id,tkey:tkeyOf(d.f),kind:d.kind,f:{...d.f},look:{...d.look},created:d.created||now,updated:now,thumb:t.toDataURL('image/jpeg',.82),
+ const rec={id,tkey:tkeyOf(d.f),kind:d.kind,f:{...d.f},look:{...d.look},created:d.created||now,updated:d.updated||now,thumb:t.toDataURL('image/jpeg',.82),
   pthumb:d.poster?await shrinkData(d.poster,320,.8):null,hasPoster:!!d.poster,hasBg:!!d.bgimg};
  await dbPut('reviews',rec);
  if(d.poster)await dbPut('imgs',d.poster,id+':p');else await dbDel('imgs',id+':p');
  if(d.bgimg)await dbPut('imgs',d.bgimg,id+':b');else await dbDel('imgs',id+':b');
  const k=S.reviews.findIndex(r=>r.id==id),oldKey=k>=0?S.reviews[k].tkey:null;if(k>=0)S.reviews[k]=rec;else S.reviews.push(rec);
- if(oldKey&&oldKey!=rec.tkey&&S.vp[oldKey]&&!S.reviews.some(r=>r.tkey==oldKey)){if(!S.vp[rec.tkey])S.vp[rec.tkey]=S.vp[oldKey];delete S.vp[oldKey];kvSet('vposters',S.vp).catch(()=>{})}
+ if(oldKey&&oldKey!=rec.tkey&&!S.reviews.some(r=>r.tkey==oldKey)){if(S.vp[oldKey]){if(!S.vp[rec.tkey])S.vp[rec.tkey]=S.vp[oldKey];delete S.vp[oldKey];kvSet('vposters',S.vp).catch(()=>{})}if(S.bn[oldKey]){if(!S.bn[rec.tkey])S.bn[rec.tkey]=S.bn[oldKey];delete S.bn[oldKey];kvSet('banners',S.bn).catch(()=>{})}}
  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
  return rec}
-async function deleteReview(id){await dbDel('reviews',id);await dbDel('imgs',id+':p');await dbDel('imgs',id+':b');const gone=S.reviews.find(r=>r.id==id);S.reviews=S.reviews.filter(r=>r.id!=id);if(gone&&S.vp[gone.tkey]&&!S.reviews.some(r=>r.tkey==gone.tkey)){delete S.vp[gone.tkey];kvSet('vposters',S.vp).catch(()=>{})}}
+async function deleteReview(id){await dbDel('reviews',id);await dbDel('imgs',id+':p');await dbDel('imgs',id+':b');const gone=S.reviews.find(r=>r.id==id);S.reviews=S.reviews.filter(r=>r.id!=id);if(gone&&!S.reviews.some(r=>r.tkey==gone.tkey)){if(S.vp[gone.tkey]){delete S.vp[gone.tkey];kvSet('vposters',S.vp).catch(()=>{})}if(S.bn[gone.tkey]){delete S.bn[gone.tkey];kvSet('banners',S.bn).catch(()=>{})}}}
 function groups(){const m=new Map();S.reviews.slice().sort((a,b)=>b.created-a.created).forEach(r=>{if(!m.has(r.tkey))m.set(r.tkey,{key:r.tkey,items:[],latest:r});m.get(r.tkey).items.push(r)});return[...m.values()]}
 /* vertical posters belong to the TITLE (kv 'vposters': {tkey: jpeg data URL}) */
 const vpOf=key=>S.vp[key]||null;
@@ -605,7 +636,7 @@ function buildNav(){$('nav').innerHTML=`<div class="brand"><img src="${WMSRC}" a
  <button class="add" data-act="new" aria-label="New review"><span class="pl">${ic('plus')}</span><span class="lbl">New review</span></button>
  <button data-go="insights">${ic('chart')}<span class="lbl">Insights</span></button>
  <button data-go="me">${ic('user')}<span class="lbl">Me</span></button>`}
-function route(){S.navN=(S.navN||0)+1;const raw=(location.hash||'#/').slice(1),parts=raw.split('/').filter(Boolean),name=parts[0]||'home',arg=parts.slice(1).map(x=>decodeURIComponent(x));
+function route(){S.navN=(S.navN||0)+1;if(S.sel.on&&location.hash!==S.sel.hash)S.sel.on=false;const raw=(location.hash||'#/').slice(1),parts=raw.split('/').filter(Boolean),name=parts[0]||'home',arg=parts.slice(1).map(x=>decodeURIComponent(x));
  closeSheet();S.route=name;
  if(name=='welcome'){showWelcome();return}
  if(!S.seen){S.seen=true;kvSet('seen',1).catch(()=>{});if(!parts.length){showWelcome();return}}
@@ -637,14 +668,17 @@ const kindName={post:'Post card',full:'Full review',ep:'Episode',anime:'Anime'};
 /* ---------- welcome ---------- */
 function showWelcome(){const w=$('welcome');document.body.classList.add('nonav');
  const keys=new Set(S.reviews.map(r=>r.tkey)),real=Object.keys(S.vp).filter(k=>keys.has(k)).map(k=>S.vp[k]);
- const Pc=4,Pr=4,gap=14,vw=Math.max(innerWidth,320),vh=Math.max(innerHeight,480),tw=Math.round(Math.max(104,Math.min(168,vw/3.1))),uw=tw+gap,uh=Math.round(tw*1.5)+gap,PW=Pc*uw,PH=Pr*uh;
- const nC=Math.ceil((vw+2*PW)/uw/Pc)*Pc,nR=Math.ceil((vh+2*PH)/uh/Pr)*Pr;
- const cells=[],css=[];for(let i=0;i<Pc*Pr;i++){const c=i%Pc,r=(i/Pc)|0;
-  if(real.length&&(i%3!=2||real.length>12)){css.push(`#welcome .pt.p${i}{background-image:url('${real[(c+r*3)%real.length]}')}`);cells.push(`<div class="pt p${i}"></div>`)}
+ const rnd=(a,b)=>a+Math.random()*(b-a),gap=14,vw=Math.max(innerWidth,320),vh=Math.max(innerHeight,480),tw=Math.round(Math.max(104,Math.min(168,vw/3.1))),uw=tw+gap,uh=Math.round(tw*1.5)+gap;
+ const mode=['cols','rows','tilt'][Math.random()*3|0],rows=mode=='rows',tilt=mode=='tilt'?(Math.random()<.5?-9:9):0,ex=tilt?1.5:1;
+ const cells=[],css=[];for(let i=0;i<16;i++){
+  if(real.length&&(i%3!=2||real.length>12)){css.push(`#welcome .pt.p${i}{background-image:url('${real[(i*5)%real.length]}')}`);cells.push(`<div class="pt p${i}"></div>`)}
   else{const h=(i*47+20)%360;cells.push(`<div class="pt ph-tile" style="--h1:hsl(${h},42%,24%);--h2:hsl(${(h+50)%360},46%,12%)">${ic('film')}</div>`)}}
- let html='';for(let r=0;r<nR;r++)for(let c=0;c<nC;c++)html+=cells[(r%Pr)*Pc+(c%Pc)];
- const D=[[0,-1],[0,1],[-1,0],[1,0],[1,-1],[-1,1],[1,1],[-1,-1]],[sx,sy]=D[Math.random()*D.length|0],dx=sx*PW,dy=sy*PH,dur=Math.round(Math.hypot(dx,dy)/(sx&&sy?22:18));
- w.innerHTML=`<style>${css.join('')}</style><div class="wall" style="--tw:${tw}px;--dx:${dx}px;--dy:${dy}px;left:${-PW}px;top:${-PH}px;grid-template-columns:repeat(${nC},${tw}px);animation-duration:${dur}s">${html}</div><div class="veil"></div><div class="mid"><img class="wm" src="${WMSRC}" alt="MyCineList"><span class="eye">Your personal cinema archive</span><h1>Review every film you watch.</h1><p>Make a card for each one, keep them in your own library and see what your taste looks like.</p><button class="btn pri go" data-act="enter">Enter MyCineList</button></div>`;
+ const nL=Math.ceil((rows?vh:vw)*ex/(rows?uh:uw))+1,nT=Math.ceil((rows?vw:vh)*ex/(rows?uw:uh))+1,step=rows?uw:uh;
+ let lanes='';for(let l=0;l<nL;l++){let half='';const off=(l*7+(Math.random()*16|0))%16;for(let t=0;t<nT;t++)half+=cells[(off+t*3)%16];
+  const speed=rnd(14,34),dur=Math.round(nT*step/speed),dir=Math.random()<.5?'normal':'reverse';
+  lanes+=`<div class="lane" style="animation-duration:${dur}s;animation-direction:${dir};animation-delay:-${Math.round(rnd(0,dur))}s"><div class="half">${half}</div><div class="half">${half}</div></div>`}
+ const place=tilt?`left:-25%;top:-25%;width:150%;height:150%;transform:rotate(${tilt}deg);`:'inset:0;';
+ w.innerHTML=`<style>${css.join('')}</style><div class="wall ${rows?'rows':''}" style="--tw:${tw}px;${place}">${lanes}</div><div class="veil"></div><div class="mid"><img class="wm" src="${WMSRC}" alt="MyCineList"><span class="eye">Your personal cinema archive</span><h1>Review every film you watch.</h1><p>Make a card for each one, keep them in your own library and see what your taste looks like.</p><button class="btn pri go" data-act="enter">Enter MyCineList</button></div>`;
  w.hidden=false}
 ACT['vp-set']=async a=>{const key=a.dataset.key;
  if(vpOf(key)){const p=sheet(`<h2 class="h2">Vertical poster</h2><p class="sub mt">Used on tiles, the title page and the welcome screen.</p><div class="mt2" style="display:grid;gap:10px"><button class="btn pri block" data-k="c">Choose a new one</button><button class="btn block" data-k="r">Remove it</button></div>`);
@@ -652,14 +686,49 @@ ACT['vp-set']=async a=>{const key=a.dataset.key;
  await pickVP(key)};
 async function pickVP(key){const raw=await pickImage(1000,.9);if(!raw)return;const d=await cropVertical(raw,400);if(!d){toast('That picture could not be used.');return}
  await setVP(key,d);toast('Poster saved');route()}
+/* ---------- select, download and delete several ---------- */
+const selOn=()=>S.sel.on;
+const selBar=()=>S.sel.on?`<div class="selbar"><span class="n" id="selcount">${selText()}</span><button class="btn sm" data-act="sel-all">All</button><button class="btn sm" data-act="sel-dl" aria-label="Download selected">${ic('down')}</button><button class="btn sm bad" data-act="sel-del" aria-label="Delete selected">${ic('trash')}</button><button class="btn sm" data-act="sel-x">Done</button></div>`:'';
+const selText=()=>S.sel.set.size?`${S.sel.set.size} selected`:'Tap to select';
+function selIds(){return S.sel.scope=='lib'?S.reviews.filter(r=>S.sel.set.has(r.tkey)).map(r=>r.id):[...S.sel.set].filter(id=>S.reviews.some(r=>r.id==id))}
+ACT['sel-start']=a=>{S.sel={on:true,scope:a.dataset.scope,set:new Set(),hash:location.hash};route()};
+ACT['sel-x']=()=>{S.sel.on=false;route()};
+ACT['sel-tog']=a=>{const k=a.dataset.key??a.dataset.id,set=S.sel.set;set.has(k)?set.delete(k):set.add(k);a.classList.toggle('on',set.has(k));const c=$('selcount');if(c)c.textContent=selText()};
+ACT['sel-all']=()=>{const els=$$('[data-act=sel-tog]'),all=els.length&&els.every(e=>S.sel.set.has(e.dataset.key??e.dataset.id));
+ els.forEach(e=>{const k=e.dataset.key??e.dataset.id;all?S.sel.set.delete(k):S.sel.set.add(k);e.classList.toggle('on',!all)});$('selcount').textContent=selText()};
+const CRCT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=u=>{let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRCT[(c^u[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0};
+async function zipStore(files){const enc=new TextEncoder(),parts=[],cd=[];let off=0,cdl=0;
+ const n=new Date(),dt=(n.getHours()<<11)|(n.getMinutes()<<5)|(n.getSeconds()>>1),dd=((n.getFullYear()-1980)<<9)|((n.getMonth()+1)<<5)|n.getDate();
+ for(const f of files){const data=new Uint8Array(await f.blob.arrayBuffer()),name=enc.encode(f.name),crc=crc32(data);
+  const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(10,dt,true);h.setUint16(12,dd,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);
+  parts.push(h.buffer,name,data);
+  const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(12,dt,true);c.setUint16(14,dd,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+  cd.push(c.buffer,name);cdl+=46+name.length;off+=30+name.length+data.length}
+ const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cdl,true);e.setUint32(16,off,true);
+ return new Blob([...parts,...cd,e.buffer],{type:'application/zip'})}
+ACT['sel-dl']=async()=>{const recs=selIds().map(id=>S.reviews.find(r=>r.id==id)).filter(Boolean);if(!recs.length){toast('Select something first.');return}
+ if(recs.length==1){const x=await recData(recs[0]);saveBlob(await cardBlob(x),fname(x));return}
+ const files=[];for(let i=0;i<recs.length;i++){toast(`Preparing ${i+1} of ${recs.length}...`);const x=await recData(recs[i]);files.push({name:String(i+1).padStart(2,'0')+'-'+fname(x),blob:await cardBlob(x)})}
+ saveBlob(await zipStore(files),'mycinelist-cards-'+new Date().toISOString().slice(0,10)+'.zip');toast(recs.length+' cards saved as one zip file')};
+ACT['sel-del']=async()=>{const ids=selIds();if(!ids.length){toast('Select something first.');return}
+ if(!await ask(`Delete ${ids.length} review${ids.length==1?'':'s'}?`,'The cards and their details are removed from your library. This cannot be undone.','Delete',true))return;
+ const keys=new Set(ids.map(id=>(S.reviews.find(r=>r.id==id)||{}).tkey));
+ for(const id of ids)await deleteReview(id);S.sel.on=false;toast(ids.length+' deleted');
+ if(S.sel.scope=='title'&&![...keys].some(k=>S.reviews.some(r=>r.tkey==k)))go('/library');else route()};
+ACT['bn-set']=async a=>{const key=a.dataset.key;
+ if(S.bn[key]){const p=sheet(`<h2 class="h2">Background picture</h2><p class="sub mt">Shown behind the poster at the top of this title page.</p><div class="mt2" style="display:grid;gap:10px"><button class="btn pri block" data-k="c">Choose a new one</button><button class="btn block" data-k="r">Remove it</button></div>`);
+  p.querySelectorAll('[data-k]').forEach(b=>b.onclick=async()=>{closeSheet();if(b.dataset.k=='r'){delete S.bn[key];await kvSet('banners',S.bn);toast('Background removed');route()}else await pickBN(key)});return}
+ await pickBN(key)};
+async function pickBN(key){const raw=await pickImage(1400,.85);if(!raw)return;S.bn[key]=raw;await kvSet('banners',S.bn);toast('Background saved');route()}
 ACT.enter=()=>{$('welcome').hidden=true;go('/')};
 
 /* ---------- home ---------- */
 ACT.new=async()=>{if(draftHasContent(S.draft)){const p=sheet(`<h2 class="h2">You have a draft</h2><p class="sub mt">${esc(S.draft.f.title||'Untitled')} is still unfinished.</p><div class="mt2" style="display:grid;gap:10px"><button class="btn pri block" data-k="c">Continue the draft</button><button class="btn block" data-k="n">Start a new review</button></div>`);
   p.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{if(b.dataset.k=='n'){S.draft=newDraft();saveDraftSoon()}closeSheet();go('/create')});return}
  S.draft=newDraft();saveDraftSoon();go('/create')};
-function tile(g){const r=g.latest,sc=rScore(r),vp=vpOf(g.key);
- return `<a class="tile" href="#/title/${encodeURIComponent(g.key)}"><div class="art ${vp?'':'gen'}" style="${vp?`background-image:url('${vp}')`:genBg(r.f.title)}">${vp?'':esc(r.f.title)}${vpBtn(g.key)}${sc!=null?`<span class="sc">${ic('star','f')}${f2n(sc)}</span>`:''}${g.items.length>1?`<span class="cn">×${g.items.length}</span>`:''}${rVerdict(r)?`<span class="vd">${esc(emoOf(rVerdict(r)))}</span>`:''}</div><div class="tt">${esc(r.f.title||'Untitled')}</div><div class="ts">${esc([r.f.year,r.f.fmt].filter(Boolean).join(' · '))}</div></a>`}
+function tile(g){const r=g.latest,sc=rScore(r),vp=vpOf(g.key),sl=S.sel.on&&S.sel.scope=='lib';
+ return `<a class="tile ${sl?'sel '+(S.sel.set.has(g.key)?'on':''):''}" href="#/title/${encodeURIComponent(g.key)}" ${sl?`data-act="sel-tog" data-key="${esc(g.key)}"`:''}><div class="art ${vp?'':'gen'}" style="${vp?`background-image:url('${vp}')`:genBg(r.f.title)}">${vp?'':esc(r.f.title)}${sl?`<span class="ck">${ic('check')}</span>`:vpBtn(g.key)}${sc!=null?`<span class="sc">${ic('star','f')}${f2n(sc)}</span>`:''}${g.items.length>1?`<span class="cn">×${g.items.length}</span>`:''}${rVerdict(r)?`<span class="vd">${esc(emoOf(rVerdict(r)))}</span>`:''}</div><div class="tt">${esc(r.f.title||'Untitled')}</div><div class="ts">${esc([r.f.year,r.f.fmt].filter(Boolean).join(' · '))}</div></a>`}
 routes.home=()=>{const gs=groups(),st=stats(),p=S.profile,d=S.draft,hasD=draftHasContent(d);
  const needB=S.reviews.length>=3&&(!S.lastBackup||Date.now()-S.lastBackup>14*864e5);
  setView(`<div class="hello"><div class="av" ${avStyle()}>${avInit()}</div><div class="sp"><h1 class="h1" style="margin:0">Hi, ${esc(p.name)}</h1><p class="sub">${st.n?`${st.n} review${st.n>1?'s':''} saved`:'Your library is empty'}</p></div></div>
@@ -680,11 +749,11 @@ function libItems(){const q=S.lib.q.trim().toLowerCase();let gs=groups();
  return gs}
 function libGrid(){const gs=libItems();$('libgrid').innerHTML=gs.length?gs.map(tile).join(''):`<div class="empty" style="grid-column:1/-1"><p class="h2">${S.reviews.length?'Nothing matches':'No reviews yet'}</p><p>${S.reviews.length?'Try a different search or clear the filter.':'Make your first card with New review.'}</p></div>`;
  $('libcount').textContent=gs.length+' title'+(gs.length==1?'':'s')}
-routes.library=()=>{setView(`<div class="topbar"><h1 class="h1 sp" style="margin:0">Library</h1><span class="sub" id="libcount"></span></div>
+routes.library=()=>{setView(`<div class="topbar"><h1 class="h1 sp" style="margin:0">Library</h1><span class="sub" id="libcount"></span>${S.sel.on?'':`<button class="btn sm" data-act="sel-start" data-scope="lib">Select</button>`}</div>
  <div class="search"><span>${ic('search')}</span><input class="in" id="libq" placeholder="Search title, director or genre" value="${esc(S.lib.q)}" autocomplete="off"></div>
  <div class="scrollx mt"><button class="chip ${S.lib.v?'':'on'}" data-act="libv" data-v="">All</button>${Object.keys(VD).map(v=>`<button class="chip ${S.lib.v==v?'on':''}" data-act="libv" data-v="${esc(v)}">${esc(v)}</button>`).join('')}</div>
  <div class="row" style="margin:2px 0 14px"><span class="sub">Sort</span><select class="in" id="libsort" style="width:auto;min-height:40px;padding:8px 36px 8px 12px"><option value="new">Newest</option><option value="high">Highest score</option><option value="low">Lowest score</option><option value="az">A to Z</option></select></div>
- <div class="grid" id="libgrid"></div>`);
+ <div class="grid" id="libgrid"></div>${selBar()}${S.sel.on?'<div style="height:70px"></div>':''}`);
  $('libsort').value=S.lib.sort;libGrid();
  $('libq').oninput=e=>{S.lib.q=e.target.value;libGrid()};$('libsort').onchange=e=>{S.lib.sort=e.target.value;libGrid()}};
 ACT.libv=a=>{S.lib.v=a.dataset.v;$$('[data-act=libv]').forEach(b=>b.classList.toggle('on',b.dataset.v==S.lib.v));libGrid()};
@@ -693,19 +762,19 @@ ACT.libv=a=>{S.lib.v=a.dataset.v;$$('[data-act=libv]').forEach(b=>b.classList.to
 const paBar=f=>{const cl=v=>Math.max(0,Math.min(10,+v||0)),pt=cl(f.pot),ac=cl(f.ach),m=Math.min(pt,ac),M=Math.max(pt,ac);
  return `<div class="pa"><i style="width:${m*10}%;background:#6c7bff"></i><i style="width:${(M-m)*10}%;background:${ac>pt?'#f5b301':'#3ddc97'}"></i></div><div class="row" style="justify-content:space-between;margin-top:6px"><span class="sub">Potential ${pt}/10</span><span class="sub">Achieved ${ac}/10</span></div>`};
 routes.title=key=>{const g=groups().find(x=>x.key==key);if(!g){go('/library');return}
- const r=g.latest,f=r.f,sc=rScore(r),vp=vpOf(g.key),vv=rVerdict(r);
+ const r=g.latest,f=r.f,sc=rScore(r),vp=vpOf(g.key),bnr=S.bn[g.key]||null,vv=rVerdict(r);
  const meta=[f.fmt,f.year,f.rt,f.age].filter(Boolean).join(' · ');
  const gen=f.genre?f.genre.split(',').map(x=>x.trim()).filter(Boolean):[];
- setView(`<div class="hero"><div class="bd" style="${vp?`background-image:url('${vp}')`:genBg(f.title)+';background-image:linear-gradient(160deg,var(--h1),var(--h2))'}"></div>
-  <div class="top"><button class="ib" data-act="back" aria-label="Back">${ic('back')}</button></div>
+ setView(`<div class="hero"><div class="bd ${bnr?'bn':''}" style="${bnr?`background-image:url('${bnr}')`:vp?`background-image:url('${vp}')`:genBg(f.title)+';background-image:linear-gradient(160deg,var(--h1),var(--h2))'}"></div>
+  <div class="top"><button class="ib" data-act="back" aria-label="Back">${ic('back')}</button><button class="ib" data-act="bn-set" data-key="${esc(g.key)}" aria-label="Set background picture">${ic('plus')}</button></div>
   <div class="main"><div class="poster ${vp?'':'gen'}" style="${vp?`background-image:url('${vp}')`:genBg(f.title)}">${vp?'':esc(f.title)}${vpBtn(g.key)}</div>
   <div class="tx"><h1>${esc(f.title||'Untitled')}</h1><div class="meta">${esc(meta)}</div>${f.dir?`<div class="meta" style="margin-top:4px">Directed by ${esc(f.dir)}</div>`:''}</div></div></div>
   ${gen.length?`<div class="chips mt">${gen.map(x=>`<span class="chip">${esc(x)}</span>`).join('')}</div>`:''}
   <div class="card mt2"><div class="ratings">${sc!=null?`<span class="score">${ic('star','f')}${f2n(sc)}<small>/10</small></span>`:''}${f.mr?pillHTML(f.mr,MR):''}${vv?pillHTML(vv,VD):''}</div>
   ${(f.pot||f.ach)?`<div class="mt">${paBar(f)}</div>`:''}</div>
   <div class="soon mt">Scores from IMDb, Rotten Tomatoes and others will appear here once the lookup update arrives.</div>
-  <div class="row mt2"><h2 class="h2 sp">Your reviews</h2><button class="btn sm" data-act="again" data-id="${r.id}">${ic('plus')} Review again</button></div>
-  <div class="mt" style="display:grid;gap:10px">${g.items.map(x=>`<a class="rv" href="#/view/${x.id}"><img src="${x.thumb}" alt=""><div class="t"><b>${esc(kindName[x.kind]||'Card')}</b><div class="sub">${fdate(x.created)}</div><div class="sub">${rScore(x)!=null?'★ '+f2n(rScore(x)):''} ${esc(emoOf(rVerdict(x)))} ${esc(wordOf(rVerdict(x)))}</div></div>${ic('arrow')}</a>`).join('')}</div>`)};
+  <div class="row mt2"><h2 class="h2 sp">Your reviews</h2>${S.sel.on?'':`<button class="btn sm" data-act="sel-start" data-scope="title">Select</button>`}<button class="btn sm" data-act="again" data-id="${r.id}">${ic('plus')} Review again</button></div>
+  <div class="mt" style="display:grid;gap:10px">${g.items.map(x=>{const sl=S.sel.on&&S.sel.scope=='title';return `<a class="rv ${sl?'sel '+(S.sel.set.has(x.id)?'on':''):''}" href="#/view/${x.id}" ${sl?`data-act="sel-tog" data-id="${x.id}"`:''}><img src="${x.thumb}" alt=""><div class="t"><b>${esc(kindName[x.kind]||'Card')}</b><div class="sub">${fdate(x.created)}</div><div class="sub">${rScore(x)!=null?'★ '+f2n(rScore(x)):''} ${esc(emoOf(rVerdict(x)))} ${esc(wordOf(rVerdict(x)))}</div></div>${sl?`<span class="ck">${ic('check')}</span>`:ic('arrow')}</a>`}).join('')}</div>${selBar()}${S.sel.on?'<div style="height:70px"></div>':''}`)};
 ACT.back=()=>{if(history.length>1)history.back();else go('/library')};
 ACT.again=async a=>{const rec=S.reviews.find(r=>r.id==a.dataset.id);if(!rec)return;S.draft=await draftFrom(rec,'again');saveDraftSoon();go('/create')};
 
@@ -811,24 +880,25 @@ ACT.prof=()=>{const p=S.profile;let av=p.avatar;
 /* ---------- backup / import ---------- */
 ACT.export=async()=>{if(!S.reviews.length){toast('There is nothing to back up yet.');return}
  const items=[];for(const r of S.reviews){const x=await recData(r);const{thumb,pthumb,hasPoster,hasBg,...rest}=r;items.push({...rest,poster:x.poster,bgimg:x.bgimg})}
- const keys=new Set(S.reviews.map(r=>r.tkey)),vposters={};Object.keys(S.vp).forEach(k=>{if(keys.has(k))vposters[k]=S.vp[k]});
- const o={app:'mycinelist',ver:3,exported:Date.now(),profile:{name:S.profile.name,handle:S.profile.handle},reviews:items,vposters};
+ const keys=new Set(S.reviews.map(r=>r.tkey)),vposters={},vbanners={};Object.keys(S.vp).forEach(k=>{if(keys.has(k))vposters[k]=S.vp[k]});Object.keys(S.bn).forEach(k=>{if(keys.has(k))vbanners[k]=S.bn[k]});
+ const o={app:'mycinelist',ver:3,exported:Date.now(),profile:{name:S.profile.name,handle:S.profile.handle},reviews:items,vposters,vbanners};
  saveBlob(new Blob([JSON.stringify(o)],{type:'application/json'}),'mycinelist-backup-'+new Date().toISOString().slice(0,10)+'.json');
  S.lastBackup=Date.now();await kvSet('backup',S.lastBackup);toast('Backup saved to your downloads');if(S.route=='me'||S.route=='home')route()};
 ACT.import=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=()=>{if(i.files[0])importFile(i.files[0])};i.click()};
 const OLDLOOK=['rfont','rsize','bg','size','tsz','ph','pfocus','dark','blur','xs'];
 async function importFile(file){let o;try{o=JSON.parse(await file.text())}catch(e){toast('That file could not be read.');return}
  const jobs=[];
- if(o&&o.app=='mycinelist'&&Array.isArray(o.reviews))o.reviews.forEach(r=>jobs.push({id:r.id,kind:r.kind||'post',f:{...blankF(),...r.f},look:{...LOOK0,...r.look},poster:r.poster||null,bgimg:r.bgimg||null,created:r.created}));
+ if(o&&o.app=='mycinelist'&&Array.isArray(o.reviews))o.reviews.forEach(r=>jobs.push({id:r.id,kind:r.kind||'post',f:{...blankF(),...r.f},look:{...LOOK0,...r.look},poster:r.poster||null,bgimg:r.bgimg||null,created:r.created,updated:r.updated}));
  else if(o&&o.app=='review-card-maker'&&o.f){const look={...LOOK0},f={...blankF()};Object.entries(o.f).forEach(([k,v])=>{if(OLDLOOK.includes(k))look[k]=v;else if(k!='feel'&&k!='accent')f[k]=v});
   if(f.mr=='🔴 Skip It')f.mr='🔴 Skip';if(!o.ver)look.bg='tint';if('rgb' in o)look.rgb=!!o.rgb;if('outl' in o)look.outl=!!o.outl;
   jobs.push({id:null,kind:['post','full','ep','anime'].includes(o.tab)?o.tab:'post',f,look,poster:o.poster||null,bgimg:o.bgimg||null,created:null})}
  else{toast('This file is not a MyCineList backup or review file.');return}
  if(!jobs.length){toast('The file has no reviews in it.');return}
  if(o.app=='mycinelist'&&o.vposters&&typeof o.vposters=='object'){let ch=false;Object.entries(o.vposters).forEach(([k,v])=>{if(typeof v=='string'&&v.startsWith('data:image')&&!S.vp[k]){S.vp[k]=v;ch=true}});if(ch)await kvSet('vposters',S.vp).catch(()=>{})}
+ if(o.app=='mycinelist'&&o.vbanners&&typeof o.vbanners=='object'){let ch=false;Object.entries(o.vbanners).forEach(([k,v])=>{if(typeof v=='string'&&v.startsWith('data:image')&&!S.bn[k]){S.bn[k]=v;ch=true}});if(ch)await kvSet('banners',S.bn).catch(()=>{})}
  toast('Importing '+jobs.length+' review'+(jobs.length>1?'s':'')+'...');
- let n=0;for(const j of jobs){try{await saveReview(j);n++}catch(e){console.error(e)}}
- toast('Imported '+n+' review'+(n==1?'':'s'));route()}
+ let n=0,kept=0;for(const j of jobs){try{const ex=j.id&&S.reviews.find(x=>x.id==j.id);if(ex&&(ex.updated||0)>=(j.updated||0)){kept++;continue}await saveReview(j);n++}catch(e){console.error(e)}}
+ toast('Imported '+n+' review'+(n==1?'':'s')+(kept?'. Kept '+kept+' newer one'+(kept==1?'':'s')+' you already have':''));route()}
 
 /* ---------- link tools ---------- */
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}},lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
@@ -920,7 +990,7 @@ const MAXREV=500;
 const wzv=k=>String(S.draft.f[k]??'');
 const TPL=[['post','Post card','Poster, scores, verdict and a short review'],['full','Full review','Long text and extra chips'],['ep','Episode','One episode of a series'],['anime','Anime','Episode scores and season info']];
 const kd=()=>S.draft.kind||'post',scK=()=>kd()=='ep'?'escore':'score',vK=()=>kd()=='ep'?'ev':'v',rvK=()=>({full:'full',ep:'erev'}[kd()]||'short'),rvMax=()=>({full:3000,ep:1200}[kd()]||MAXREV);
-const tplChips=()=>`<div class="chips">${TPL.map(t=>`<button class="chip ${kd()==t[0]?'on':''}" data-act="tpl" data-v="${t[0]}">${t[1]}</button>`).join('')}</div>`;
+const tplStrip=()=>`<button class="in pfsel" data-act="tpl-open"><span>${esc((TPL.find(t=>t[0]==kd())||TPL[0])[1])}</span>${ic('chev')}</button>`;
 const lk=k=>S.draft.look[k]??LOOK0[k];
 const wzl=k=>String(S.draft.look[k]??LOOK0[k]??'');
 const genList=()=>wzv('genre').split(',').map(x=>x.trim()).filter(Boolean);
@@ -951,21 +1021,19 @@ ACT['wz-x']=()=>{if(!draftHasContent(S.draft)&&!S.draft.id){S.draft=null;dbDel('
 const STEPFN=[
  /* 1 title */
  ()=>{const d=S.draft,fm=wzv('fmt'),all=FMTS.includes(fm)||!fm?FMTS:[...FMTS,fm];
-  return `<div class="fld"><label class="lb">Template</label>${tplChips()}</div>
+  return `<div class="fld"><label class="lb">Template</label>${tplStrip()}</div>
   <div class="fld"><label class="lb">Type</label><div class="chips">${all.map(x=>`<button class="chip ${fm==x?'on':''}" data-act="fmtchip" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div></div>
   <div class="fld"><label class="lb" for="wz-title">Title</label><input class="in" id="wz-title" data-f="title" value="${esc(wzv('title'))}" placeholder="The Furious" autocomplete="off" enterkeyhint="next"></div>
   <div class="fld"><label class="lb">Poster</label>${posterDrop()}<p class="hint">A wide picture works best, it fills the top of the card. You can skip it.</p></div>`},
  /* 2 details */
- ()=>{const k=kd(),ep=k=='ep',inp=(id,lb,ph,extra='')=>`<div class="fld"><label class="lb" for="wz-${id}">${lb}</label><input class="in" id="wz-${id}" data-f="${id}" ${extra} value="${esc(wzv(id))}" placeholder="${ph}" autocomplete="off"></div>`;
-  return `<div class="two"><div class="fld"><label class="lb" for="wz-year">Year</label><input class="in" id="wz-year" data-f="year" inputmode="numeric" maxlength="4" value="${esc(wzv('year'))}" placeholder="2026"></div>
-  <div class="fld"><label class="lb" for="wz-age">Age rating</label><input class="in" id="wz-age" data-f="age" value="${esc(wzv('age'))}" placeholder="18+"></div></div>
-  <div class="chips" style="margin:-6px 0 16px">${AGES.map(a=>`<button class="chip" data-act="agechip" data-v="${a}">${a}</button>`).join('')}</div>
+ ()=>{const k=kd(),ep=k=='ep',inp=(id,lb,ph,extra='')=>`<div class="fld"><label class="lb" for="wz-${id}">${lb}</label><input class="in" id="wz-${id}" data-f="${id}" ${extra} value="${esc(wzv(id))}" placeholder="${ph}" autocomplete="off"></div>`,
+  pf=(id,lb,ph,act,extra='')=>`<div class="fld"><label class="lb" for="wz-${id}">${lb}</label><div class="pf"><input class="in" id="wz-${id}" data-f="${id}" ${extra} value="${esc(wzv(id))}" placeholder="${ph}" autocomplete="off"><button class="pfb" data-act="${act}" data-k="${id}" aria-label="Choose ${lb}">${ic('chev')}</button></div></div>`;
+  return `<div class="two">${pf('year','Year','2026','pick-year','inputmode="numeric" maxlength="4"')}${pf('age','Age rating','18+','pick-age')}</div>
   ${ep?`<div class="two">${inp('sn','Season no.','1','inputmode="numeric"')}${inp('en','Episode no.','3','inputmode="numeric"')}</div>
-  <div class="two">${inp('et','Total episodes','12','inputmode="numeric"')}${inp('ert','Episode runtime','24 min')}</div>
-  ${inp('edate','Date watched','21 Oct 2026')}`:`${inp('rt','Runtime','1h 53m')}${k!='post'?inp('origin','Origin','Japan, Manga'):''}${k=='anime'?inp('ascope','Season and episodes','Season 1 • 12 episodes'):''}`}
+  <div class="two">${inp('et','Total episodes','12','inputmode="numeric"')}${pf('ert','Episode runtime','24 min','pick-rt')}</div>
+  ${inp('edate','Date watched','21 Oct 2026')}`:`${pf('rt','Runtime','1h 53m','pick-rt')}${k!='post'?inp('origin','Origin','Japan, Manga'):''}${k=='anime'?inp('ascope','Season and episodes','Season 1 • 12 episodes'):''}`}
   ${inp('dir','Director','Kenji Tanigaki')}
-  ${ep?'':`<div class="fld"><label class="lb">Genres</label><div class="chips" id="genchips">${genChips()}</div>
-  <div class="row mt"><input class="in" id="wz-gen" placeholder="Add your own" autocomplete="off" enterkeyhint="done"><button class="btn" data-act="gen-add">Add</button></div><p class="hint" id="genhint">${genHint()}</p></div>`}
+  ${ep?'':`<div class="fld"><label class="lb">Genres</label>${genField()}</div>`}
   ${k=='full'||k=='anime'?`${inp('chips','Extra chips','Manga, Studio MAPPA')}<p class="hint" style="margin-top:-8px">Separate with commas: source, studio, anything extra.</p>`:''}`},
  /* 3 rating */
  ()=>{const k=kd(),ep=k=='ep',sk=scK(),vk=vK(),sc=wzv(sk),v=wzv(vk),m=wzv('mr');
@@ -980,14 +1048,14 @@ const STEPFN=[
  /* 4 review */
  ()=>{const rk=rvK(),mx=rvMax(),t=wzv(rk),lbl={full:'Your full review',ep:'Your episode review'}[kd()]||'Your review';
   return `<div class="fld"><label class="lb" for="rv">${lbl} <span id="cnt" style="float:right">${t.length}/${mx}</span></label>
-  <div class="tools" id="ftools"><button data-act="fmt" data-w="**" title="Bold"><b>B</b></button><button data-act="fmt" data-w="*" title="Italic"><i>I</i></button><button data-act="fmt" data-w="__" title="Underline"><u>U</u></button><button data-act="fmt" data-w="~~" title="Strikethrough"><s>S</s></button><button data-act="fmt" data-p="- " title="List">•</button><button data-act="fmt" data-p="> " title="Quote">❝</button><button class="col" data-act="col" title="Colour"><i style="background:var(--grad)"></i></button></div>
+  <div class="tools" id="ftools"><button data-act="fmt-info" title="How formatting works" aria-label="How formatting works">${ic('info')}</button><button data-act="fmt" data-w="**" title="Bold"><b>B</b></button><button data-act="fmt" data-w="*" title="Italic"><i>I</i></button><button data-act="fmt" data-w="__" title="Underline"><u>U</u></button><button data-act="fmt" data-w="~~" title="Strikethrough"><s>S</s></button><button data-act="fmt" data-p="- " title="List">•</button><button data-act="fmt" data-p="> " title="Quote">❝</button><button class="col" data-act="col" title="Colour"><i style="background:var(--grad)"></i></button></div>
   <div class="tools" id="swatches" hidden>${SWATCH.map(c=>`<button class="col" data-act="colset" data-c="${c}" aria-label="${c}"><i style="background:${c}"></i></button>`).join('')}</div>
   <textarea class="in" id="rv" data-f="${rk}" maxlength="${mx}" style="min-height:${kd()=='full'?320:220}px" placeholder="What did you think? ${kd()=='full'?'Write as much as you like.':'A few honest lines work best.'}">${esc(t)}</textarea>
-  <p class="hint">Select words and tap a button to format them. **bold** *italic* __underline__ ~~strike~~. A line starting with - becomes a bullet.</p></div>`},
+  </div>`},
  /* 5 style */
  ()=>{const bg=wzl('bg'),hasP=!!S.draft.poster;
   return `<div class="fld"><label class="lb">Template</label>
-  ${TPL.map(t=>`<button class="tpl ${kd()==t[0]?'on':''}" data-act="tpl" data-v="${t[0]}"><span class="th" ${kd()==t[0]?'':'style="background:var(--pn2)"'}></span><span><b>${t[1]}</b><small>${t[2]}</small></span></button>`).join('')}</div>
+  ${tplStrip()}</div>
   <button class="btn block" data-act="wz-peek" style="margin-bottom:18px">${ic('eye')}Preview the card</button>
   <div class="card" style="margin-bottom:16px"><div class="fld"><label class="lb">Theme</label><select class="in" data-l="bg">${Object.entries(TH).map(([k,v])=>`<option value="${k}" ${bg==k?'selected':''}>${esc(v)}</option>`).join('')}</select></div>
   <div id="imgopts" ${['poster','custom'].includes(bg)?'':'hidden'}>${sliderHTML('l','dark',0,90,1,'Darkness')}${sliderHTML('l','blur',0,100,1,'Blur')}</div>
@@ -1009,8 +1077,9 @@ const STEPFN=[
 const posterDrop=()=>{const p=S.draft.poster;return `<div class="drop ${p?'has':''}" data-act="poster" role="button" tabindex="0" style="${p?`background-image:url('${p}')`:''}">${p?'<span>Tap to change</span>':`${ic('image')}<span>Tap to add a poster</span>`}</div>${p?'<button class="btn sm" data-act="poster-rm" style="margin-top:10px">Remove poster</button>':''}`};
 const genChips=()=>{const gl=genList(),extra=gl.filter(g=>!GENRES.some(x=>x.toLowerCase()==g.toLowerCase()));
  return GENRES.map(g=>`<button class="chip ${gl.some(x=>x.toLowerCase()==g.toLowerCase())?'on':''}" data-act="gen" data-v="${g}">${g}</button>`).join('')+extra.map(g=>`<button class="chip on x" data-act="gen-rm" data-v="${esc(g)}">${esc(g)} <b>×</b></button>`).join('')};
-const genHint=()=>{const n=genList().length;return n?`${n} picked. The card shows the first 5.`:'Pick up to five. The card shows the first five.'};
-const genRefresh=()=>{$('genchips').innerHTML=genChips();$('genhint').textContent=genHint()};
+const genHint=()=>{const n=genList().length;return n?`${n} of 5 picked.`:'Pick up to five. They show on the card.'};
+const genField=()=>{const gl=genList();return `<button class="in pfsel ${gl.length?'':'ph'}" id="genval" data-act="pick-gen"><span>${esc(gl.length?gl.join(', '):'Choose genres')}</span>${ic('chev')}</button>`};
+const genRefresh=()=>{const c=$('genchips');if(c){c.innerHTML=genChips();$('genhint').textContent=genHint()}const v=$('genval');if(v){const gl=genList();v.classList.toggle('ph',!gl.length);v.querySelector('span').textContent=gl.length?gl.join(', '):'Choose genres'}};
 
 /* ---------- field binding ---------- */
 function wzSet(el){const d=S.draft;if(!d)return;const val=el.type=='checkbox'?el.checked:el.value;
@@ -1032,9 +1101,30 @@ document.addEventListener('mousedown',e=>{if(e.target.closest&&e.target.closest(
 /* ---------- step actions ---------- */
 ACT.fmtchip=a=>{S.draft.f.fmt=a.dataset.v;$$('[data-act=fmtchip]').forEach(b=>b.classList.toggle('on',b===a));saveDraftSoon()};
 ACT.agechip=a=>{S.draft.f.age=a.dataset.v;$('wz-age').value=a.dataset.v;saveDraftSoon()};
-ACT.gen=a=>{const gl=genList(),i=gl.findIndex(x=>x.toLowerCase()==a.dataset.v.toLowerCase());if(i>=0)gl.splice(i,1);else gl.push(a.dataset.v);setGen(gl);genRefresh()};
+ACT.gen=a=>{const gl=genList(),i=gl.findIndex(x=>x.toLowerCase()==a.dataset.v.toLowerCase());if(i>=0)gl.splice(i,1);else{if(gl.length>=5){toast('The card shows 5 genres. Remove one first.');return}gl.push(a.dataset.v)}setGen(gl);genRefresh()};
 ACT['gen-rm']=a=>{setGen(genList().filter(x=>x!=a.dataset.v));genRefresh()};
-ACT['gen-add']=()=>{const i=$('wz-gen'),t=i.value.trim().replace(/,/g,' ').slice(0,24);if(!t)return;const gl=genList();if(!gl.some(x=>x.toLowerCase()==t.toLowerCase()))gl.push(t);setGen(gl);i.value='';genRefresh()};
+function genAdd(t){t=String(t||'').trim().replace(/,/g,' ').slice(0,24);if(!t)return false;const gl=genList();if(!gl.some(x=>x.toLowerCase()==t.toLowerCase())){if(gl.length>=5){toast('The card shows 5 genres. Remove one first.');return false}gl.push(t)}setGen(gl);genRefresh();return true}
+ACT['gen-add']=()=>{const i=$('wz-gen');if(i&&genAdd(i.value))i.value=''};
+ACT['pick-gen']=()=>{let inp=null;const p=sheet(`<h2 class="h2">Genres</h2><div class="chips mt" id="genchips">${genChips()}</div>
+  <div class="row mt"><input class="in" id="wz-gen" placeholder="Add your own" autocomplete="off" enterkeyhint="done"><button class="btn" data-act="gen-add">Add</button></div><p class="hint" id="genhint">${genHint()}</p>
+  <button class="btn pri block mt" data-act="sheet-x">Done</button>`,{onClose:()=>{if(inp&&inp.value.trim())genAdd(inp.value);genRefresh()}});inp=p.querySelector('#wz-gen')};
+const setF=(id,v)=>{S.draft.f[id]=v;const i=$('wz-'+id);if(i)i.value=v;saveDraftSoon()};
+ACT['pick-age']=()=>{const cur=wzv('age');sheet(`<h2 class="h2">Age rating</h2><div class="opts mt">${AGES.map(a=>`<button class="opt ${cur==a?'on':''}" data-act="set-f" data-k="age" data-v="${a}">${a}</button>`).join('')}<button class="opt" data-act="set-f" data-k="age" data-v="">None</button></div>`)};
+ACT['set-f']=a=>{setF(a.dataset.k,a.dataset.v);closeSheet()};
+ACT['pick-year']=()=>{const cur=wzv('year'),y0=new Date().getFullYear()+1,ys=[];for(let y=y0;y>=1920;y--)ys.push(y);
+ sheet(`<h2 class="h2">Year</h2><div class="ygrid mt" id="yg">${ys.map(y=>`<button class="${cur==y?'on':''}" data-act="set-f" data-k="year" data-v="${y}">${y}</button>`).join('')}</div>`);
+ const on=$('yg').querySelector('.on');if(on)on.scrollIntoView({block:'center'})};
+ACT['pick-rt']=a=>{const id=a.dataset.k,cur=wzv(id),h=+(cur.match(/(\d+)\s*h/i)||[])[1]||0,m=+(cur.match(/(\d+)\s*m/i)||(!/h/i.test(cur)?cur.match(/(\d+)/):null)||[])[1]||0,
+  opt=(n,v)=>Array.from({length:n},(_,i)=>`<option value="${i}" ${i==v?'selected':''}>${i}</option>`).join('');
+ const p=sheet(`<h2 class="h2">Runtime</h2><div class="two mt"><div class="fld"><label class="lb">Hours</label><select class="in" id="rt-h">${opt(10,h)}</select></div><div class="fld"><label class="lb">Minutes</label><select class="in" id="rt-m">${opt(60,m)}</select></div></div>
+  <button class="btn pri block" id="rt-ok">Set runtime</button><button class="btn block mt" id="rt-clr">Clear</button>`);
+ p.querySelector('#rt-ok').onclick=()=>{const H=+p.querySelector('#rt-h').value,M=+p.querySelector('#rt-m').value;setF(id,H?`${H}h ${M}m`:(M?`${M} min`:''));closeSheet()};
+ p.querySelector('#rt-clr').onclick=()=>{setF(id,'');closeSheet()}};
+ACT['fmt-info']=()=>sheet(`<h2 class="h2">Formatting your review</h2><p class="sub mt">Select some words, then tap a button. Or type the marks yourself.</p>
+ <ul class="how"><li><b>B</b> Bold: <code>**great acting**</code></li><li><i>I</i> Italic: <code>*slow burn*</code></li><li><u>U</u> Underline: <code>__must watch__</code></li><li><s>S</s> Strikethrough: <code>~~boring~~</code></li>
+ <li>• List: start a line with <code>- </code> like <code>- Great fights</code></li><li>❝ Quote: start a line with <code>&gt; </code> like <code>&gt; Best scene ever</code></li>
+ <li>Colour: tap the colour dot, then a colour. It looks like <code>{#ff5c7a:loved it}</code></li></ul>
+ <button class="btn pri block mt2" data-act="sheet-x">Got it</button>`);
 ACT.poster=async()=>{const p=await pickImage(1400,.9);if(!p)return;S.draft.poster=p;saveDraftSoon();wzStep(0)};
 ACT['poster-rm']=()=>{S.draft.poster=null;saveDraftSoon();wzStep(0)};
 ACT['sc-step']=a=>{const n=Math.max(0,Math.min(10,Math.round(((num(wzv(scK()))??0)+ +a.dataset.d)*100)/100));S.draft.f[scK()]=f2n(n);$('sci').value=f2n(n);$('scs').value=n;syncRanges($('wzb'));buzz();saveDraftSoon()};
@@ -1055,7 +1145,8 @@ ACT.colset=a=>{wrapSel('{'+a.dataset.c+':','}');$('swatches').hidden=true};
 /* style step */
 ACT.seg=a=>{const k=a.dataset.k,v=a.dataset.v;S.draft.look[k]=v;S.look[k]=v;a.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===a));saveDraftSoon()};
 ACT.tgl=a=>{const k=a.dataset.k,v=!lk(k);S.draft.look[k]=v;S.look[k]=v;a.classList.toggle('on',v);saveDraftSoon()};
-ACT.tpl=a=>{const d=S.draft,k=a.dataset.v;if(!k||d.kind==k)return;d.kind=k;
+ACT['tpl-open']=()=>{const p=sheet(`<h2 class="h2">Template</h2><div class="opts mt">${TPL.map(t=>`<button class="opt ${kd()==t[0]?'on':''}" data-act="tpl" data-v="${t[0]}"><span><b>${t[1]}</b><small>${t[2]}</small></span></button>`).join('')}</div>`)};
+ACT.tpl=a=>{const d=S.draft,k=a.dataset.v;closeSheet();if(!k||d.kind==k)return;d.kind=k;
  if(k=='anime'&&(!d.f.fmt||d.f.fmt=='Movie'))d.f.fmt='Anime';
  saveDraftSoon();wzStep(d.step)};
 ACT.bgpick=async()=>{const p=await pickImage(1400,.8);if(!p)return;S.draft.bgimg=p;S.draft.look.bg='custom';S.look.bg='custom';saveDraftSoon();wzStep(4);toast('Theme set to My background image')};
@@ -1085,8 +1176,8 @@ async function seedFromClassic(){try{const g=k=>{try{return localStorage.getItem
   S.draft={id:null,kind:'post',step:0,f,look:{...S.look},poster:p||null,bgimg:b||null,created:null};await kvSet('draft',S.draft)}}catch(e){console.error(e)}}
 async function boot(){
  await dbOpen();
- try{const[pr,lk,sn,dr,bk,sd,vps]=await Promise.all([kvGet('profile'),kvGet('look'),kvGet('seen'),kvGet('draft'),kvGet('backup'),kvGet('seeded'),kvGet('vposters')]);
-  if(vps&&typeof vps=='object')S.vp=vps;
+ try{const[pr,lk,sn,dr,bk,sd,vps,bns]=await Promise.all([kvGet('profile'),kvGet('look'),kvGet('seen'),kvGet('draft'),kvGet('backup'),kvGet('seeded'),kvGet('vposters'),kvGet('banners')]);
+  if(vps&&typeof vps=='object')S.vp=vps;if(bns&&typeof bns=='object')S.bn=bns;
   if(pr)S.profile={...S.profile,...pr};if(lk)S.look={...LOOK0,...lk};S.seen=!!sn;S.draft=dr||null;S.lastBackup=bk||null;
   S.reviews=await dbAll('reviews');
   if(!sd&&!S.reviews.length&&!S.draft)await seedFromClassic();
