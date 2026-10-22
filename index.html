@@ -1019,19 +1019,27 @@ function zipEntries(u8){const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLen
  return out}
 async function zipRead(u8,en){const dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength),p=en.lho,nl=dv.getUint16(p+26,true),xl=dv.getUint16(p+28,true),s=p+30+nl+xl,raw=u8.subarray(s,s+en.csz);
  return en.meth==0?raw:en.meth==8?await inflateRaw(raw):null}
+function mdRecord(t){const L=String(t).replace(/^\uFEFF/,'').split(/\r?\n/);let i=0;while(i<L.length&&!L[i].trim())i++;
+ const o={};if(i<L.length&&/^#\s+/.test(L[i])){o[normK('Name')]=L[i].replace(/^#\s+/,'').trim();i++}else return null;
+ for(;i<L.length;i++){const m=L[i].match(/^([^:\n]{1,60}):\s?(.*)$/);if(m){const k=normK(m[1]);if(k&&o[k]===undefined)o[k]=m[2].trim()}else if(L[i].trim()&&Object.keys(o).length>1)break}
+ return o}
+function mdRecords(texts){const recs=texts.map(mdRecord).filter(Boolean);if(!recs.length)return null;const h=[];recs.forEach(r=>Object.keys(r).forEach(k=>{if(!h.includes(k))h.push(k)}));return{heads:h,recs}}
 async function fromZip(u8,depth){const es=zipEntries(u8).filter(e=>!e.name.endsWith('/')&&!e.name.startsWith('__MACOSX'));
  const csvs=es.filter(e=>/\.csv$/i.test(e.name));
- if(!csvs.length){const inner=es.find(e=>/\.zip$/i.test(e.name));if(inner&&depth<2){const b=await zipRead(u8,inner);if(b)return fromZip(b,depth+1)}return null}
+ if(!csvs.length){const mds=es.filter(e=>/\.md$/i.test(e.name));
+  if(mds.length){const tx=[];for(const e of mds){const b=await zipRead(u8,e);if(b)tx.push(new TextDecoder().decode(b))}const c=mdRecords(tx);if(c)return{c,zip:{u8,es}}}
+  const inner=es.find(e=>/\.zip$/i.test(e.name));if(inner&&depth<2){const b=await zipRead(u8,inner);if(b)return fromZip(b,depth+1)}return null}
  const pick=csvs.find(e=>/_all\.csv$/i.test(e.name))||csvs.slice().sort((a,b)=>b.usz-a.usz)[0];
  const bytes=await zipRead(u8,pick);if(!bytes)return null;
  return{csv:new TextDecoder().decode(bytes),zip:{u8,es}}}
 async function notionSource(file){
+ if(/\.(md|markdown)$/i.test(file.name)||file.type=='text/markdown'){const c=mdRecords([await file.text()]);return c?{c,zip:null}:null}
  if(/\.csv$/i.test(file.name)||file.type=='text/csv')return{csv:await file.text(),zip:null};
  if(typeof DecompressionStream=='undefined')throw new Error('This browser cannot open zip files. Unzip the export first and choose the .csv file inside.');
  return fromZip(new Uint8Array(await file.arrayBuffer()),0)}
 async function zipImage(zip,cell,maxW,q){if(!zip||!cell)return null;
  const first=String(cell).split(',')[0].trim();if(!first)return null;
- let base=first.split('/').pop();try{base=decodeURIComponent(base)}catch(e){}
+ const mk=first.match(/\(([^)]+)\)\s*$/);let base=(mk?mk[1]:first).split('/').pop();try{base=decodeURIComponent(base)}catch(e){}
  const en=zip.es.find(e=>{let b=e.name.split('/').pop();try{b=decodeURIComponent(b)}catch(x){}return b==base&&/\.(jpe?g|png|webp|gif)$/i.test(b)});
  if(!en)return null;const bytes=await zipRead(zip.u8,en);if(!bytes)return null;
  const ext=base.split('.').pop().toLowerCase();
@@ -1046,28 +1054,29 @@ function notionRow(r,mp,useDate){
  const title=noEmoji(g('Name','Title'));if(!title)return null;
  const style=normK(g('Style')),fmtN=normK(noEmoji(g('Format'))),status=normK(g('Watch Status'));
  const fmt=['2d','3d','2d3dmix'].includes(style)?'Anime':fmtN=='series'?'Series':fmtN=='special'?'Special':'Movie';
- const sc=nnum(g('My Score','Score')),yr=nnum(g('Year')),age=g('Age Rating'),pk=matchKey(mp.pot,g('Potential')),ak=matchKey(mp.ach,g('Achieved'));
+ const sc=nnum(g('My Score','Score')),yr=nnum(g('Year')),age=g('Age Rating'),pk=matchKey(mp.pot,g('Potential')),ak=matchKey(mp.ach,g('Achieved')),pn=nnum(g('Potential Score')),an=nnum(g('Neutral Score')),cl=x=>f2n(Math.max(0,Math.min(10,x)));
  let short=plainText(g('Short Review')),cut=false;if(short.length>MAXREV){short=short.slice(0,MAXREV).trim();cut=true}
  const v=matchKey(VD,g('Verdict')),mr=matchKey(MR,g('Moctale Rating'));
  const f={...blankF(),title,fmt,year:yr!=null?String(Math.round(yr)):'',age:/^all/i.test(age)?'U':age,rt:rtText(nnum(g('Runtime (min)','Runtime'))),dir:g('Director'),
   genre:g('Genre').split(',').map(x=>x.trim()).filter(Boolean).slice(0,5).join(', '),score:sc!=null?f2n(Math.max(0,Math.min(10,sc))):'',v,mr,short,
-  pot:pk?String(mp.pot[pk]):'',ach:ak?String(mp.ach[ak]):''};
+  pot:pn!=null?cl(pn):pk?String(mp.pot[pk]):'',ach:an!=null?cl(an):ak?String(mp.ach[ak]):''};
  let created=null;if(useDate){const s=g('Date Completed');if(s){const d=new Date(s);if(!isNaN(d))created=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12).getTime()}}
  const unreviewed=status=='plantowatch'||(sc==null&&!v&&!mr&&!short);
- return{f,created,unreviewed,cut,noPA:!pk&&!ak,posterL:g('Poster Landscape'),posterP:g('Poster Portrait')}}
+ return{f,created,unreviewed,cut,noPA:!f.pot&&!f.ach,posterL:g('Poster Landscape'),posterP:g('Poster Portrait')}}
 
 const NSTATE={};
 ACT.notion=()=>{
  const p=sheet(`<h2 class="h2">Import from Notion</h2><p class="sub mt">Brings your My Watchlist rows in as Post cards. Nothing is sent anywhere and nothing in Notion changes.</p>
  <ol class="how" style="list-style:decimal;padding-left:22px"><li>In Notion, open <b>My Watchlist</b> (if the menus are missing on a phone, open Notion in your browser and choose Request desktop site).</li>
- <li>Tap <b>•••</b>, then <b>Export</b>. Choose <b>CSV</b>. If you can, also include sub-pages and files so posters come along.</li>
- <li>Save the file Notion gives you (a .zip or a .csv), then choose it below.</li></ol>
+ <li>Tap <b>•••</b>, then <b>Export</b>. Choose <b>Markdown &amp; CSV</b> (a whole database gives a .zip with all rows). Exporting one page works too: choose <b>Markdown</b> and you get a .md or a .zip.</li>
+ <li>Save the file Notion gives you (.zip, .csv or .md), then choose it below.</li>
+ <li>If your database has the <b>Potential Score</b> and <b>Neutral Score</b> number columns, those numbers are used directly.</li></ol>
  <p class="hint">I could not check the exact Notion phone menus, so if a step differs, tell me what you see.</p>
  <button class="btn pri block mt2" id="nfile">Choose the export file</button><p class="msg" id="nmsg" hidden></p><button class="btn block mt" data-act="sheet-x">Cancel</button>`);
- p.querySelector('#nfile').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.csv,.zip,text/csv,application/zip,application/x-zip-compressed';
+ p.querySelector('#nfile').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.csv,.zip,.md,.markdown,text/csv,text/markdown,application/zip,application/x-zip-compressed';
   i.onchange=async()=>{const f=i.files[0];if(!f)return;say('nmsg','Reading the file...');
-   try{const src=await notionSource(f);if(!src){say('nmsg','I could not find a spreadsheet (.csv) inside that file.','err');return}
-    const c=csvRecords(src.csv);if(!c){say('nmsg','That file has no rows.','err');return}
+   try{const src=await notionSource(f);if(!src){say('nmsg','I could not find a spreadsheet (.csv) or a page (.md) inside that file. Export the whole database as Markdown & CSV, or a single page as Markdown.','err');return}
+    const c=src.c||csvRecords(src.csv);if(!c){say('nmsg','That file has no rows.','err');return}
     if(!c.heads.includes('name')&&!c.heads.includes('title')){say('nmsg','I could not find a Name column. Is this the My Watchlist export?','err');return}
     NSTATE.src=src;NSTATE.c=c;notionPreview()}catch(e){console.error(e);say('nmsg',e.message||'That file could not be read.','err')}};i.click()}};
 function notionPreview(){const{src,c}=NSTATE,mp=ntMap(),has=k=>c.heads.includes(normK(k)),existing=new Set(S.reviews.map(r=>r.tkey));
@@ -1075,7 +1084,7 @@ function notionPreview(){const{src,c}=NSTATE,mp=ntMap(),has=k=>c.heads.includes(
  const ok=rows.filter(r=>!r.unreviewed&&!existing.has(tkeyOf(r.f))),unrev=rows.filter(r=>r.unreviewed).length,dup=rows.filter(r=>!r.unreviewed&&existing.has(tkeyOf(r.f))).length;
  const hasPA=has('Potential')||has('Achieved'),pics=!!src.zip&&(has('Poster Landscape')||has('Poster Portrait'));
  const sel=(grp,k)=>`<select class="in" data-nm="${grp}:${k}" style="min-height:40px;padding:0 8px">${Array.from({length:10},(_,i)=>`<option value="${i+1}" ${mp[grp][k]==i+1?'selected':''}>${i+1}</option>`).join('')}</select>`;
- const mapHTML=hasPA?`<div class="card mt"><p class="lb">Potential and Achieved are tags in Notion, but numbers out of 10 here. Check the numbers:</p>
+ const mapHTML=hasPA?`<div class="card mt"><p class="lb">Potential and Achieved tags become numbers out of 10. This table is only used for rows that have no Potential Score / Neutral Score number. Check the numbers:</p>
   <div class="two"><div>${Object.keys(mp.pot).map(k=>`<div class="fld" style="margin-bottom:8px"><label class="lb">Potential: ${esc(k)}</label>${sel('pot',k)}</div>`).join('')}</div>
   <div>${Object.keys(mp.ach).map(k=>`<div class="fld" style="margin-bottom:8px"><label class="lb">Achieved: ${esc(k)}</label>${sel('ach',k)}</div>`).join('')}</div></div></div>`:'';
  const sample=ok.slice(0,5).map(r=>`<div class="sub" style="padding:3px 0">${esc(r.f.title)} ${esc(r.f.year?'('+r.f.year+')':'')} · ${esc(r.f.score?'★ '+r.f.score:'no score')} ${esc(emoOf(r.f.v)||'')}</div>`).join('');
@@ -1084,7 +1093,7 @@ function notionPreview(){const{src,c}=NSTATE,mp=ntMap(),has=k=>c.heads.includes(
   <p class="sub" style="margin-top:6px">${dup?dup+' already in your Library (skipped). ':''}${unrev?unrev+' not reviewed yet, like Plan to watch (skipped). ':''}${(()=>{const n=rows.filter(r=>r.cut).length;return n?n+' short review'+(n==1?' was':'s were')+' over '+MAXREV+' characters and will be trimmed. ':''})()}${(()=>{const n=ok.filter(r=>r.noPA).length;return n?n+(n==1?' has':' have')+' no Potential/Achieved. ':''})()}</p>${sample?`<div class="mt">${sample}${ok.length>5?'<div class="sub">and more...</div>':''}</div>`:''}</div>
  ${mapHTML}
  ${has('Date Completed')?`<label class="row mt" style="gap:12px"><input type="checkbox" id="ndate" checked style="width:22px;height:22px"><span class="sp">Use Date Completed as the review date<small class="hint" style="display:block;margin:2px 0 0">So Insights shows when you watched things.</small></span></label>`:''}
- ${pics?`<label class="row mt" style="gap:12px"><input type="checkbox" id="npics" checked style="width:22px;height:22px"><span class="sp">Bring the posters too<small class="hint" style="display:block;margin:2px 0 0">Landscape for the card top, portrait for tiles. Only works with the .zip.</small></span></label>`:''}
+ ${pics?`<label class="row mt" style="gap:12px"><input type="checkbox" id="npics" checked style="width:22px;height:22px"><span class="sp">Bring the posters too<small class="hint" style="display:block;margin:2px 0 0">Landscape for the card top, portrait for tiles. Only works with a .zip.</small></span></label>`:''}
  <p class="msg" id="nmsg" hidden></p>
  <button class="btn pri block mt2" id="ngo" ${ok.length?'':'disabled'}>Import ${ok.length} title${ok.length==1?'':'s'}</button><button class="btn block mt" data-act="sheet-x">Cancel</button>`);
  p.querySelector('#ngo').onclick=()=>runNotionImport(p)}
