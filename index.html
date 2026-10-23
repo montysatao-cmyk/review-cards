@@ -1054,12 +1054,12 @@ function notionRow(r,mp,useDate){
  const title=noEmoji(g('Name','Title'));if(!title)return null;
  const style=normK(g('Style')),fmtN=normK(noEmoji(g('Format'))),status=normK(g('Watch Status'));
  const fmt=['2d','3d','2d3dmix'].includes(style)?'Anime':fmtN=='series'?'Series':fmtN=='special'?'Special':'Movie';
- const sc=nnum(g('My Score','Score')),yr=nnum(g('Year')),age=g('Age Rating'),pk=matchKey(mp.pot,g('Potential')),ak=matchKey(mp.ach,g('Achieved')),pn=nnum(g('Potential Score')),an=nnum(g('Neutral Score')),cl=x=>f2n(Math.max(0,Math.min(10,x)));
+ const sc=nnum(g('My Score','Score')),yr=nnum(g('Year')),age=g('Age Rating'),pn=nnum(g('Potential Score')),an=nnum(g('Neutral Score')),cl=x=>f2n(Math.max(0,Math.min(10,x)));
  let short=plainText(g('Short Review')),cut=false;if(short.length>MAXREV){short=short.slice(0,MAXREV).trim();cut=true}
  const v=matchKey(VD,g('Verdict')),mr=matchKey(MR,g('Moctale Rating'));
  const f={...blankF(),title,fmt,year:yr!=null?String(Math.round(yr)):'',age:/^all/i.test(age)?'U':age,rt:rtText(nnum(g('Runtime (min)','Runtime'))),dir:g('Director'),
   genre:g('Genre').split(',').map(x=>x.trim()).filter(Boolean).slice(0,5).join(', '),score:sc!=null?f2n(Math.max(0,Math.min(10,sc))):'',v,mr,short,
-  pot:pn!=null?cl(pn):pk?String(mp.pot[pk]):'',ach:an!=null?cl(an):ak?String(mp.ach[ak]):''};
+  pot:pn!=null?cl(pn):'',ach:an!=null?cl(an):''};
  let created=null;if(useDate){const s=g('Date Completed');if(s){const d=new Date(s);if(!isNaN(d))created=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12).getTime()}}
  const unreviewed=status=='plantowatch'||(sc==null&&!v&&!mr&&!short);
  return{f,created,unreviewed,cut,noPA:!f.pot&&!f.ach,posterL:g('Poster Landscape'),posterP:g('Poster Portrait')}}
@@ -1070,7 +1070,7 @@ ACT.notion=()=>{
  <ol class="how" style="list-style:decimal;padding-left:22px"><li>In Notion, open <b>My Watchlist</b> (if the menus are missing on a phone, open Notion in your browser and choose Request desktop site).</li>
  <li>Tap <b>•••</b>, then <b>Export</b>. Choose <b>Markdown &amp; CSV</b> (a whole database gives a .zip with all rows). Exporting one page works too: choose <b>Markdown</b> and you get a .md or a .zip.</li>
  <li>Save the file Notion gives you (.zip, .csv or .md), then choose it below.</li>
- <li>If your database has the <b>Potential Score</b> and <b>Neutral Score</b> number columns, those numbers are used directly.</li></ol>
+ <li>The numbers in your <b>Potential Score</b> and <b>Neutral Score</b> columns become Potential and Achieved on the card. Rows without them import with those left empty.</li></ol>
  <p class="hint">I could not check the exact Notion phone menus, so if a step differs, tell me what you see.</p>
  <button class="btn pri block mt2" id="nfile">Choose the export file</button><p class="msg" id="nmsg" hidden></p><button class="btn block mt" data-act="sheet-x">Cancel</button>`);
  p.querySelector('#nfile').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.csv,.zip,.md,.markdown,text/csv,text/markdown,application/zip,application/x-zip-compressed';
@@ -1082,7 +1082,7 @@ ACT.notion=()=>{
 function notionPreview(){const{src,c}=NSTATE,mp=ntMap(),has=k=>c.heads.includes(normK(k)),existing=new Set(S.reviews.map(r=>r.tkey));
  const rows=c.recs.map(r=>notionRow(r,mp,true)).filter(Boolean);
  const ok=rows.filter(r=>!r.unreviewed&&!existing.has(tkeyOf(r.f))),unrev=rows.filter(r=>r.unreviewed).length,dup=rows.filter(r=>!r.unreviewed&&existing.has(tkeyOf(r.f))).length;
- const hasPA=has('Potential')||has('Achieved'),pics=!!src.zip&&(has('Poster Landscape')||has('Poster Portrait'));
+ const hasPA=false,pics=!!src.zip&&(has('Poster Landscape')||has('Poster Portrait'));
  const sel=(grp,k)=>`<select class="in" data-nm="${grp}:${k}" style="min-height:40px;padding:0 8px">${Array.from({length:10},(_,i)=>`<option value="${i+1}" ${mp[grp][k]==i+1?'selected':''}>${i+1}</option>`).join('')}</select>`;
  const mapHTML=hasPA?`<div class="card mt"><p class="lb">Potential and Achieved tags become numbers out of 10. This table is only used for rows that have no Potential Score / Neutral Score number. Check the numbers:</p>
   <div class="two"><div>${Object.keys(mp.pot).map(k=>`<div class="fld" style="margin-bottom:8px"><label class="lb">Potential: ${esc(k)}</label>${sel('pot',k)}</div>`).join('')}</div>
@@ -1118,7 +1118,7 @@ ACT.keys=()=>{const k=KEYS();
   <details class="mt"><summary class="btn block">How to get the free key</summary>
   <ol class="how" style="list-style:decimal;padding-left:22px"><li>Open <a href="https://www.themoviedb.org/signup" target="_blank" rel="noopener" style="color:var(--a1)">themoviedb.org</a> and log in (a free account).</li>
   <li>Open your profile, then <b>Settings</b>, then <b>API</b> in the left menu. On a phone you may need to choose Request desktop site.</li>
-  <li>Ask for a key, choose the personal / developer option, and fill the short form. Use MyCineList as the name and your site address as the link.</li>
+  <li>Tap <b>Request an API key</b>, choose <b>Developer</b>, and accept the terms. In the form: name = <b>MyCineList</b>; link = your app address, <b>https://montysatao-cmyk.github.io/review-cards/</b> (any link is accepted, even your GitHub profile); type of use = personal or website; summary = <i>A personal movie review card maker for my own use</i>. Add your real name, address and phone.</li>
   <li>Copy the <b>API Key</b> (or the long <b>API Read Access Token</b>) and paste it below.</li></ol></details>
   <div class="fld mt"><label class="lb">TMDB key</label><input class="in" type="password" id="ktm" value="${esc(k.tm)}" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
   <button class="btn block" id="ttm">Test TMDB key</button></div>
@@ -1126,7 +1126,7 @@ ACT.keys=()=>{const k=KEYS();
   <details class="mt"><summary class="btn block">How to get the free key</summary>
   <ol class="how" style="list-style:decimal;padding-left:22px"><li>Open <a href="https://www.omdbapi.com/apikey.aspx" target="_blank" rel="noopener" style="color:var(--a1)">omdbapi.com/apikey.aspx</a>.</li>
   <li>Choose <b>FREE</b> (1,000 lookups a day) and enter your email.</li>
-  <li>The key is emailed to you. It can take a while, longer with Hotmail, Outlook or Yahoo. If the email has an activation link, tap it once.</li>
+  <li>The key is emailed to you. It can take a while, longer with Hotmail, Outlook or Yahoo. The email has an <b>activation link</b>: tap it once. The key does not work until you do. Copy the key from the email without spaces.</li>
   <li>Paste the key below.</li></ol></details>
   <div class="fld mt"><label class="lb">OMDb key</label><input class="in" type="password" id="kom" value="${esc(k.om)}" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
   <button class="btn block" id="tom">Test OMDb key</button></div>
