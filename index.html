@@ -294,32 +294,14 @@ body.nonav #toast{bottom:calc(96px + var(--sb))}
 .lkb{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px 10px;border-radius:14px;border:1px solid var(--ln);background:var(--pn);font-size:12px;color:var(--mu)}
 .lkb svg{width:56px;height:96px;display:block}.lkb.on{border-color:var(--a1);color:var(--tx);box-shadow:0 0 0 2px color-mix(in srgb,var(--a1) 30%,transparent)}
 .lkb .fr{fill:var(--bg);stroke:var(--ln)}.lkb .a{fill:var(--a1)}.lkb .m{fill:var(--mu)}.lkb .m2{fill:var(--ln)}.lkb .p{fill:var(--pn2)}.lkb .nb{fill:var(--pn)}.lkb .sk{fill:#9fdcf7}.lkb .w{fill:#fff}
-/* ----- Editorial: tabs on top, square, uppercase headings ----- */
-html[data-look=ed]{--r:3px}
-html[data-look=ed] .h1{font-size:34px;text-transform:uppercase;letter-spacing:.03em;line-height:1.02}
-html[data-look=ed] .h2{text-transform:uppercase;letter-spacing:.09em;font-size:15px}
-html[data-look=ed] .btn,html[data-look=ed] .chip,html[data-look=ed] .pill,html[data-look=ed] .bub,html[data-look=ed] .card,html[data-look=ed] .stat,html[data-look=ed] .banner,html[data-look=ed] .list,html[data-look=ed] .rv,html[data-look=ed] .empty,html[data-look=ed] .in,html[data-look=ed] .seg4,html[data-look=ed] .feat,html[data-look=ed] .tpl,html[data-look=ed] .opts .opt,html[data-look=ed] .cta,html[data-look=ed] .cta .pl{border-radius:3px}
-html[data-look=ed] .tile .art,html[data-look=ed] .hero .poster,html[data-look=ed] .rv img,html[data-look=ed] .feat .art{border-radius:2px}
-html[data-look=ed] .cta{box-shadow:none}
-html[data-look=ed] .stats{grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--tx);border-bottom:1px solid var(--ln)}
-html[data-look=ed] .stat{background:none;border:0;border-left:1px solid var(--ln);border-radius:0;padding:12px 6px 10px}
-html[data-look=ed] .stat:first-child{border-left:0}html[data-look=ed] .stat b{font-size:24px}
-html[data-look=ed] .stat span{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
-html[data-look=ed] .grid{grid-template-columns:repeat(3,1fr);gap:14px 10px}
-html[data-look=ed] .tile .tt{font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}html[data-look=ed] .tile .ts{font-size:11px}
-html[data-look=ed] .feat .ft{text-transform:uppercase;letter-spacing:.02em}
-html[data-look=ed]:not([data-desk]){--nav:0px}
-html[data-look=ed]:not([data-desk]) #app{padding-top:calc(54px + env(safe-area-inset-top,0px));padding-bottom:28px}
-html[data-look=ed]:not([data-desk]) body.nonav #app{padding-top:0;padding-bottom:0}
-html[data-look=ed]:not([data-desk]) #nav{top:0;bottom:auto;height:calc(54px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 12px 0;border-top:0;border-bottom:1px solid var(--ln);justify-content:flex-start;gap:2px}
-html[data-look=ed]:not([data-desk]) #nav button{flex:none;flex-direction:row;gap:0;padding:0 11px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
-html[data-look=ed]:not([data-desk]) #nav button>svg{display:none}
-html[data-look=ed]:not([data-desk]) #nav button.on::before{top:auto;bottom:-1px;left:11px;right:11px;height:2px;border-radius:0}
-html[data-look=ed]:not([data-desk]) #nav button.add{margin-left:auto;width:auto;padding:0 2px}
-html[data-look=ed]:not([data-desk]) #nav button.add .pl{width:auto;height:auto;margin:0;border-radius:3px;box-shadow:none;padding:9px 12px;display:flex;align-items:center;gap:6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
-html[data-look=ed]:not([data-desk]) #nav button.add .pl svg{width:15px;height:15px;stroke-width:3}
-html[data-look=ed]:not([data-desk]) #nav button.add .pl::after{content:'New'}
-html[data-look=ed]:not([data-desk]) .selbar{bottom:0}
+/* ----- Corners: square (the corner style of the old Editorial look). Works with every look and theme ----- */
+html[data-cr=square]{--r:3px!important}
+html[data-cr=square] .btn,html[data-cr=square] .chip,html[data-cr=square] .pill,html[data-cr=square] .bub,html[data-cr=square] .card,html[data-cr=square] .stat,html[data-cr=square] .banner,html[data-cr=square] .list,html[data-cr=square] .rv,html[data-cr=square] .empty,html[data-cr=square] .in,html[data-cr=square] .seg4,html[data-cr=square] .feat,html[data-cr=square] .tpl,html[data-cr=square] .opts .opt,html[data-cr=square] .cta,html[data-cr=square] .cta .pl,html[data-cr=square] .drop,html[data-cr=square] .uisw,html[data-cr=square] .lkb,html[data-cr=square] .srcrow,html[data-cr=square] .gl-hello,html[data-cr=square] .grid .tile{border-radius:3px!important}
+html[data-cr=square] .seg4 button,html[data-cr=square] .uith .thsq,html[data-cr=square] .uith .thpn,html[data-cr=square] .tile .art,html[data-cr=square] .hero .poster,html[data-cr=square] .rv img,html[data-cr=square] .feat .art,html[data-cr=square] .strip .tile .art,html[data-cr=square] .grid .tile .art{border-radius:2px!important}
+html[data-cr=square] #sheet .pn,html[data-cr=square] #pop .pn{border-radius:6px 6px 0 0!important}
+html[data-cr=square] #nav button.add .pl{border-radius:6px!important}
+html[data-cr=square][data-look=glass]:not([data-desk]) #nav{border-radius:8px!important}
+html[data-cr=square][data-look=glass]:not([data-desk]) #nav button:not(.add).on::after{border-radius:5px!important}
 /* ----- Floating: floating bar, glass cards ----- */
 html[data-look=glass]{--r:24px}
 html[data-look=glass] .btn{border-radius:18px}
@@ -359,24 +341,45 @@ html[data-look=rail]:not([data-desk]) #nav button.add .pl{width:44px;height:44px
 html[data-look=rail]:not([data-desk]) .selbar{left:var(--rail);bottom:0}
 html[data-look=rail]:not([data-desk]) .selbar{padding:8px 8px;gap:5px}html[data-look=rail]:not([data-desk]) .selbar .btn{padding:0 9px;min-width:0}html[data-look=rail]:not([data-desk]) .selbar .n{font-size:13px}
 html[data-look=rail]:not([data-desk]) #toast{left:calc(50% + 32px)}
-/* ----- Ocean air: light, airy, serif ----- */
-html[data-look=sky]{--disp:"Playfair Display",Georgia,"Times New Roman",serif;--r:20px}
-html[data-look=sky] body{font-variant-numeric:lining-nums}
-html[data-look=sky] .h1{font-size:34px;letter-spacing:0}html[data-look=sky] .h2{letter-spacing:0}
-html[data-look=sky] .lb,html[data-look=sky] .stat span,html[data-look=sky] .kick{text-transform:uppercase;letter-spacing:.12em;font-size:11.5px;font-weight:600}
-html[data-look=sky] .lb.hd{text-transform:none;letter-spacing:0;font-size:15px}
-html[data-look=sky] .card,html[data-look=sky] .stat,html[data-look=sky] .banner,html[data-look=sky] .list,html[data-look=sky] .rv,html[data-look=sky] .feat{border-radius:20px;box-shadow:0 10px 30px rgba(24,96,150,.10)}
-html[data-look=sky][data-mode=light] .card,html[data-look=sky][data-mode=light] .stat,html[data-look=sky][data-mode=light] .banner,html[data-look=sky][data-mode=light] .list,html[data-look=sky][data-mode=light] .rv,html[data-look=sky][data-mode=light] .feat{border-color:rgba(120,170,205,.35)}
-html[data-look=sky] .tile .art{border-radius:18px;box-shadow:0 12px 28px rgba(10,60,100,.28)}
-html[data-look=sky] .cta{border-radius:22px}html[data-look=sky] .btn{border-radius:16px}
-html[data-look=sky] .grid{gap:18px 14px}html[data-look=sky] .tile .tt{margin-top:10px}
-html[data-look=sky][data-mode=dark]{--pn:#0f2d46!important;--pn2:#17405f!important;--ln:#245170!important;--bg2:#0b2238!important;--mu:#8fb0c8!important;--inp:#0a2238!important;--navbg:rgba(8,28,46,.9)!important;--grip:#2f5f80!important}
-html[data-look=sky][data-mode=amoled]{--pn:#07202f!important;--pn2:#0d2f44!important;--ln:#143a52!important;--bg2:#03141f!important;--mu:#7fa3bc!important;--inp:#04141e!important;--navbg:rgba(0,10,16,.92)!important}
-html[data-look=sky][data-mode=light]{--pn:#ffffff!important;--pn2:#e0f0fa!important;--ln:#c4dcec!important;--bg2:#fbfeff!important;--mu:#56728a!important;--tx:#0d2538!important;--inp:#f2f9fd!important;--navbg:rgba(255,255,255,.88)!important;--grip:#b9d3e4!important}
-html[data-look=sky] #nav{border-top-color:transparent;box-shadow:0 -10px 30px rgba(24,96,150,.10)}
-html[data-look=sky] .sk-hi .h1{margin-top:8px}
-/* ----- App-wide: keep the welcome screen dark in every look ----- */
-html[data-look=sky] #welcome{--tx:#f2f4fa;--mu:#96a0b8;--disp:Oswald,"Arial Narrow",system-ui,sans-serif;color:#f2f4fa}
+/* ----- Ocean air theme: small spaced labels, thin dividers, soft shadows (the serif headings come from the theme, in code) ----- */
+html[data-theme=ocean] body{font-variant-numeric:lining-nums}
+html[data-theme=ocean] .h1{font-size:34px;letter-spacing:0}html[data-theme=ocean] .h2{letter-spacing:0}
+html[data-theme=ocean] .lb,html[data-theme=ocean] .stat span,html[data-theme=ocean] .kick{text-transform:uppercase;letter-spacing:.12em;font-size:11.5px;font-weight:600}
+html[data-theme=ocean] .lb.hd{text-transform:none;letter-spacing:0;font-size:15px}
+html[data-theme=ocean] .card,html[data-theme=ocean] .stat,html[data-theme=ocean] .banner,html[data-theme=ocean] .list,html[data-theme=ocean] .rv,html[data-theme=ocean] .feat{box-shadow:0 10px 30px rgba(24,96,150,.10)}
+html[data-theme=ocean][data-mode=light] .card,html[data-theme=ocean][data-mode=light] .stat,html[data-theme=ocean][data-mode=light] .banner,html[data-theme=ocean][data-mode=light] .list,html[data-theme=ocean][data-mode=light] .rv,html[data-theme=ocean][data-mode=light] .feat{border-color:rgba(120,170,205,.35)}
+html[data-theme=ocean] .tile .art{box-shadow:0 12px 28px rgba(10,60,100,.28)}
+html[data-theme=ocean] .grid{gap:18px 14px}html[data-theme=ocean] .tile .tt{margin-top:10px}
+html[data-theme=ocean] #nav{border-top-color:transparent;box-shadow:0 -10px 30px rgba(24,96,150,.10)}
+/* ----- Appearance: accent swatches, theme tiles ----- */
+.uisws{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.uisw{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:14px;border:1px solid var(--ln);background:var(--pn);font-size:12px;color:var(--mu)}
+.uisw i{display:block;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.uisw.on{border-color:var(--a1);color:var(--tx);box-shadow:0 0 0 2px color-mix(in srgb,var(--a1) 30%,transparent)}
+.uiths{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 8px}
+.uith{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:0;border:0;background:none;color:var(--mu);font-size:12px;min-width:0;text-align:center}
+.uith .thsq{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;background:var(--tb);border:1px solid var(--ln)}
+.uith .thaa{position:absolute;left:9px;top:7px;font:700 19px/1 var(--tf);color:var(--tt)}
+.uith .thpn{position:absolute;left:7px;right:7px;bottom:7px;height:38%;border-radius:8px;background:var(--tp);border:1px solid var(--tl);overflow:hidden}
+.uith .thpn i{position:absolute;left:7px;top:7px;width:46%;height:4px;border-radius:2px;background:var(--tm)}
+.uith .thpn i+i{top:15px;width:28%;opacity:.55}
+.uith .thpn b{position:absolute;right:6px;bottom:6px;width:16px;height:8px;border-radius:4px;background:var(--tg)}
+.uith>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uith.on{color:var(--tx);font-weight:600}.uith.on .thsq{border-color:var(--a1);box-shadow:0 0 0 2px color-mix(in srgb,var(--a1) 30%,transparent)}
+/* ----- 2.9.0 stage 1: Version row and sheet, (i) buttons, Scores icon buttons, space under swatches ----- */
+.vnum{flex:none;margin-left:auto;color:var(--mu);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.verbig{display:flex;align-items:baseline;gap:12px;margin:10px 0 0}.verbig b{font:700 44px/1 var(--disp);color:var(--a1);letter-spacing:.01em}.verbig span{color:var(--mu);font-size:15px}
+.vh3{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:26px 0 0}
+.vdef{display:flex;gap:14px;align-items:baseline;padding:10px 0;border-top:1px solid var(--ln)}.vh3+.vdef{margin-top:10px}
+.vdef b{flex:none;width:58px;font-variant-numeric:tabular-nums;color:var(--tx)}.vdef span{color:var(--mu);line-height:1.4}
+.vlog{display:grid;gap:16px;margin-top:12px}
+.vrow{border-left:2px solid var(--ln);padding:0 0 0 14px}.vrow.now{border-left-color:var(--a1)}
+.vrow .vh{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}.vrow .vh b{font-size:16px}.vrow .vh span{color:var(--mu);font-size:12.5px}
+.vrow p{margin:0;color:var(--mu);line-height:1.45;font-size:14px}.vrow.now p{color:var(--tx)}
+.btn.sm.ib{width:40px;height:40px;min-height:40px;padding:0;flex:none}.btn.ib svg.i{width:20px;height:20px;color:var(--tx)}
+.btn.ib.spin svg.i{animation:mclspin .9s linear infinite}@keyframes mclspin{to{transform:rotate(360deg)}}
+.t>.inf,.t .nw>.inf{margin-left:8px;vertical-align:middle;position:relative;top:-1px}.nw{white-space:nowrap}.sw .t.bal{text-wrap:balance}
+.uisws+.sw,.lkgrid+.sw,.uiths+.sw{margin-top:16px}
 @media(prefers-reduced-motion:reduce){#welcome .lane{animation:none}*{transition:none!important;animation:none!important}}
 
 </style></head>
@@ -1005,7 +1008,7 @@ routes.me=()=>{const p=S.profile;
  <div class="list mt"><button data-go="tools">${ic('link')}<span class="t">Link tools<small>Image to link, and link to clickable name</small></span>${ic('arrow')}</button>
   <button data-act="keys">${ic('search')}<span class="t">Lookup keys<small>${(()=>{const k=KEYS();return k.tm||k.om?'TMDB '+(k.tm?'on':'off')+' · OMDb '+(k.om?'on':'off'):'Optional: auto-fill details and scores'})()}</small></span>${ic('arrow')}</button></div>
  <h2 class="h2 mt2">Appearance</h2>
- <div class="list mt"><button data-act="look">${ic('tool')}<span class="t">Appearance<small>Colours, mode, font, text size, background, layout</small></span>${ic('arrow')}</button></div>
+ <div class="list mt"><button data-act="look">${ic('tool')}<span class="t">Appearance<small>Themes, colours, mode, font, text size, layout</small></span>${ic('arrow')}</button></div>
  <h2 class="h2 mt2">Your data</h2>
  <div class="list mt"><button data-act="export">${ic('up')}<span class="t">Back up your library<small>${S.lastBackup?'Last backup '+fdate(S.lastBackup):'No backup yet'} · ${S.reviews.length} review${S.reviews.length==1?'':'s'}</small></span></button>
   <button data-act="import">${ic('file')}<span class="t">Import a backup or an old review file<small>Backups from this app, or files from the classic editor</small></span></button>
@@ -1021,7 +1024,7 @@ routes.me=()=>{const p=S.profile;
  ${DB.persistent?'':`<p class="msg err">This browser is not allowing saved data, so your library will be lost when you close the page. Use Back up.</p>`}`)};
 ACT.welcome=()=>go('/welcome');
 const CHANGELOG=[
- [VERSION,'Now',['Quick tidy-ups: a Version row with this list, small (i) buttons for the grey help text, icon buttons in the Scores box, a lighter and warmer Gold.']],
+ [VERSION,'Now',['Themes: pick a whole look in one tap (Classic, Ocean air, Cinema Gold, Paper, Velvet, Sage, Dusk, Slate), or get a new theme each time you open the app.','Corners: choose round or square for any look or theme. This replaces the Editorial look; Ocean air is now a theme.','Compact is only offered on a PC.','Also: this Version sheet, small (i) buttons for the grey help text, icon buttons in the Scores box, a lighter and warmer Gold.']],
  ['2.8.0','Previous round',['New app looks, toned-down colours, Gold and a random colour on open, Suggest a colour combination, 2K saved images, the rating-row and tile layouts, and the Storage sheet.']],
  ['2.0 to 2.7.x','The new app',['Built in seven stages: the app shell, Insights, templates, Notion and lookups, sync and offline, Notion sync through chat, and Appearance. 2.7.1 and 2.7.2 were fix releases.']],
  ['1.x','The first one',['The original single post-card maker.']]];
@@ -1848,7 +1851,7 @@ async function boot(){
 /* ---------- Stage 7: app look, layout, more card themes and fonts ---------- */
 /* Everything here is added after the card-drawing code, which is left untouched. */
 const SPK=['imdb','rt','mc','tmdb','al','mal'];
-const UI0={mode:'dark',acc:'blue',a1:'#2f8cff',a2:'#a76bff',font:'system',hf:false,bg:'none',bgc:'#0b1020',bgi:null,dim:'80',sp:[],lk:'studio'};
+const UI0={mode:'dark',acc:'blue',a1:'#2f8cff',a2:'#a76bff',font:'system',hf:false,bg:'none',bgc:'#0b1020',bgi:null,dim:'80',sp:[],lk:'studio',th:'',cr:'round'};
 const DEV0={size:'100',layout:'auto'};
 const MODES={dark:['Dark',{bg:'#090b12',bg2:'#0e1119',pn:'#121623',pn2:'#1a1f2f',ln:'#262c3f',tx:'#f2f4fa',mu:'#96a0b8',nav:'rgba(11,13,21,.9)',inp:'#0b0d15',gr:'#3a4260',sch:'dark'}],
  amoled:['Black',{bg:'#000000',bg2:'#06070b',pn:'#0b0c11',pn2:'#14161d',ln:'#1f2330',tx:'#f2f4fa',mu:'#8e97ad',nav:'rgba(0,0,0,.92)',inp:'#07080c',gr:'#3a4260',sch:'dark'}],
@@ -1869,9 +1872,12 @@ const uiNorm=u=>{u=u&&typeof u=='object'?u:{};const o={...UI0};
  const d=parseInt(u.dim,10);if(d>=30&&d<=95)o.dim=String(d);
  if(o.bg=='image'&&!o.bgi)o.bg='none';
  o.sp=Array.isArray(u.sp)?[...new Set(u.sp.filter(x=>SPK.includes(x)))].slice(0,4):[];
+ /* old saved looks: Editorial became square corners, Ocean air became a theme; Compact stays saved (it is only shown on a PC) */
  o.lk=LOOKS[u.lk]?u.lk:'studio';
+ o.th=THEMES[u.th]?u.th:(u.lk=='sky'&&u.th===undefined?'ocean':'');
+ o.cr=u.cr=='square'?'square':(u.cr===undefined&&u.lk=='ed'?'square':'round');
  return o};
-const uiOut=u=>({mode:u.mode,acc:u.acc,a1:u.a1,a2:u.a2,font:u.font,hf:u.hf,bg:u.bg,bgc:u.bgc,bgi:u.bgi,dim:u.dim,sp:u.sp,lk:u.lk}); /* fixed key order: used for sync */
+const uiOut=u=>({mode:u.mode,acc:u.acc,a1:u.a1,a2:u.a2,font:u.font,hf:u.hf,bg:u.bg,bgc:u.bgc,bgi:u.bgi,dim:u.dim,sp:u.sp,lk:u.lk,th:u.th,cr:u.cr}); /* fixed key order: used for sync. New keys go at the end. */
 const devGet=()=>{let d={};try{d=JSON.parse(lsGet('mcl.dev7')||'{}')||{}}catch(e){}
  return{size:['92','100','112','125'].includes(String(d.size))?String(d.size):'100',layout:d.layout=='phone'?'phone':'auto',rnd:d.rnd===false?false:true}};
 const devSet=p=>lsSet('mcl.dev7',JSON.stringify({...devGet(),...p}));
@@ -1896,11 +1902,39 @@ function applyLayout(mode){if(!MQ.done){MQ.done=true;ownSheets().forEach(s=>{try
  MQ.list.forEach(([r,t])=>{try{r.media.mediaText=mode=='phone'?'not all':t}catch(e){}})}
 
 /* ---------- 2.7.3: app looks, random colour, tinted wordmark ---------- */
-const LOOKS={studio:['Studio','Bottom bar, soft cards'],ed:['Editorial','Tabs on top, big featured title'],glass:['Floating','Floating bar, glass cards'],rail:['Compact','Side rail and list rows'],sky:['Ocean air','Light, airy, serif']};
+const LOOKS={studio:['Studio','Bottom bar, soft cards'],glass:['Floating','Floating bar, glass cards'],rail:['Compact','Side rail and list rows (PC only)']};
 const SKYBG={light:'linear-gradient(180deg,#9fdcf7 0%,#cdeefd 24%,#eaf7ff 52%,#ffffff 100%)',dark:'linear-gradient(180deg,#0b3a5c 0%,#0a2842 38%,#08151f 100%)',amoled:'linear-gradient(180deg,#05293f 0%,#00090e 46%,#000 100%)'};
-const RND={k:null};
-const rndPick=()=>{const ks=Object.keys(ACCS);RND.k=ks[Math.random()*ks.length|0]};
-try{if(devGet().rnd)rndPick()}catch(e){}
+const RND={th:null};
+const PLAYFAIR="'Playfair Display',Georgia,'Times New Roman',serif",LORAF="'Lora',Georgia,serif";
+/* ---------- 2.9.0: themes. A theme sets mode, accent, font and background together. Accent and background can still be fine-tuned. ---------- */
+const THEMES={
+ classic:{n:'Classic',mode:'dark',acc:'blue',font:'system',hf:false},
+ ocean:{n:'Ocean air',mode:'light',acc:'ocean',font:'system',hf:false,disp:PLAYFAIR,fam:'Playfair Display',aa:PLAYFAIR,grad:SKYBG,
+  pal:{light:{pn:'#ffffff',pn2:'#e0f0fa',ln:'#c4dcec',bg2:'#fbfeff',mu:'#56728a',tx:'#0d2538',inp:'#f2f9fd',nav:'rgba(255,255,255,.88)',gr:'#b9d3e4'},
+   dark:{pn:'#0f2d46',pn2:'#17405f',ln:'#245170',bg2:'#0b2238',mu:'#8fb0c8',inp:'#0a2238',nav:'rgba(8,28,46,.9)',gr:'#2f5f80'},
+   amoled:{pn:'#07202f',pn2:'#0d2f44',ln:'#143a52',bg2:'#03141f',mu:'#7fa3bc',inp:'#04141e',nav:'rgba(0,10,16,.92)'}}},
+ cgold:{n:'Cinema Gold',mode:'dark',acc:'shine',font:'system',hf:false,disp:PLAYFAIR,fam:'Playfair Display',aa:PLAYFAIR,
+  pal:{dark:{bg:'#100d09',bg2:'#15110c',pn:'#1a150f',pn2:'#251e15',ln:'#362c1e',tx:'#f6efe4',mu:'#ab9c88',nav:'rgba(16,13,9,.9)',inp:'#0d0a07',gr:'#4a3d2b'}}},
+ paper:{n:'Paper',mode:'light',acc:'crimson',font:'Lora',hf:true,aa:LORAF,
+  pal:{light:{bg:'#f4eee3',bg2:'#fbf7ef',pn:'#fffcf6',pn2:'#efe6d6',ln:'#ddd0ba',tx:'#231d14',mu:'#6a5f4d',nav:'rgba(251,247,239,.92)',inp:'#f8f3e9',gr:'#cfc3ac'}}},
+ velvet:{n:'Velvet',mode:'dark',acc:'rose',font:'system',hf:false,
+  pal:{dark:{bg:'#130a14',bg2:'#190e1b',pn:'#1e1222',pn2:'#2a1a30',ln:'#3a2644',tx:'#f6eef7',mu:'#b49cb9',nav:'rgba(19,10,20,.9)',inp:'#0f0711',gr:'#4c3458'}}},
+ sage:{n:'Sage',mode:'light',acc:'emerald',font:'Nunito',hf:false,aa:"'Nunito',system-ui,sans-serif",
+  pal:{light:{bg:'#eef3ee',bg2:'#f8fbf7',pn:'#ffffff',pn2:'#e4ece4',ln:'#d0dccf',tx:'#14201a',mu:'#54675b',nav:'rgba(248,251,247,.92)',inp:'#f4f8f3',gr:'#c2cfc1'}}},
+ dusk:{n:'Dusk',mode:'dark',acc:'sunset',font:'system',hf:false,grad:{dark:'linear-gradient(180deg,#221a52 0%,#151133 42%,#0b0a1a 100%)'},
+  pal:{dark:{bg:'#0b0a1a',bg2:'#100e26',pn:'#16133a',pn2:'#201c4a',ln:'#2f2a63',tx:'#f1effb',mu:'#a49ec9',nav:'rgba(11,10,26,.9)',inp:'#0b0a1c',gr:'#3d3875'}}},
+ slate:{n:'Slate',mode:'dark',acc:'mono',font:'system',hf:false,
+  pal:{dark:{bg:'#0e0f11',bg2:'#131416',pn:'#17181b',pn2:'#222427',ln:'#2f3135',tx:'#eeeff1',mu:'#9a9ea6',nav:'rgba(14,15,17,.92)',inp:'#0b0c0e',gr:'#3d4046'}}}};
+/* what a theme changes in the saved settings */
+const thSet=id=>{const t=THEMES[id];return t?{th:id,mode:t.mode,acc:t.acc,font:t.font,hf:t.hf,bg:'none'}:{}};
+/* random theme on open: this device only, never saved; avoids repeating the last one */
+const rndPickTheme=()=>{const ids=Object.keys(THEMES);let last='';try{last=lsGet('mcl.rth')||''}catch(e){}
+ const pool=ids.filter(x=>x!==last);RND.th=pool[Math.random()*pool.length|0];try{lsSet('mcl.rth',RND.th)}catch(e){}};
+try{if(devGet().rnd)rndPickTheme()}catch(e){}
+/* the settings the app is really showing: the saved ones, or the random theme of this opening */
+const effUI=()=>{const u=curUI();return(devGet().rnd&&RND.th&&THEMES[RND.th])?{...u,...thSet(RND.th)}:u};
+const thTile=(id,on)=>{const t=THEMES[id],M={...MODES[t.mode][1],...((t.pal&&t.pal[t.mode])||{})},A=ACCS[t.acc],g=A[3]||`linear-gradient(135deg,${A[1]},${A[2]})`,bg=(t.grad&&t.grad[t.mode])||M.bg;
+ return `<button class="uith ${on?'on':''}" data-th="${id}" aria-pressed="${on?'true':'false'}" aria-label="${esc(t.n)}" style="--tb:${bg};--tp:${M.pn};--tt:${M.tx};--tm:${M.mu};--tl:${M.ln};--tg:${g};--tf:${t.aa||'system-ui,sans-serif'}"><span class="thsq"><span class="thaa">Aa</span><span class="thpn"><i></i><i></i><b></b></span></span><span>${esc(t.n)}</span></button>`};
 const hsl2rgb=(h,s,l)=>{h=((h%360)+360)%360;s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));return[f(0),f(8),f(4)].map(v=>Math.round(v*255))};
 const rgb2hex=a=>'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
 const rgb2hsl=([r,g,b])=>{r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0,s=0;const l=(mx+mn)/2;
@@ -1934,26 +1968,25 @@ function wmSync(){const A=ACCNOW;if(!A)return;
 /* little pictures of each look, for the picker */
 const LKTH={
 studio:`<svg viewBox="0 0 56 96" aria-hidden="true"><rect class="fr" x=".5" y=".5" width="55" height="95" rx="9"/><circle class="a" cx="12" cy="12" r="4.5"/><rect class="m" x="20" y="9" width="22" height="3" rx="1.5"/><rect class="m2" x="20" y="14" width="15" height="2.5" rx="1.2"/><rect class="a" x="6" y="24" width="44" height="13" rx="5"/><rect class="p" x="6" y="44" width="12" height="18" rx="3"/><rect class="p" x="22" y="44" width="12" height="18" rx="3"/><rect class="p" x="38" y="44" width="12" height="18" rx="3"/><rect class="p" x="6" y="67" width="20" height="9" rx="3"/><rect class="p" x="30" y="67" width="20" height="9" rx="3"/><path class="nb" d="M.5 82h55v8.5a5 5 0 0 1-5 5h-45a5 5 0 0 1-5-5z"/><circle class="a" cx="28" cy="82" r="6"/></svg>`,
-ed:`<svg viewBox="0 0 56 96" aria-hidden="true"><rect class="fr" x=".5" y=".5" width="55" height="95" rx="9"/><rect class="m" x="6" y="8" width="9" height="2.5" rx="1"/><rect class="m" x="19" y="8" width="9" height="2.5" rx="1"/><rect class="m" x="32" y="8" width="9" height="2.5" rx="1"/><rect class="a" x="6" y="13" width="9" height="1.6"/><rect class="a" x="45" y="6" width="6" height="7" rx="1"/><rect class="m" x="6" y="22" width="30" height="5" rx="1"/><rect class="m" x="6" y="30" width="22" height="5" rx="1"/><rect class="m2" x="6" y="40" width="44" height="1"/><rect class="p" x="6" y="45" width="14" height="21" rx="1"/><rect class="m" x="24" y="47" width="22" height="3" rx="1"/><rect class="m2" x="24" y="53" width="16" height="2.5" rx="1"/><rect class="a" x="24" y="60" width="10" height="3" rx="1"/><rect class="p" x="6" y="72" width="13" height="18" rx="1"/><rect class="p" x="21" y="72" width="13" height="18" rx="1"/><rect class="p" x="36" y="72" width="14" height="18" rx="1"/></svg>`,
 glass:`<svg viewBox="0 0 56 96" aria-hidden="true"><rect class="fr" x=".5" y=".5" width="55" height="95" rx="9"/><rect class="a" x="5" y="6" width="46" height="18" rx="8" opacity=".55"/><circle class="w" cx="14" cy="15" r="5"/><rect class="m" x="23" y="11" width="20" height="3" rx="1.5"/><rect class="m2" x="23" y="17" width="14" height="2.5" rx="1"/><rect class="a" x="5" y="28" width="46" height="11" rx="6"/><rect class="p" x="5" y="44" width="21" height="28" rx="8"/><rect class="p" x="30" y="44" width="21" height="28" rx="8"/><rect class="nb" x="6" y="78" width="44" height="12" rx="6"/><circle class="a" cx="28" cy="78" r="6"/><circle class="m" cx="14" cy="84" r="2"/><circle class="m" cx="42" cy="84" r="2"/></svg>`,
-rail:`<svg viewBox="0 0 56 96" aria-hidden="true"><rect class="fr" x=".5" y=".5" width="55" height="95" rx="9"/><path class="nb" d="M.5 9.5a9 9 0 0 1 9-9h2v95h-2a9 9 0 0 1-9-9z"/><circle class="a" cx="6" cy="12" r="3.6"/><rect class="m" x="3.2" y="26" width="5.6" height="5.6" rx="1.5"/><rect class="m" x="3.2" y="38" width="5.6" height="5.6" rx="1.5"/><rect class="m" x="3.2" y="50" width="5.6" height="5.6" rx="1.5"/><circle class="a" cx="20" cy="10" r="3.5"/><rect class="m" x="26" y="8" width="16" height="3" rx="1.5"/><rect class="p" x="16" y="19" width="34" height="9" rx="3"/><rect class="p" x="16" y="34" width="34" height="14" rx="4"/><rect class="m2" x="18" y="36" width="6" height="10" rx="1.5"/><rect class="m" x="27" y="38" width="14" height="2.5" rx="1"/><rect class="p" x="16" y="52" width="34" height="14" rx="4"/><rect class="m2" x="18" y="54" width="6" height="10" rx="1.5"/><rect class="m" x="27" y="56" width="14" height="2.5" rx="1"/><rect class="p" x="16" y="70" width="34" height="14" rx="4"/><rect class="m2" x="18" y="72" width="6" height="10" rx="1.5"/><rect class="m" x="27" y="74" width="14" height="2.5" rx="1"/></svg>`,
-sky:`<svg viewBox="0 0 56 96" aria-hidden="true"><rect class="sk" x=".5" y=".5" width="55" height="95" rx="9" stroke="#9fdcf7"/><rect x="6" y="9" width="30" height="5" rx="1" fill="#13405f"/><rect x="6" y="17" width="20" height="3" rx="1" fill="#13405f" opacity=".5"/><rect class="w" x="5" y="28" width="46" height="46" rx="8"/><rect x="10" y="34" width="14" height="2" rx="1" fill="#6b8ca3"/><rect x="10" y="39" width="26" height="3.5" rx="1" fill="#13405f"/><rect x="10" y="48" width="36" height=".8" fill="#cfe3ef"/><rect x="10" y="53" width="14" height="2" rx="1" fill="#6b8ca3"/><rect x="10" y="58" width="22" height="3.5" rx="1" fill="#13405f"/><rect x="10" y="66" width="10" height="4" rx="2" fill="none" stroke="#9db8c9"/><rect x="23" y="66" width="10" height="4" rx="2" fill="none" stroke="#9db8c9"/><rect class="w" x=".5" y="82" width="55" height="13" rx="0"/><circle class="a" cx="14" cy="88" r="2.4"/><circle class="m" cx="28" cy="88" r="2.4"/><circle class="m" cx="42" cy="88" r="2.4"/></svg>`};
+rail:`<svg viewBox="0 0 56 96" aria-hidden="true"><rect class="fr" x=".5" y=".5" width="55" height="95" rx="9"/><path class="nb" d="M.5 9.5a9 9 0 0 1 9-9h2v95h-2a9 9 0 0 1-9-9z"/><circle class="a" cx="6" cy="12" r="3.6"/><rect class="m" x="3.2" y="26" width="5.6" height="5.6" rx="1.5"/><rect class="m" x="3.2" y="38" width="5.6" height="5.6" rx="1.5"/><rect class="m" x="3.2" y="50" width="5.6" height="5.6" rx="1.5"/><circle class="a" cx="20" cy="10" r="3.5"/><rect class="m" x="26" y="8" width="16" height="3" rx="1.5"/><rect class="p" x="16" y="19" width="34" height="9" rx="3"/><rect class="p" x="16" y="34" width="34" height="14" rx="4"/><rect class="m2" x="18" y="36" width="6" height="10" rx="1.5"/><rect class="m" x="27" y="38" width="14" height="2.5" rx="1"/><rect class="p" x="16" y="52" width="34" height="14" rx="4"/><rect class="m2" x="18" y="54" width="6" height="10" rx="1.5"/><rect class="m" x="27" y="56" width="14" height="2.5" rx="1"/><rect class="p" x="16" y="70" width="34" height="14" rx="4"/><rect class="m2" x="18" y="72" width="6" height="10" rx="1.5"/><rect class="m" x="27" y="74" width="14" height="2.5" rx="1"/></svg>`};
 
-function applyUI(){const u=curUI(),d=devGet(),M=MODES[u.mode][1],root=document.documentElement,st=root.style;
- const ak=(d.rnd&&RND.k&&ACCS[RND.k])?RND.k:u.acc;
+function applyUI(){const u=effUI(),d=devGet(),T=THEMES[u.th],M={...MODES[u.mode][1],...((T&&T.pal&&T.pal[u.mode])||{})},root=document.documentElement,st=root.style;
+ const ak=u.acc;
  let a1=u.a1,a2=u.a2,grad=null,dark=null,ink=null;if(ak!='custom'&&ACCS[ak]){a1=ACCS[ak][1];a2=ACCS[ak][2];grad=ACCS[ak][3]||null;dark=ACCS[ak][4]===1;if(typeof ACCS[ak][4]=='string')ink=ACCS[ak][4]}
  if(!grad)grad=`linear-gradient(135deg,${a1},${a2})`;if(dark===null)dark=(lum(a1)+lum(a2))/2>165;ACCNOW={k:ak,a1,a2,g:grad};
  const setv={'--bg':M.bg,'--bg2':M.bg2,'--pn':M.pn,'--pn2':M.pn2,'--ln':M.ln,'--tx':M.tx,'--mu':M.mu,'--a1':a1,'--a2':a2,'--grad':grad,'--ok':u.mode=='light'?'#0e9f66':'#19d38a','--bad':u.mode=='light'?'#d92d45':'#ff6b7d','--onacc':ink||(dark?'#101114':'#ffffff'),'--navbg':M.nav,'--inp':M.inp,'--grip':M.gr};
  Object.entries(setv).forEach(([k,v])=>st.setProperty(k,v));
- root.dataset.mode=u.mode;root.dataset.look=u.lk;st.colorScheme=M.sch;
- if(d.layout!='phone'&&innerWidth>=900)root.setAttribute('data-desk','');else root.removeAttribute('data-desk');
- if(u.lk=='sky')ensureFont('Playfair Display');
+ const desk=d.layout!='phone'&&innerWidth>=900;
+ root.dataset.mode=u.mode;root.dataset.look=(u.lk=='rail'&&!desk)?'studio':u.lk;root.dataset.theme=u.th||'';root.dataset.cr=u.cr;st.colorScheme=M.sch;
+ if(desk)root.setAttribute('data-desk','');else root.removeAttribute('data-desk');
+ if(T&&T.fam)ensureFont(T.fam);
  const fam=UIFONTS[u.font]&&UIFONTS[u.font][1];if(fam)ensureFont(fam);
  const ff=fam?`"${fam}",system-ui,"Segoe UI",Roboto,sans-serif`:'';
  const[r1,g1,b1]=rgbOf(M.bg);let bgcss='';
  if(u.bg=='color'&&hexOk(u.bgc)){const[r,g,b]=rgbOf(u.bgc);bgcss=`html,body{background:rgb(${r},${g},${b})!important}body{background-image:radial-gradient(900px 520px at 85% -8%,rgba(${rgbOf(a1).join(',')},.14),transparent 60%),radial-gradient(700px 420px at -10% 0,rgba(${rgbOf(a2).join(',')},.08),transparent 60%)!important}`}
  else if(u.bg=='image'&&u.bgi){const d2=(+u.dim)/100;bgcss=`body{background:linear-gradient(rgba(${r1},${g1},${b1},${d2}),rgba(${r1},${g1},${b1},${Math.min(1,d2+.08)})),url("${u.bgi}") center/cover no-repeat fixed,${M.bg}!important}`}
- else if(u.lk=='sky')bgcss=`body{background:radial-gradient(700px 420px at 92% -6%,rgba(${rgbOf(a1).join(',')},${u.mode=='light'?.16:.2}),transparent 62%),${SKYBG[u.mode]||SKYBG.dark};background-attachment:fixed}`;
+ else if(T&&T.grad&&T.grad[u.mode])bgcss=`body{background:radial-gradient(700px 420px at 92% -6%,rgba(${rgbOf(a1).join(',')},${u.mode=='light'?.16:.2}),transparent 62%),${T.grad[u.mode]};background-attachment:fixed}`;
  else bgcss=`body{background:radial-gradient(900px 520px at 85% -8%,rgba(${rgbOf(a1).join(',')},${u.mode=='light'?.10:.16}),transparent 60%),radial-gradient(700px 420px at -10% 0,rgba(${rgbOf(a2).join(',')},${u.mode=='light'?.06:.08}),transparent 60%),var(--bg)}`;
  let css=bgcss+`
 #nav{background:var(--navbg)}
@@ -1980,7 +2013,8 @@ html[data-mode=light] .hero:has(.bd.bn) .sub{color:rgba(255,255,255,.82)}
 .btn.pri,.cta,.chip.on,#nav button.add,#nav button.add .pl,.av{color:var(--onacc,#fff)}
 `;
  if(ff)css+=`html body,html button,html input,html select,html textarea{font-family:${ff}}`;
- if(ff&&u.hf)css+=`:root{--disp:${ff}}`;
+ if(ff&&u.hf)css+=`:root{--disp:${ff}}`;else if(T&&T.disp)css+=`:root{--disp:${T.disp}}#welcome{--disp:Oswald,"Arial Narrow",system-ui,sans-serif}`;
+ if(T&&T.pal)css+=`html #welcome{--tx:#f2f4fa;--mu:#96a0b8;color:#f2f4fa}`;
  let el=document.getElementById('mcl-ui');if(!el){el=document.createElement('style');el.id='mcl-ui';document.head.appendChild(el)}
  el.textContent=css;
  const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=M.bg;
@@ -2005,17 +2039,20 @@ function deskCheck(){if(devGet().layout=='phone'||lsGet('mcl.deskno')=='1'||!des
 /* ---------- Appearance screen ---------- */
 ACT.look=()=>{
  let dirty=false;const pn=sheet('',{onClose:()=>{if(dirty){dirty=false;setTimeout(route,0)}}});
- let u=curUI(),dv=devGet(),bgSel=u.bg;
- const eff=()=>(dv.rnd&&RND.k&&ACCS[RND.k])?RND.k:u.acc;
+ let u=effUI(),dv=devGet(),bgSel=u.bg;
+ ['Playfair Display','Lora','Nunito'].forEach(ensureFont);
  const seg=(id,opts,cur)=>`<div class="seg4" data-seg="${id}">${opts.map(([v,t])=>`<button data-v="${v}" class="${String(cur)==String(v)?'on':''}">${t}</button>`).join('')}</div>`;
  const sw=(k,c1,c2,on,t,g)=>`<button class="uisw ${on?'on':''}" data-acc="${k}" style="--c1:${c1};--c2:${c2}${g?';--g:'+g:''}" aria-label="${esc(t)}"><i></i><span>${esc(t)}</span></button>`;
- const draw=()=>{const bgAcc=eff();
-  pn.innerHTML=`<div class="gr"></div><div class="shead"><h2 class="h2">Appearance</h2><span class="shb">${infoBtn('lk-i','Appearance',['Changes show at once.','Your mode, look, colours, font and background are saved and travel with Sync.','Text size, layout, the opening screen and random colours stay on each device.'])}</span></div>
-  <div class="fld" style="margin-top:18px"><label class="lb">Mode</label>${seg('mode',Object.entries(MODES).map(([k,v])=>[k,v[0]]),u.mode)}</div>
-  <div class="fld"><div class="lrow"><label class="lb">App look</label>${infoBtn('lk-look','App look',['A look changes the layout of the whole app: the bottom bar, Home, Library and Me.','Studio is the look you already know.','Editorial puts tabs on top and features your latest review.','Floating has a floating bar and glass cards.','Compact has a side rail and list rows.','Ocean air is light and airy with serif titles and a details list on the title page.','Every look works with every mode and colour.'])}</div>
-   <div class="lkgrid">${Object.entries(LOOKS).map(([k,v])=>`<button class="lkb ${u.lk==k?'on':''}" data-look="${k}">${LKTH[k]}<span>${esc(v[0])}</span></button>`).join('')}</div></div>
+ const draw=()=>{const bgAcc=u.acc,desk=document.documentElement.hasAttribute('data-desk'),lkOn=(u.lk=='rail'&&!desk)?'studio':u.lk;
+  pn.innerHTML=`<div class="gr"></div><div class="shead"><h2 class="h2">Appearance</h2><span class="shb">${infoBtn('lk-i','Appearance',['Changes show at once.','Your theme, mode, look, corners, colours, font and background are saved and travel with Sync.','Text size, layout, the opening screen and random themes stay on each device.'])}</span></div>
+  <div class="fld" style="margin-top:18px"><div class="lrow"><label class="lb">Theme</label>${infoBtn('lk-th','Themes',['A theme sets the mode, accent colour, font and background together.','After you pick one, you can still change the accent colour or the background below.','Ocean air also changes the headings, the small labels and the title page.'])}</div>
+   <div class="uiths">${Object.keys(THEMES).map(k=>thTile(k,u.th==k)).join('')}</div>
+   <div class="sw"><span class="t bal">New theme every time I open <span class="nw">the app${infoBtn('lk-rnd','New theme every time',['Each time you open the app, one of the themes above is picked at random.','It only changes the look on this device.','Turn it off to keep the theme you chose.'])}</span></span><button class="tgl ${dv.rnd?'on':''}" id="urnd" aria-label="Random theme on open"></button></div></div>
+  <div class="fld"><label class="lb">Mode</label>${seg('mode',Object.entries(MODES).map(([k,v])=>[k,v[0]]),u.mode)}</div>
+  <div class="fld"><div class="lrow"><label class="lb">App look</label>${infoBtn('lk-look','App look',['A look changes the layout of the whole app: the bottom bar, Home, Library and Me.','Studio is the look you already know.','Floating has a floating bar and glass cards.'].concat(desk?['Compact has a side rail and list rows. It is only for a PC.']:[]).concat(['Every look works with every theme, mode and colour.']))}</div>
+   <div class="lkgrid">${Object.entries(LOOKS).filter(([k])=>k!='rail'||desk).map(([k,v])=>`<button class="lkb ${lkOn==k?'on':''}" data-look="${k}">${LKTH[k]}<span>${esc(v[0])}</span></button>`).join('')}</div></div>
+  <div class="fld"><div class="lrow"><label class="lb">Corners</label>${infoBtn('lk-cr','Corners',['Round is the soft look you already know.','Square gives small, sharp corners on cards, buttons and fields.','It works with every look and theme.'])}</div>${seg('cr',[['round','Round'],['square','Square']],u.cr)}</div>
   <div class="fld"><label class="lb">Accent colour</label><div class="uisws">${Object.entries(ACCS).map(([k,v])=>sw(k,v[1],v[2],bgAcc==k,v[0],v[3])).join('')}${sw('custom',u.a1,u.a2,bgAcc=='custom','Custom')}</div>
-   <div class="sw"><span class="t bal">New colour every time I open <span class="nw">the app${infoBtn('lk-rnd','New colour every time',['Each time you open the app, one of the colours above is picked at random.','It only changes the colour on this device.','Turn it off to keep the colour you chose.'])}</span></span><button class="tgl ${dv.rnd?'on':''}" id="urnd" aria-label="Random colour on open"></button></div>
    <div id="cust" ${bgAcc=='custom'?'':'hidden'}><div class="row mt"><label class="sp lb" style="margin:0">Colour 1<input type="color" id="ca1" value="${u.a1}" style="display:block;width:100%;height:42px;margin-top:6px;border:0;background:none"></label><label class="sp lb" style="margin:0">Colour 2<input type="color" id="ca2" value="${u.a2}" style="display:block;width:100%;height:42px;margin-top:6px;border:0;background:none"></label></div>
    <button class="btn block mt" id="usur">Suggest a colour combination</button></div></div>
   <div class="fld"><label class="lb">App font</label><select class="in" id="uf">${Object.entries(UIFONTS).map(([k,v])=>`<option value="${k}" ${u.font==k?'selected':''}>${esc(v[0])}</option>`).join('')}</select>
@@ -2029,32 +2066,29 @@ ACT.look=()=>{
   <div class="fld"><div class="lrow"><label class="lb">Opening screen (this device)</label>${infoBtn('lk-w','Opening screen',['Every time shows the welcome screen each time you open the app.','First time only shows it once, then goes straight to Home.','You can always open it from Me, Show the welcome screen.'])}</div>${seg('wel',[['every','Every time'],['once','First time only']],lsGet('mcl.wel')=='once'?'once':'every')}</div>
   <button class="btn pri block mt2" id="udone">Done</button><button class="btn block mt" id="ureset">Reset to default look</button>`;
   bind()};
- const commit=()=>{saveUI(u);u=curUI()};
+ const commit=()=>{RND.th=null;saveUI(u);u=curUI()};
  const redraw=()=>{const sc=pn.scrollTop;draw();pn.scrollTop=sc};
  const bind=()=>{
   pn.querySelectorAll('[data-seg]').forEach(g=>g.onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=g.dataset.seg,v=b.dataset.v;
-   if(id=='mode'){u.mode=v;commit()}else if(id=='bg'){bgSel=v;u.bg=v;commit()}
+   if(id=='mode'){u.mode=v;commit()}else if(id=='cr'){u.cr=v;commit()}else if(id=='bg'){bgSel=v;u.bg=v;commit()}
    else if(id=='size'){devSet({size:v});dv=devGet();applyUI()}else if(id=='layout'){devSet({layout:v});dv=devGet();applyUI()}else if(id=='wel'){lsSet('mcl.wel',v)}
    redraw()});
   pn.querySelectorAll('[data-look]').forEach(b=>b.onclick=()=>{u.lk=b.dataset.look;dirty=true;commit();redraw()});
-  pn.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{u.acc=b.dataset.acc;RND.k=null;commit();redraw()});
-  pn.querySelector('#urnd').onclick=()=>{if(dv.rnd){devSet({rnd:false});RND.k=null}else{devSet({rnd:true});rndPick()}dv=devGet();applyUI();redraw();toast(dv.rnd?'A new colour will be picked each time you open the app':'Your chosen colour stays')};
-  const a1=pn.querySelector('#ca1'),a2=pn.querySelector('#ca2');if(a1)a1.oninput=()=>{u.a1=a1.value;u.acc='custom';RND.k=null;saveUI(u);u=curUI()};if(a2)a2.oninput=()=>{u.a2=a2.value;u.acc='custom';RND.k=null;saveUI(u);u=curUI()};
-  const sur=pn.querySelector('#usur');if(sur)sur.onclick=()=>{[u.a1,u.a2]=rndPair();u.acc='custom';RND.k=null;commit();redraw()};
+  pn.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{Object.assign(u,thSet(b.dataset.th));bgSel=u.bg;dirty=true;commit();redraw()});
+  pn.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{u.acc=b.dataset.acc;commit();redraw()});
+  pn.querySelector('#urnd').onclick=()=>{if(dv.rnd){devSet({rnd:false});RND.th=null;dv=devGet();u=curUI()}else{devSet({rnd:true});dv=devGet();rndPickTheme();u=effUI()}bgSel=u.bg;dirty=true;applyUI();redraw();toast(dv.rnd?'A new theme will be picked each time you open the app':'Your chosen theme stays')};
+  const a1=pn.querySelector('#ca1'),a2=pn.querySelector('#ca2');if(a1)a1.oninput=()=>{u.a1=a1.value;u.acc='custom';commit()};if(a2)a2.oninput=()=>{u.a2=a2.value;u.acc='custom';commit()};
+  const sur=pn.querySelector('#usur');if(sur)sur.onclick=()=>{[u.a1,u.a2]=rndPair();u.acc='custom';commit();redraw()};
   pn.querySelector('#uf').onchange=e=>{u.font=e.target.value;commit()};
   pn.querySelector('#uhf').onclick=e=>{u.hf=!u.hf;e.currentTarget.classList.toggle('on',u.hf);commit()};
-  const bc=pn.querySelector('#bgcol');if(bc)bc.oninput=()=>{u.bgc=bc.value;u.bg='color';bgSel='color';saveUI(u);u=curUI()};
+  const bc=pn.querySelector('#bgcol');if(bc)bc.oninput=()=>{u.bgc=bc.value;u.bg='color';bgSel='color';commit()};
   const pick=async()=>{const d=await pickImage(900,.72,false);if(d){u.bgi=d;u.bg='image';bgSel='image';commit();redraw()}};
   pn.querySelector('#bgpick').onclick=pick;
   const rm=pn.querySelector('#bgrm');if(rm)rm.onclick=()=>{u.bgi=null;u.bg='none';bgSel='none';commit();draw()};
-  const dm=pn.querySelector('#bgdim');if(dm)dm.oninput=()=>{u.dim=dm.value;dm.parentElement.querySelector('output').textContent=dm.value;saveUI(u);u=curUI()};
+  const dm=pn.querySelector('#bgdim');if(dm)dm.oninput=()=>{u.dim=dm.value;dm.parentElement.querySelector('output').textContent=dm.value;commit()};
   pn.querySelector('#udone').onclick=closeSheet;
-  pn.querySelector('#ureset').onclick=()=>{if(u.lk!='studio')dirty=true;u={...UI0,sp:u.sp};bgSel='none';RND.k=null;commit();devSet({size:'100',layout:'auto'});dv=devGet();applyUI();draw();toast('Look reset')}};
+  pn.querySelector('#ureset').onclick=()=>{dirty=true;u={...UI0,...thSet('classic'),sp:u.sp};bgSel='none';commit();devSet({size:'100',layout:'auto'});dv=devGet();applyUI();draw();toast('Look reset')}};
  draw()};
-(()=>{const st=document.createElement('style');st.textContent=`.uisws{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.uisw{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;border-radius:14px;border:1px solid var(--ln);background:var(--pn);font-size:12px;color:var(--mu)}
-.uisw i{display:block;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c2))}
-.uisw.on{border-color:var(--a1);color:var(--tx);box-shadow:0 0 0 2px color-mix(in srgb,var(--a1) 30%,transparent)}`;document.head.appendChild(st)})();
 
 /* ---------- more card themes and fonts (added without touching the original drawing code) ---------- */
 Object.assign(TH,{rosegold:'Rose gold',violet:'Violet haze',ember:'Ember',teal:'Deep teal',goldnoir:'Gold noir',steel:'Steel blue',duo:'Duotone',blueprint:'Blueprint grid',carbon:'Carbon weave',mint:'Mint (light)',sky:'Sky (light)',peach:'Peach (light)',lilac:'Lilac (light)'});
@@ -2159,29 +2193,20 @@ routes.home=()=>{const lk=LKN();if(lk=='studio'){_home();return}
  const cta=`<button class="cta" data-act="new"><span class="pl">${ic('plus')}</span><span><span class="big">New review</span><small>A card in six quick steps</small></span></button>`;
  const empty=`<div class="empty mt2"><p class="h2">No reviews yet</p><p>Tap New review to make your first card. Your cards will appear here and in the Library.</p><button class="btn mt" data-go="me">Import a backup</button></div>`;
  const sts=`<div class="stats mt2"><div class="stat"><b>${st.n}</b><span>Reviews</span></div><div class="stat"><b>${st.month}</b><span>This month</span></div><div class="stat"><b>${st.avg==null?'–':f2n(st.avg)}</b><span>Average score</span></div><div class="stat"><b>${st.titles}</b><span>Titles</span></div></div>`;
- const slist=`<div class="card slist mt2"><div><span>Reviews</span><b>${st.n}</b></div><div><span>This month</span><b>${st.month}</b></div><div><span>Average score</span><b>${st.avg==null?'–':f2n(st.avg)}</b></div><div><span>Titles</span><b>${st.titles}</b></div></div>`;
  const head=(t,n)=>`<div class="row mt2"><h2 class="h2 sp">${t}</h2><button class="btn sm" data-go="library">See all</button></div>`;
  const strip=(a,b)=>`<div class="strip mt">${gs.slice(a,b).map(g=>`<div class="tile">${tile(g)}</div>`).join('')}</div>`;
  let h='';
- if(lk=='ed'){
-  const feat=(()=>{if(!gs.length)return'';const g=gs[0],r=g.latest,f=r.f,vp=vpOf(g.key),sc=rScore(r),vv=rVerdict(r),sn=String(f.short||'').replace(/[*_>#~\[\]]+/g,' ').replace(/\s+/g,' ').trim().slice(0,130);
-   return `<a class="feat" href="#/title/${encodeURIComponent(g.key)}"><div class="art ${vp?'':'gen'}" style="${vp?`background-image:url('${vp}')`:genBg(f.title)}"></div><div class="tx"><div class="kick">Latest review</div><div class="ft">${esc(f.title||'Untitled')}</div><div class="fm">${esc([f.fmt,f.year].filter(Boolean).join(' · '))}</div><div class="fr">${sc!=null?`<span class="score">${ic('star','f')}${f2n(sc)}<small>/10</small></span>`:''}${vv?`<span class="vem">${esc(emoOf(vv)||wordOf(vv))}</span>`:''}</div>${sn?`<p class="fq">“${esc(sn)}${String(f.short||'').length>130?'…':''}”</p>`:''}</div></a>`})();
-  h=`<div class="ed-top"><div class="kick">${esc(p.name)} · ${cnt}</div><h1 class="h1">Your cinema archive</h1></div>${draft}<div class="mt">${cta}</div>
-   ${gs.length?`${feat}${gs.length>1?head('More recent')+strip(1,11):''}${sts}`:empty}${bk}`}
- else if(lk=='glass'){
+ if(lk=='glass'){
   h=`<div class="gl-hello card"><div class="av lg" ${avStyle()}>${avInit()}</div><div class="sp"><div class="kick">${greet()}</div><h1 class="h1" style="margin:2px 0 2px">${esc(p.name)}</h1><p class="sub">${cnt}</p></div></div>${draft?`<div class="mt">${draft}</div>`:''}<div class="mt">${cta}</div>
    ${gs.length?`${head('Recently reviewed')}${strip(0,10)}${sts}`:empty}${bk}`}
- else if(lk=='rail'){
+ else{ /* rail (Compact, PC only) */
   h=`<div class="rl-head"><div class="av" ${avStyle()}>${avInit()}</div><div class="sp"><b>${esc(p.name)}</b><small>${cnt}</small></div></div>${draft?`<div class="mt">${draft}</div>`:''}<div class="mt">${cta}</div>
    ${gs.length?`${sts}${head('Recent')}<div class="rows mt">${gs.slice(0,7).map(rowTile).join('')}</div>`:empty}${bk}`}
- else{ /* sky */
-  h=`<div class="sk-hi"><div class="kick">${greet()}</div><h1 class="h1">Hello, ${esc(p.name)}.</h1><p class="sub">${cnt}</p></div>${draft?`<div class="mt">${draft}</div>`:''}<div class="mt2">${cta}</div>
-   ${gs.length?`${head('Recently reviewed')}${strip(0,10)}${slist}`:empty}${bk}`}
  setView(h)}}
 
-/* title page: Ocean air shows a details list, like a film page */
+/* title page: the Ocean air theme shows a details list, like a film page */
 {const _title=routes.title;
-routes.title=key=>{_title(key);if(LKN()!='sky')return;
+routes.title=key=>{_title(key);if(document.documentElement.dataset.theme!='ocean')return;
  const g=groups().find(x=>x.key==key);if(!g)return;const r=g.latest,f=r.f,sc=rScore(r),rc=$('view').querySelector('.ratings');if(!rc)return;
  const gen=f.genre?f.genre.split(',').map(x=>x.trim()).filter(Boolean):[];
  const row=(k,v)=>v?`<div class="r"><span class="k">${k}</span><div class="v">${v}</div></div>`:'';
@@ -2220,23 +2245,8 @@ ACT.storage=async()=>{const e=await storEst();let per=false;try{per=!!(navigator
   if(K<want-.01)toast('This card is very tall, so it was saved at '+Math.round(1080*K)+' px wide.');
   return new Promise(r=>HTMLCanvasElement.prototype.toBlob.call(cv,r,'image/png'))}}
 
-/* ---------- 2.9.0, stage 1: Version row and sheet, (i) buttons, Scores icon buttons, space under swatches ---------- */
-(()=>{const st=document.createElement('style');st.id='mcl-290a';st.textContent=`
-.vnum{flex:none;margin-left:auto;color:var(--mu);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-.verbig{display:flex;align-items:baseline;gap:12px;margin:10px 0 0}.verbig b{font:700 44px/1 var(--disp);color:var(--a1);letter-spacing:.01em}.verbig span{color:var(--mu);font-size:15px}
-.vh3{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:26px 0 0}
-.vdef{display:flex;gap:14px;align-items:baseline;padding:10px 0;border-top:1px solid var(--ln)}.vh3+.vdef{margin-top:10px}
-.vdef b{flex:none;width:58px;font-variant-numeric:tabular-nums;color:var(--tx)}.vdef span{color:var(--mu);line-height:1.4}
-.vlog{display:grid;gap:16px;margin-top:12px}
-.vrow{border-left:2px solid var(--ln);padding:0 0 0 14px}.vrow.now{border-left-color:var(--a1)}
-.vrow .vh{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}.vrow .vh b{font-size:16px}.vrow .vh span{color:var(--mu);font-size:12.5px}
-.vrow p{margin:0;color:var(--mu);line-height:1.45;font-size:14px}.vrow.now p{color:var(--tx)}
-.btn.sm.ib{width:40px;height:40px;min-height:40px;padding:0;flex:none}.btn.ib svg.i{width:20px;height:20px;color:var(--tx)}
-.btn.ib.spin svg.i{animation:mclspin .9s linear infinite}@keyframes mclspin{to{transform:rotate(360deg)}}
-.t>.inf,.t .nw>.inf{margin-left:8px;vertical-align:middle;position:relative;top:-1px}.nw{white-space:nowrap}.sw .t.bal{text-wrap:balance}
-.uisws+.sw,.lkgrid+.sw{margin-top:16px}
-`;document.head.appendChild(st)})();
-
+{let lastDesk=document.documentElement.hasAttribute('data-desk');
+ addEventListener('resize',()=>{const now=document.documentElement.hasAttribute('data-desk');if(now===lastDesk)return;lastDesk=now;const was=LKN();applyUI();if(LKN()!==was)route()})}
 boot();
 
 </script></body></html>
